@@ -1,0 +1,135 @@
+// file      : cutl/shared-ptr.hxx
+// author    : Boris Kolpackov <boris@codesynthesis.com>
+// copyright : Copyright (c) 2009 Code Synthesis Tools CC
+// license   : MIT; see accompanying LICENSE file
+
+#ifndef CUTL_SHARED_PTR_HXX
+#define CUTL_SHARED_PTR_HXX
+
+#include <cutl/shared-ptr/base.hxx>
+
+namespace cutl
+{
+  template <typename X>
+  class shared_ptr: bits::counter_ops<typename bits::counter_type<X>::r, X>
+  {
+    typedef bits::counter_ops<typename bits::counter_type<X>::r, X> base;
+
+  public:
+    ~shared_ptr ()
+    {
+      if (x_ != 0)
+        base::dec (x_);
+    }
+
+    explicit
+    shared_ptr (X* x = 0)
+        : base (x), x_ (x)
+    {
+    }
+
+    shared_ptr (shared_ptr const& x)
+        : base (x), x_ (x.x_)
+    {
+      if (x_ != 0)
+        base::inc (x_);
+    }
+
+    template <typename Y>
+    shared_ptr (shared_ptr<Y> const& x)
+        : base (x), x_ (x.x_)
+    {
+      if (x_ != 0)
+        base::inc (x_);
+    }
+
+    shared_ptr&
+    operator= (shared_ptr const& x)
+    {
+      if (x_ != x.x_)
+      {
+        if (x_ != 0)
+          base::dec (x_);
+
+        static_cast<base&> (*this) = x;
+        x_ = x.x_;
+
+        if (x_ != 0)
+          base::inc (x_);
+      }
+
+      return *this;
+    }
+
+    template <typename Y>
+    shared_ptr&
+    operator= (shared_ptr<Y> const& x)
+    {
+      if (x_ != x.x_)
+      {
+        if (x_ != 0)
+          base::dec (x_);
+
+        static_cast<base&> (*this) = x;
+        x_ = x.x_;
+
+        if (x_ != 0)
+          base::inc (x_);
+      }
+
+      return *this;
+    }
+
+  public:
+    X*
+    operator-> () const
+    {
+      return x_;
+    }
+
+    X&
+    operator* () const
+    {
+      return *x_;
+    }
+
+    // Conversion to bool.
+    //
+    typedef void (shared_ptr::*boolean_convertible)();
+    void true_value () {};
+
+    operator boolean_convertible () const
+    {
+      return x_ ? &shared_ptr<X>::true_value : 0;
+    }
+
+  public:
+    X*
+    get () const
+    {
+      return x_;
+    }
+
+    X*
+    release ()
+    {
+      X* r (x_);
+      x_ = 0;
+      return r;
+    }
+
+    std::size_t
+    count () const
+    {
+      return x_ != 0 ? base::count (x_) : 0;
+    }
+
+  private:
+    template <typename>
+    friend class shared_ptr;
+
+    X* x_;
+  };
+}
+
+#endif // CUTL_SHARED_PTR_HXX

@@ -1,0 +1,2 @@
+@@ Common exception class (print typeid(*this).name () in what()).
+@@ Add memprof?

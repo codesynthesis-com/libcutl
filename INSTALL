@@ -1,0 +1,28 @@
+UNIX
+----
+
+Building on UNIX-like operating systems requires GNU make 3.81 or later.
+Most recent GNU/Linux distributions should already have this version
+installed. To check the GNU make version run make (or gmake) with the
+--version option.
+
+Unless you are using the libcutl+dep package, you will also need to 
+install the following dependencies:
+
+  build   >= 0.3.4 http://kolpackov.net/projects/build/
+
+The libcutl+dep package comes with the necessary dependencies bundled.
+
+To build the library, tests, and examples simply run make in the root
+directory of the package. To run the automated tests, run 'make test'.
+To clean the object file, executables, etc., run 'make clean'. To de-
+configure the package (that is, remove configuration files in addition
+to objects, executables, etc.), run 'make disfigure'.
+
+
+Windows
+-------
+
+Project and solution files for Visual C++ will be provided in the future.
+For now, you can create an empty library project and add all the source
+files in the cutl/ directory to it.
