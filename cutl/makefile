@@ -7,6 +7,8 @@ include $(dir $(lastword $(MAKEFILE_LIST)))../build/bootstrap.make
 
 cxx_tun   := shared-ptr/base.cxx
 
+cxx_tun   += fs/path.cxx
+
 cxx_tun   +=              \
 compiler/context.cxx      \
 compiler/type-info.cxx    \

@@ -1,11 +1,11 @@
-# file      : tests/makefile
+# file      : tests/fs/makefile
 # author    : Boris Kolpackov <boris@codesynthesis.com>
 # copyright : Copyright (c) 2009 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
-include $(dir $(lastword $(MAKEFILE_LIST)))../build/bootstrap.make
+include $(dir $(lastword $(MAKEFILE_LIST)))../../build/bootstrap.make
 
-tests := compiler fs shared-ptr
+tests := path
 
 default   := $(out_base)/
 test      := $(out_base)/.test
