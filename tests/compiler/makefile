@@ -5,7 +5,7 @@
 
 include $(dir $(lastword $(MAKEFILE_LIST)))../../build/bootstrap.make
 
-tests := sloc-counter traversal
+tests := cxx-indenter sloc-counter traversal
 
 default   := $(out_base)/
 test      := $(out_base)/.test
