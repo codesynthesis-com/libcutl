@@ -6,7 +6,6 @@
 #ifndef CUTL_COMPILER_SLOC_COUNTER_HXX
 #define CUTL_COMPILER_SLOC_COUNTER_HXX
 
-#include <cctype>  // std::isspace
 #include <cstddef> // std::size_t
 
 #include <cutl/compiler/code-stream.hxx>
@@ -35,26 +34,26 @@ namespace cutl
 
     public:
       virtual void
-      put (C c);
+      put (C);
 
       virtual void
       unbuffer ();
 
     private:
       void
-      code (C c);
+      code (C);
 
       void
-      c_comment (C c);
+      c_comment (C);
 
       void
-      cxx_comment (C c);
+      cxx_comment (C);
 
       void
-      char_literal (C c);
+      char_literal (C);
 
       void
-      string_literal (C c);
+      string_literal (C);
 
     private:
       code_stream<C>& out_;
