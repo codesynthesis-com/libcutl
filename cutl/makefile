@@ -7,7 +7,7 @@ include $(dir $(lastword $(MAKEFILE_LIST)))../build/bootstrap.make
 
 cxx_tun   := exception.cxx shared-ptr/base.cxx
 
-cxx_tun   += fs/path.cxx
+cxx_tun   += fs/exception.cxx fs/path.cxx fs/auto-remove.cxx
 
 cxx_tun   +=              \
 compiler/context.cxx      \
