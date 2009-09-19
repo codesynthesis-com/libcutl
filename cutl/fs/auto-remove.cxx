@@ -6,7 +6,6 @@
 #include <cstdio> // std::remove
 #include <cerrno>
 
-#include <cutl/fs/exception.hxx>
 #include <cutl/fs/auto-remove.hxx>
 
 namespace cutl

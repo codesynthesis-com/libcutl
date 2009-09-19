@@ -8,8 +8,8 @@
 
 #include <vector>
 
-#include <cutl/exception.hxx>
 #include <cutl/fs/path.hxx>
+#include <cutl/fs/exception.hxx>
 
 namespace cutl
 {
@@ -49,6 +49,7 @@ namespace cutl
     //
     struct auto_removes
     {
+      auto_removes () {}
       ~auto_removes ();
 
       void
