@@ -9,6 +9,8 @@
 #include <memory>   // std::auto_ptr
 #include <typeinfo> // std::type_info
 
+#include <cutl/exception.hxx>
+
 namespace cutl
 {
   namespace container
@@ -16,7 +18,7 @@ namespace cutl
     class any
     {
     public:
-      struct typing {};
+      struct typing: exception {};
 
     public:
       template <typename X>

@@ -8,7 +8,8 @@
 
 #include <new>
 #include <cstddef>   // std::size_t
-#include <exception> // std::exception
+
+#include <cutl/exception.hxx>
 
 namespace cutl
 {
@@ -36,7 +37,7 @@ operator delete (void*, cutl::share) throw ();
 
 namespace cutl
 {
-  struct not_shared: std::exception
+  struct not_shared: exception
   {
     virtual char const*
     what () const throw ();
@@ -81,7 +82,7 @@ namespace cutl
 
   template <typename X>
   inline std::size_t
-    ref_count (X const*);
+  ref_count (X const*);
 }
 
 #include <cutl/shared-ptr/base.ixx>

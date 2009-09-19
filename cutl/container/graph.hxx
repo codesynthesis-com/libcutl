@@ -7,20 +7,22 @@
 #define CUTL_CONTAINER_GRAPH_HXX
 
 #include <map>
+
+#include <cutl/exception.hxx>
 #include <cutl/shared-ptr.hxx>
 
 namespace cutl
 {
   namespace container
   {
+    struct no_edge: exception {};
+
     template <typename N, typename E>
     class graph
     {
     public:
       typedef N node_base;
       typedef E edge_base;
-
-      struct no_edge {};
 
     public:
       template <typename T>

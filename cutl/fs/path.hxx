@@ -9,11 +9,13 @@
 #include <string>
 #include <iosfwd>
 
+#include <cutl/exception.hxx>
+
 namespace cutl
 {
   namespace fs
   {
-    struct invalid_path: std::exception
+    struct invalid_path: exception
     {
       virtual char const*
       what () const throw ();

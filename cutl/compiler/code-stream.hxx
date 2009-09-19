@@ -9,6 +9,8 @@
 #include <memory>  // std::auto_ptr
 #include <ostream>
 
+#include <cutl/exception.hxx>
+
 namespace cutl
 {
   namespace compiler
@@ -54,8 +56,8 @@ namespace cutl
       typedef typename std::basic_streambuf<C>::traits_type traits_type;
       typedef typename std::basic_streambuf<C>::int_type int_type;
 
-      struct eof {};
-      struct sync {};
+      class eof: exception {};
+      class sync: exception {};
 
     public:
       from_streambuf_adapter (std::basic_streambuf<C>& stream)

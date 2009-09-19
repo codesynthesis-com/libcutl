@@ -10,6 +10,7 @@
 #include <string>
 #include <cstddef> // std::size_t
 
+#include <cutl/exception.hxx>
 #include <cutl/container/any.hxx>
 
 namespace cutl
@@ -19,8 +20,8 @@ namespace cutl
     class context
     {
     public:
-      struct no_entry {};
-      struct typing {};
+      struct no_entry: exception {};
+      struct typing: exception {};
 
     public:
       context () {}

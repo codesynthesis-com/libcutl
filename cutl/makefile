@@ -5,7 +5,7 @@
 
 include $(dir $(lastword $(MAKEFILE_LIST)))../build/bootstrap.make
 
-cxx_tun   := shared-ptr/base.cxx
+cxx_tun   := exception.cxx shared-ptr/base.cxx
 
 cxx_tun   += fs/path.cxx
 

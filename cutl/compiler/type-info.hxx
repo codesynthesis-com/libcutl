@@ -10,6 +10,7 @@
 #include <vector>
 #include <typeinfo> // std::type_info
 
+#include <cutl/exception.hxx>
 #include <cutl/static-ptr.hxx>
 #include <cutl/compiler/type-id.hxx>
 
@@ -76,7 +77,7 @@ namespace cutl
 
     //
     //
-    class no_type_info {};
+    class no_type_info: exception {};
 
     type_info const&
     lookup (type_id const&);
