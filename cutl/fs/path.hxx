@@ -15,17 +15,44 @@ namespace cutl
 {
   namespace fs
   {
-    struct invalid_path: exception
+    template <typename C>
+    class basic_path;
+
+    template <typename C>
+    class invalid_basic_path;
+
+    typedef basic_path<char> path;
+    typedef invalid_basic_path<char> invalid_path;
+
+    typedef basic_path<wchar_t> wpath;
+    typedef invalid_basic_path<wchar_t> invalid_wpath;
+
+    //
+    //
+    struct invalid_path_base: exception
     {
       virtual char const*
       what () const throw ();
     };
 
     template <typename C>
-    class basic_path;
+    struct invalid_basic_path: invalid_path_base
+    {
+      typedef std::basic_string<C> string_type;
 
-    typedef basic_path<char> path;
-    typedef basic_path<wchar_t> wpath;
+      invalid_basic_path (C const* p): path_ (p) {}
+      invalid_basic_path (string_type const& p): path_ (p) {}
+      ~invalid_basic_path () throw () {}
+
+      string_type const&
+      path () const
+      {
+        return path_;
+      }
+
+    private:
+      string_type path_;
+    };
 
     template <typename C>
     class basic_path

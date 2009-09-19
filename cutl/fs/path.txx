@@ -70,7 +70,7 @@ namespace cutl
     operator/ (basic_path<C> const& r)
     {
       if (r.path_.empty ())
-        throw invalid_path ();
+        throw invalid_basic_path<C> (r.path_);
 
       basic_path<C> x (*this);
       x.path_ += '/';
@@ -83,7 +83,7 @@ namespace cutl
     init (bool internal)
     {
       if (!internal && path_.empty ())
-        throw invalid_path ();
+        throw invalid_basic_path<C> (path_);
 
       // Strip trailing slashes. This way empty string represents
       // root directory.

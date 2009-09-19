@@ -9,7 +9,7 @@ namespace cutl
 {
   namespace fs
   {
-    char const* invalid_path::
+    char const* invalid_path_base::
     what () const throw ()
     {
       return "invalid filesystem path";
