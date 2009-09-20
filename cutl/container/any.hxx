@@ -85,7 +85,7 @@ namespace cutl
         virtual holder*
         clone () const = 0;
 
-        virtual std::type_info&
+        virtual std::type_info const&
         type_info () const = 0;
       };
 
@@ -104,7 +104,7 @@ namespace cutl
           return new holder_impl (x_);
         }
 
-        virtual std::type_info&
+        virtual std::type_info const&
         type_info () const
         {
           return typeid (x_);
