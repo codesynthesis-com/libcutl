@@ -1,4 +1,3 @@
-@@ Common exception class (print typeid(*this).name () in what()).
 @@ Add memprof?
 @@ path::base() and ".." & "." special directories
 
