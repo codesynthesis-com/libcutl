@@ -29,15 +29,17 @@ namespace cutl
 
     //
     //
-    struct invalid_path_base: exception
+    class invalid_path_base: exception
     {
+    public:
       virtual char const*
       what () const throw ();
     };
 
     template <typename C>
-    struct invalid_basic_path: invalid_path_base
+    class invalid_basic_path: public invalid_path_base
     {
+    public:
       typedef std::basic_string<C> string_type;
 
       invalid_basic_path (C const* p): path_ (p) {}
