@@ -20,8 +20,7 @@ $(test): $(out_base)/tests/.test
 
 # Install.
 #
-$(install): $(out_base)/cutl/.install           \
-            $(out_base)/doc/.install
+$(install): $(out_base)/cutl/.install
 	$(call install-data,$(src_base)/LICENSE,$(install_doc_dir)/libcutl/LICENSE)
 	$(call install-data,$(src_base)/NEWS,$(install_doc_dir)/libcutl/NEWS)
 	$(call install-data,$(src_base)/README,$(install_doc_dir)/libcutl/README)

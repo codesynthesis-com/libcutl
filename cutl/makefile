@@ -20,6 +20,8 @@ cxx_od    := $(cxx_obj:.o=.o.d)
 cutl.l             := $(out_base)/cutl.l
 cutl.l.cpp-options := $(out_base)/cutl.l.cpp-options
 
+default   := $(out_base)/
+install   := $(out_base)/.install
 clean     := $(out_base)/.clean
 
 
@@ -37,6 +39,12 @@ $(call include-dep,$(cxx_od))
 #
 $(out_base)/: $(cutl.l)
 
+# Install.
+#
+$(install): $(cutl.l)
+	$(call install-lib,$<,$(install_lib_dir))
+	$(call install-dir,$(src_base),$(install_inc_dir)/cutl,\
+'(' -name '*.hxx' -o -name '*.ixx' -o -name '*.txx' ')')
 
 # Clean.
 #
