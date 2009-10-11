@@ -22,19 +22,17 @@ endif
 .PHONY: $(out_base)/         \
         $(out_base)/.test    \
         $(out_base)/.install \
-        $(out_base)/.dist    \
         $(out_base)/.clean
 
 ifdef %interactive%
 
-.PHONY: test install dist clean
+.PHONY: test install clean
 
 test:    $(out_base)/.test
 install: $(out_base)/.install
-dist:    $(out_base)/.dist
 clean:   $(out_base)/.clean
 
-ifneq ($(filter $(.DEFAULT_GOAL),test install dist clean),)
+ifneq ($(filter $(.DEFAULT_GOAL),test install clean),)
 .DEFAULT_GOAL :=
 endif
 

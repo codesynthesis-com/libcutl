@@ -8,7 +8,6 @@ include $(dir $(lastword $(MAKEFILE_LIST)))build/bootstrap.make
 default  := $(out_base)/
 test     := $(out_base)/.test
 install  := $(out_base)/.install
-dist     := $(out_base)/.dist
 clean    := $(out_base)/.clean
 
 # Build.
@@ -26,11 +25,6 @@ $(install): $(out_base)/cutl/.install           \
 	$(call install-data,$(src_base)/LICENSE,$(install_doc_dir)/libcutl/LICENSE)
 	$(call install-data,$(src_base)/NEWS,$(install_doc_dir)/libcutl/NEWS)
 	$(call install-data,$(src_base)/README,$(install_doc_dir)/libcutl/README)
-
-# Dist.
-#
-
-# @@ TODO
 
 # Clean.
 #
