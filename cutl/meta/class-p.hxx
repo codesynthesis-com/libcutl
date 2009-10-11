@@ -12,14 +12,15 @@ namespace cutl
 {
   namespace meta
   {
+    // g++ cannot have these inside class_p.
+    //
+    template <typename Y> no class_p_test (...);
+    template <typename Y> yes class_p_test (void (Y::*) ());
+
     template <typename X>
     struct class_p
     {
-      template <typename Y> static no test (...);
-      template <typename Y> static yes test (void* Y::*);
-
-      static bool const r = sizeof (
-        class_p<X>::template test<X> (0)) == sizeof (yes);
+      static bool const r = sizeof (class_p_test<X> (0)) == sizeof (yes);
     };
   }
 }
