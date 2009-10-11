@@ -23,6 +23,8 @@ to objects, executables, etc.), run 'make disfigure'.
 Windows
 -------
 
-Project and solution files for Visual C++ will be provided in the future.
-For now, you can create an empty library project and add all the source
-files in the cutl/ directory to it.
+Project and solution files are provided for Visual C++ 8.0 (2005) and 
+9.0 (2008). To build the cutl library, open and build the corresponding
+solution file in the cutl\ directory. After the build is complete, the
+library can be found in the cutl\ directory.
+
