@@ -19,6 +19,29 @@ To clean the object file, executables, etc., run 'make clean'. To de-
 configure the package (that is, remove configuration files in addition
 to objects, executables, etc.), run 'make disfigure'.
 
+To install the libcutl library, header files, and documentation use the
+install target, for example:
+
+$ make install_prefix=/usr install
+
+You can fine-tune the installation locations with the following make
+variables:
+
+install_prefix       default is /usr/local
+install_data_prefix  default is install_prefix
+install_exec_prefix  default is install_prefix
+
+install_bin_dir      default is install_exec_prefix/bin
+install_sbin_dir     default is install_exec_prefix/sbin
+install_lib_dir      default is install_exec_prefix/lib
+
+install_data_dir     default is install_data_prefix/share
+install_inc_dir      default is install_data_prefix/include
+
+install_doc_dir      default is install_data_dir/doc
+install_man_dir      default is install_data_dir/man
+install_info_dir     default is install_data_dir/info
+
 
 Windows
 -------
