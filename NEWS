@@ -1,3 +1,13 @@
+Version 1.1.0
+
+  * Code stream interface (compiler/code-stream).
+  * SLOC counter code stream (compiler/sloc-counter).
+  * C++ code indenter (compiler/cxx-indenter).
+  * Filesystem path abstraction (fs/path).
+  * RAII-based file auto-removal (fs/auto-remove).
+  * Project and solution files for VC++ 8 and 9.
+  * Install target.
+
 Version 1.0.0
 
   * First public release.
