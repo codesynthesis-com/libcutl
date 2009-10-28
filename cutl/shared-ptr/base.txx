@@ -60,7 +60,7 @@ namespace cutl
     meta::yes test (shared_base*);
 
     template <typename X,
-              std::size_t A = sizeof (test (reinterpret_cast<X*> (0)))>
+              std::size_t A = sizeof (bits::test (reinterpret_cast<X*> (0)))>
     struct counter_type;
 
     template <typename X>
