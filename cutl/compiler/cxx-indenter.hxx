@@ -8,6 +8,7 @@
 
 #include <set>
 #include <stack>
+#include <deque>
 #include <string>
 #include <cstddef> // std::size_t
 

@@ -66,15 +66,30 @@ namespace cutl
           if (construct_ != con_pp_dir &&
               construct_ != con_c_com &&
               construct_ != con_cxx_com &&
-              construct_ != con_char_lit &&
-              (hold_.empty () || hold_.back () != '\\'))
+              construct_ != con_char_lit)
           {
-            // Not an escape sequence.
+            // We might be in an escape sequence.
             //
-            if (construct_ == con_string_lit)
-              new_con = con_other;
-            else
-              construct_ = new_con = con_string_lit;
+            bool es (!hold_.empty () && hold_.back () == '\\');
+
+            if (es)
+            {
+              // Scan the hold sequence backwards to figure out if this
+              // backslash is part of this escape sequence or a preceding
+              // one.
+              //
+              for (typename hold::reverse_iterator i (hold_.rbegin () + 1),
+                     e (hold_.rend ()); i != e && *i == '\\'; ++i)
+                es = !es;
+            }
+
+            if (!es)
+            {
+              if (construct_ == con_string_lit)
+                new_con = con_other;
+              else
+                construct_ = new_con = con_string_lit;
+            }
           }
 
           break;
@@ -84,15 +99,30 @@ namespace cutl
           if (construct_ != con_pp_dir &&
               construct_ != con_c_com &&
               construct_ != con_cxx_com &&
-              construct_ != con_string_lit &&
-              (hold_.empty () || hold_.back () != '\\'))
+              construct_ != con_string_lit)
           {
-            // Not an escape sequence.
+            // We might be in an escape sequence.
             //
-            if (construct_ == con_char_lit)
-              new_con = con_other;
-            else
-              construct_ = new_con = con_char_lit;
+            bool es (!hold_.empty () && hold_.back () == '\\');
+
+            if (es)
+            {
+              // Scan the hold sequence backwards to figure out if this
+              // backslash is part of this escape sequence or a preceding
+              // one.
+              //
+              for (typename hold::reverse_iterator i (hold_.rbegin () + 1),
+                     e (hold_.rend ()); i != e && *i == '\\'; ++i)
+                es = !es;
+            }
+
+            if (!es)
+            {
+              if (construct_ == con_char_lit)
+                new_con = con_other;
+              else
+                construct_ = new_con = con_char_lit;
+            }
           }
 
           break;
