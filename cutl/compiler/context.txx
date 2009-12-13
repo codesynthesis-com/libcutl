@@ -18,7 +18,7 @@ namespace cutl
 
       try
       {
-        return i->second.value<X> ();
+        return i->second. template value<X> ();
       }
       catch (container::any::typing const&)
       {
@@ -37,7 +37,7 @@ namespace cutl
 
       try
       {
-        return i->second.value<X> ();
+        return i->second. template value<X> ();
       }
       catch (container::any::typing const&)
       {
@@ -56,7 +56,7 @@ namespace cutl
 
       try
       {
-        return i->second.value<X> ();
+        return i->second. template value<X> ();
       }
       catch (container::any::typing const&)
       {
@@ -74,7 +74,7 @@ namespace cutl
           map_.insert (map::value_type (key, value)));
 
         if (!r.second)
-          r.first->second.value<X> () = value;
+          r.first->second. template value<X> () = value;
       }
       catch (container::any::typing const&)
       {
