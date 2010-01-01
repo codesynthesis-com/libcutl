@@ -1,6 +1,6 @@
 // file      : cutl/shared-ptr/base.hxx
 // author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2009 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2010 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_SHARED_PTR_BASE_HXX
