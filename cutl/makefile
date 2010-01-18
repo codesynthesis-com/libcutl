@@ -42,7 +42,7 @@ $(out_base)/: $(cutl.l)
 # Install.
 #
 $(install): $(cutl.l)
-	$(call install-lib,$<,$(install_lib_dir))
+	$(call install-lib,$<,$(install_lib_dir)/$(ld_lib_prefix)cutl$(ld_lib_suffix))
 	$(call install-dir,$(src_base),$(install_inc_dir)/cutl,\
 '(' -name '*.hxx' -o -name '*.ixx' -o -name '*.txx' ')')
 
