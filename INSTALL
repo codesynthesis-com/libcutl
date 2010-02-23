@@ -9,7 +9,7 @@ installed. To check the GNU make version run make (or gmake) with the
 Unless you are using the libcutl+dep package, you will also need to 
 install the following dependencies:
 
-  build   >= 0.3.5 http://kolpackov.net/projects/build/
+  build   >= 0.3.5 http://www.codesynthesis.com/projects/build/
 
 The libcutl+dep package comes with the necessary dependencies bundled.
 
