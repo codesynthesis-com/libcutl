@@ -91,6 +91,18 @@ namespace cutl
       basic_path
       operator/ (basic_path const&);
 
+      bool
+      operator== (basic_path const& x) const
+      {
+        return path_ == x.path_;
+      }
+
+      bool
+      operator!= (basic_path const& x) const
+      {
+        return !(*this == x);
+      }
+
     public:
       string_type
       string () const
