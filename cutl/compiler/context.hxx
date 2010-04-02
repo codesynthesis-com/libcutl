@@ -36,27 +36,67 @@ namespace cutl
       std::size_t
       count (char const* key) const
       {
+        return count (std::string (key));
+      }
+
+      std::size_t
+      count (std::string const& key) const
+      {
         return map_.count (key);
       }
 
       template <typename X>
       X&
-      get (char const* key);
+      get (char const* key)
+      {
+        return get<X> (std::string (key));
+      }
+
+      template <typename X>
+      X&
+      get (std::string const& key);
 
       template <typename X>
       X const&
-      get (char const* key) const;
+      get (char const* key) const
+      {
+        return get<X> (std::string (key));
+      }
 
       template <typename X>
       X const&
-      get (char const* key, X const& default_value) const;
+      get (std::string const& key) const;
+
+      template <typename X>
+      X const&
+      get (char const* key, X const& default_value) const
+      {
+        return get<X> (std::string (key) ,default_value);
+      }
+
+      template <typename X>
+      X const&
+      get (std::string const& key, X const& default_value) const;
 
       template <typename X>
       void
-      set (char const* key, X const& value);
+      set (char const* key, X const& value)
+      {
+        set<X> (std::string (key), value);
+      }
+
+      template <typename X>
+      void
+      set (std::string const& key, X const& value);
 
       void
-      remove (char const* key);
+      remove (char const* key)
+      {
+        remove (std::string (key));
+      }
+
+      void
+      remove (std::string const& key);
 
     private:
       typedef std::map<std::string, container::any> map;

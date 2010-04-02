@@ -10,7 +10,7 @@ namespace cutl
   namespace compiler
   {
     void context::
-    remove (char const* key)
+    remove (std::string const& key)
     {
       map::iterator i (map_.find (key));
 

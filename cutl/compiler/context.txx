@@ -9,7 +9,7 @@ namespace cutl
   {
     template <typename X>
     X& context::
-    get (char const* key)
+    get (std::string const& key)
     {
       map::iterator i (map_.find (key));
 
@@ -28,7 +28,7 @@ namespace cutl
 
     template <typename X>
     X const& context::
-    get (char const* key) const
+    get (std::string const& key) const
     {
       map::const_iterator i (map_.find (key));
 
@@ -47,7 +47,7 @@ namespace cutl
 
     template <typename X>
     X const& context::
-    get (char const* key, X const& default_value) const
+    get (std::string const& key, X const& default_value) const
     {
       map::const_iterator i (map_.find (key));
 
@@ -66,7 +66,7 @@ namespace cutl
 
     template <typename X>
     void context::
-    set (char const* key, X const& value)
+    set (std::string const& key, X const& value)
     {
       try
       {
