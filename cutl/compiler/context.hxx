@@ -26,6 +26,12 @@ namespace cutl
     public:
       context () {}
 
+      void
+      swap (context& c)
+      {
+        map_.swap (c.map_);
+      }
+
     private:
       context (context const&);
 
