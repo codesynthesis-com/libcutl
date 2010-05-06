@@ -8,7 +8,7 @@ $(dcf_root)/import/libcutl/configuration-dynamic.make: | $(dcf_root)/import/libc
 
 ifndef %foreign%
 
-disfigure::
+$(dcf_root)/.disfigure::
 	$(call message,rm $(dcf_root)/import/libcutl/configuration-dynamic.make,\
 rm -f $(dcf_root)/import/libcutl/configuration-dynamic.make)
 
