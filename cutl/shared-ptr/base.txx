@@ -103,6 +103,12 @@ namespace cutl
       }
 
       void
+      reset (X const* p)
+      {
+        counter_ = p ? bits::counter (p) : 0;
+      }
+
+      void
       inc (X*)
       {
         (*counter_)++;
@@ -131,6 +137,9 @@ namespace cutl
     struct counter_ops<shared_base, Y>
     {
       counter_ops (Y const*) {}
+
+      void
+      reset (Y const*) {}
 
       void
       inc (shared_base* p) {p->_inc_ref ();}

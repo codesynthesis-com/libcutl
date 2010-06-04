@@ -118,6 +118,16 @@ namespace cutl
       return r;
     }
 
+    void
+    reset (X* x)
+    {
+      if (x_ != 0)
+        base::dec (x_);
+
+      base::reset (x);
+      x_ = x;
+    }
+
     std::size_t
     count () const
     {
