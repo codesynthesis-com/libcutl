@@ -84,8 +84,8 @@ namespace cutl
       counter_ops (X const* p) : counter_ (p ? bits::counter (p) : 0) {}
       counter_ops (counter_ops const& x) : counter_ (x.counter_) {}
 
-      template <typename Y>
-      counter_ops (counter_ops<Y, Y> const& x) : counter_ (x.counter_) {}
+      template <typename Z>
+      counter_ops (counter_ops<Z, Z> const& x) : counter_ (x.counter_) {}
 
       counter_ops&
       operator= (counter_ops const& x)
@@ -94,9 +94,9 @@ namespace cutl
         return *this;
       }
 
-      template <typename Y>
+      template <typename Z>
       counter_ops&
-      operator= (counter_ops<Y, Y> const& x)
+      operator= (counter_ops<Z, Z> const& x)
       {
         counter_ = x.counter_;
         return *this;
@@ -137,6 +137,23 @@ namespace cutl
     struct counter_ops<shared_base, Y>
     {
       counter_ops (Y const*) {}
+      counter_ops (counter_ops const&) {}
+
+      template <typename Z>
+      counter_ops (counter_ops<shared_base, Z> const&) {}
+
+      counter_ops&
+      operator= (counter_ops const&)
+      {
+        return *this;
+      }
+
+      template <typename Z>
+      counter_ops&
+      operator= (counter_ops<shared_base, Z> const&)
+      {
+        return *this;
+      }
 
       void
       reset (Y const*) {}
