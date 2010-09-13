@@ -11,30 +11,28 @@ namespace cutl
     basic_path<C> basic_path<C>::
     leaf () const
     {
-      size_type n (path_.size ()), i (n);
+      size_type p (traits::rfind_separator (path_));
 
-      for (; i > 0; --i)
-      {
-        if (path_[i - 1] == '/' || path_[i - 1] == '\\')
-          break;
-      }
-
-      return i != 0 ? basic_path (path_.c_str () + i, n - i) : *this;
+      return p != string_type::npos
+        ? basic_path (path_.c_str () + p + 1, path_.size () - p - 1)
+        : *this;
     }
 
     template <typename C>
     basic_path<C> basic_path<C>::
     directory () const
     {
-      size_type i (path_.size ());
+      if (root ())
+        return basic_path ();
 
-      for (; i > 0; --i)
-      {
-        if (path_[i - 1] == '/' || path_[i - 1] == '\\')
-          break;
-      }
+      size_type p (traits::rfind_separator (path_));
 
-      return i != 0 ? basic_path (path_.c_str (), i - 1) : *this;
+      // Include the trailing slash so that we get correct behavior
+      // if directory is root.
+      //
+      return p != string_type::npos
+        ? basic_path (path_.c_str (), p + 1)
+        : basic_path ();
     }
 
     template <typename C>
@@ -48,7 +46,7 @@ namespace cutl
         if (path_[i - 1] == '.')
           break;
 
-        if (path_[i - 1] == '/' || path_[i - 1] == '\\')
+        if (traits::is_separator (path_[i - 1]))
         {
           i = 0;
           break;
@@ -57,7 +55,7 @@ namespace cutl
 
       // Weed out paths like ".txt" and "/.txt"
       //
-      if (i > 1 && path_[i - 2] != '/' && path_[i - 2] != '\\')
+      if (i > 1 && !traits::is_separator (path_[i - 2]))
       {
         return basic_path (path_.c_str (), i - 1);
       }
@@ -66,30 +64,35 @@ namespace cutl
     }
 
     template <typename C>
-    basic_path<C> basic_path<C>::
-    operator/ (basic_path<C> const& r)
+    basic_path<C>& basic_path<C>::
+    operator/= (basic_path<C> const& r)
     {
-      if (r.path_.empty ())
+      if (r.root ())
         throw invalid_basic_path<C> (r.path_);
 
-      basic_path<C> x (*this);
-      x.path_ += '/';
-      x.path_ += r.path_;
-      return x;
+      if (path_.empty () || r.path_.empty ())
+      {
+        path_ += r.path_;
+        return *this;
+      }
+
+      if (!root ())
+        path_ += traits::directory_separator;
+
+      path_ += r.path_;
+
+      return *this;
     }
 
     template <typename C>
     void basic_path<C>::
-    init (bool internal)
+    init ()
     {
-      if (!internal && path_.empty ())
-        throw invalid_basic_path<C> (path_);
-
-      // Strip trailing slashes. This way empty string represents
-      // root directory.
+      // Strip trailing slashes except for the case where the single
+      // slash represents the root directory.
       //
       size_type n (path_.size ());
-      for (; n > 0 && (path_[n - 1] == '/' || path_[n - 1] == '\\'); --n) ;
+      for (; n > 1 && traits::is_separator (path_[n - 1]); --n) ;
       path_.resize (n);
     }
   }

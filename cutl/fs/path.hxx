@@ -19,6 +19,63 @@ namespace cutl
     class basic_path;
 
     template <typename C>
+    struct path_traits
+    {
+      typedef std::basic_string<C> string_type;
+      typedef typename string_type::size_type size_type;
+
+      // Canonical directory and path seperators.
+      //
+#ifdef _WIN32
+      static char const directory_separator = '\\';
+      static char const path_separator = ';';
+#else
+      static char const directory_separator = '/';
+      static char const path_separator = ':';
+#endif
+
+      // Directory separator tests. On some platforms there
+      // could be multiple seperators. For example, on Windows
+      // we check for both '/' and '\'.
+      //
+
+      static bool
+      is_separator (C c)
+      {
+#ifdef _WIN32
+        return c == '\\' || c == '/';
+#else
+        return c == '/';
+#endif
+      }
+
+      static size_type
+      find_separator (string_type const& s)
+      {
+        for (size_type i (0), n (s.size ()); i < n; ++i)
+        {
+          if (is_separator (s[i]))
+            return i;
+        }
+
+        return string_type::npos;
+      }
+
+      static size_type
+      rfind_separator (string_type const& s)
+      {
+        for (size_type i (s.size ()) ; i > 0; --i)
+        {
+          if (is_separator (s[i - 1]))
+            return i - 1;
+        }
+
+        return string_type::npos;
+      }
+    };
+
+
+    template <typename C>
     class invalid_basic_path;
 
     typedef basic_path<char> path;
@@ -63,33 +120,75 @@ namespace cutl
       typedef std::basic_string<C> string_type;
       typedef typename string_type::size_type size_type;
 
+      typedef path_traits<C> traits;
+
+      // Construct special empty path.
+      //
+      basic_path ()
+      {
+      }
+
       explicit
       basic_path (C const* s)
           : path_ (s)
       {
-        init (false);
+        init ();
+      }
+
+      basic_path (C const* s, size_type n)
+          : path_ (s, n)
+      {
+        init ();
       }
 
       explicit
       basic_path (string_type const& s)
           : path_ (s)
       {
-        init (false);
+        init ();
       }
 
     public:
+      // Return the path without the directory part.
+      //
       basic_path
       leaf () const;
 
+      // Return the directory part of the path or empty path if
+      // there is no directory.
+      //
       basic_path
       directory () const;
 
+      // Return the path without the extension, if any.
+      //
       basic_path
       base () const;
 
     public:
       basic_path
-      operator/ (basic_path const&);
+      operator/ (basic_path const& x)
+      {
+        basic_path r (*this);
+        r /= x;
+        return r;
+      }
+
+      basic_path&
+      operator/= (basic_path const&);
+
+      basic_path
+      operator+ (string_type const& s)
+      {
+        return basic_path (path_ + s);
+      }
+
+      basic_path&
+      operator+= (string_type const& s)
+      {
+        path_ += s;
+        return *this;
+      }
 
       bool
       operator== (basic_path const& x) const
@@ -104,22 +203,26 @@ namespace cutl
       }
 
     public:
+      bool
+      empty () const
+      {
+        return path_.empty ();
+      }
+
       string_type
       string () const
       {
-        return path_.empty () ? string_type (1, '/') : path_;
+        return path_;
       }
 
     private:
       void
-      init (bool internal);
+      init ();
 
-      // Assume internal format.
-      //
-      basic_path (C const* s, size_type n)
-          : path_ (s, n)
+      bool
+      root () const
       {
-        init (true);
+        return path_.size () == 1 && traits::is_separator (path_[0]);
       }
 
     private:
