@@ -11,14 +11,16 @@
 
 #include <cutl/exception.hxx>
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
   namespace container
   {
-    class any
+    class LIBCUTL_EXPORT any
     {
     public:
-      struct typing: exception {};
+      struct LIBCUTL_EXPORT typing: exception {};
 
     public:
       template <typename X>
@@ -76,7 +78,7 @@ namespace cutl
       }
 
     private:
-      class holder
+      class LIBCUTL_EXPORT holder
       {
       public:
         virtual

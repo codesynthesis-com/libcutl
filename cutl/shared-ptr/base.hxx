@@ -11,9 +11,11 @@
 
 #include <cutl/exception.hxx>
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
-  struct share
+  struct LIBCUTL_EXPORT share
   {
     explicit
     share (char id);
@@ -26,24 +28,24 @@ namespace cutl
   };
 }
 
-extern cutl::share shared;
-extern cutl::share exclusive;
+extern LIBCUTL_EXPORT cutl::share shared;
+extern LIBCUTL_EXPORT cutl::share exclusive;
 
-void*
+LIBCUTL_EXPORT void*
 operator new (std::size_t, cutl::share) throw (std::bad_alloc);
 
-void
+LIBCUTL_EXPORT void
 operator delete (void*, cutl::share) throw ();
 
 namespace cutl
 {
-  struct not_shared: exception
+  struct LIBCUTL_EXPORT not_shared: exception
   {
     virtual char const*
     what () const throw ();
   };
 
-  struct shared_base
+  struct LIBCUTL_EXPORT shared_base
   {
     shared_base ();
     shared_base (shared_base const&);

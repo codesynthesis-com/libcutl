@@ -11,13 +11,15 @@
 #include <cutl/fs/path.hxx>
 #include <cutl/fs/exception.hxx>
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
   namespace fs
   {
     // Remove a file or an empty directory on destruction unless canceled.
     //
-    struct auto_remove
+    struct LIBCUTL_EXPORT auto_remove
     {
       explicit
       auto_remove (path const& p)
@@ -47,7 +49,7 @@ namespace cutl
     // Remove a list of file or aempty directories on destruction unless
     // canceled.
     //
-    struct auto_removes
+    struct LIBCUTL_EXPORT auto_removes
     {
       auto_removes () {}
       ~auto_removes ();

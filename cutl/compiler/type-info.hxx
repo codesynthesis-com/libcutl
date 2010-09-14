@@ -14,6 +14,8 @@
 #include <cutl/static-ptr.hxx>
 #include <cutl/compiler/type-id.hxx>
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
   namespace compiler
@@ -26,7 +28,7 @@ namespace cutl
 
     //
     //
-    class base_info
+    class LIBCUTL_EXPORT base_info
     {
     public:
       base_info (type_id const&);
@@ -45,7 +47,7 @@ namespace cutl
 
     //
     //
-    class type_info
+    class LIBCUTL_EXPORT type_info
     {
       typedef std::vector<base_info> bases;
 
@@ -77,12 +79,12 @@ namespace cutl
 
     //
     //
-    class no_type_info: exception {};
+    class LIBCUTL_EXPORT no_type_info: exception {};
 
-    type_info const&
+    LIBCUTL_EXPORT type_info const&
     lookup (type_id const&);
 
-    type_info const&
+    LIBCUTL_EXPORT type_info const&
     lookup (std::type_info const&);
 
     template <typename X>
@@ -93,7 +95,7 @@ namespace cutl
     type_info const&
     lookup ();
 
-    void
+    LIBCUTL_EXPORT void
     insert (type_info const&);
 
     namespace bits

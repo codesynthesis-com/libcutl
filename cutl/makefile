@@ -21,6 +21,7 @@ cutl.l             := $(out_base)/cutl.l
 cutl.l.cpp-options := $(out_base)/cutl.l.cpp-options
 
 default   := $(out_base)/
+dist      := $(out_base)/.dist
 install   := $(out_base)/.install
 clean     := $(out_base)/.clean
 
@@ -30,14 +31,40 @@ clean     := $(out_base)/.clean
 $(cutl.l): $(cxx_obj)
 
 $(cxx_obj) $(cxx_od): $(cutl.l.cpp-options)
-$(cutl.l.cpp-options): value := -I$(src_root)
+$(cutl.l.cpp-options): value := -I$(out_root) -I$(src_root)
+$(cxx_obj) $(cxx_od): $(odb_tracer.l.cpp-options) $(out_base)/details/config.h
 
-$(call include-dep,$(cxx_od))
+$(out_base)/details/config.h:
+	@echo '// file      : cutl/details/config.h'               >$@
+	@echo '// author    : automatically generated'            >>$@
+	@echo ''                                                  >>$@
+	@echo '#ifndef CUTL_DETAILS_CONFIG_H'                     >>$@
+	@echo '#define CUTL_DETAILS_CONFIG_H'                     >>$@
+	@echo ''                                                  >>$@
+	@echo ''                                                  >>$@
+	@echo '#endif // CUTL_DETAILS_CONFIG_H'                   >>$@
 
+$(call include-dep,$(cxx_od),$(cxx_obj),$(out_base)/details/config.h)
 
 # Convenience alias for default target.
 #
 $(out_base)/: $(cutl.l)
+
+# Dist.
+#
+$(dist): export sources := $(cxx_tun)
+$(dist): export headers = $(subst $(src_base)/,,$(shell find $(src_base) \
+-name '*.hxx' -o -name '*.ixx' -o -name '*.txx'))
+$(dist): export extra_dist := libcutl-vc9.vcproj libcutl-vc10.vcxproj \
+libcutl-vc10.vcxproj.filters
+$(dist): export interface_version = $(shell sed -e \
+'s/^\([0-9]*\.[0-9]*\).*/\1/' $(src_root)/version)
+
+$(dist):
+	$(call dist-data,$(sources) $(headers) details/config.h.in)
+	$(call meta-vc9proj,libcutl-vc9.vcproj)
+	$(call meta-vc10proj,libcutl-vc10.vcxproj)
+	$(call meta-automake)
 
 # Install.
 #
@@ -45,6 +72,8 @@ $(install): $(cutl.l)
 	$(call install-lib,$<,$(install_lib_dir)/$(ld_lib_prefix)cutl$(ld_lib_suffix))
 	$(call install-dir,$(src_base),$(install_inc_dir)/cutl,\
 '(' -name '*.hxx' -o -name '*.ixx' -o -name '*.txx' ')')
+	$(call install-data,$(out_base)/details/config.h,\
+$(install_inc_dir)/cutl/details/config.h)
 
 # Clean.
 #
@@ -52,10 +81,27 @@ $(clean): $(cutl.l).o.clean          \
   $(cutl.l.cpp-options).clean        \
   $(addsuffix .cxx.clean,$(cxx_obj)) \
   $(addsuffix .cxx.clean,$(cxx_od))
+	$(call message,rm $$1,rm -f $$1,$(out_base)/details/config.h)
 
+# Generated .gitignore.
+#
+ifeq ($(out_base),$(src_base))
+$(cutl.l): | $(out_base)/.gitignore
+
+$(out_base)/.gitignore: files := details/config.h
+$(clean): $(out_base)/.gitignore.clean
+
+$(call include,$(bld_root)/git/gitignore.make)
+endif
 
 # How to.
 #
+$(call include,$(bld_root)/dist.make)
+$(call include,$(bld_root)/install.make)
+$(call include,$(bld_root)/meta/vc9proj.make)
+$(call include,$(bld_root)/meta/vc10proj.make)
+$(call include,$(bld_root)/meta/automake.make)
+
 $(call include,$(bld_root)/cxx/o-l.make)
 $(call include,$(bld_root)/cxx/cxx-o.make)
 $(call include,$(bld_root)/cxx/cxx-d.make)

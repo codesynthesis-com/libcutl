@@ -1,0 +1,14 @@
+/* file      : cutl/details/config.h.in
+ * author    : Boris Kolpackov <boris@codesynthesis.com>
+ * copyright : Copyright (c) 2009-2010 Code Synthesis Tools CC
+ * license   : MIT; see accompanying LICENSE file
+ */
+
+/* This file is automatically processed by configure. */
+
+#ifndef CUTL_DETAILS_CONFIG_H
+#define CUTL_DETAILS_CONFIG_H
+
+#undef LIBCUTL_STATIC_LIB
+
+#endif /* CUTL_DETAILS_CONFIG_H */

@@ -12,7 +12,7 @@ namespace cutl
 {
   namespace fs
   {
-    struct error: exception
+    struct LIBCUTL_EXPORT error: exception
     {
       error (int code): code_ (code) {}
 

@@ -13,15 +13,17 @@
 #include <cutl/exception.hxx>
 #include <cutl/container/any.hxx>
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
   namespace compiler
   {
-    class context
+    class LIBCUTL_EXPORT context
     {
     public:
-      struct no_entry: exception {};
-      struct typing: exception {};
+      struct LIBCUTL_EXPORT no_entry: exception {};
+      struct LIBCUTL_EXPORT typing: exception {};
 
     public:
       context () {}

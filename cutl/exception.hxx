@@ -8,9 +8,11 @@
 
 #include <exception>
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
-  struct exception: std::exception
+  struct LIBCUTL_EXPORT exception: std::exception
   {
     // By default return the exception type name ( typeid (*this).name () ).
     //

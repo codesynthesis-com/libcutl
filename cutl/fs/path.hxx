@@ -11,6 +11,8 @@
 
 #include <cutl/exception.hxx>
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
   namespace fs
@@ -86,7 +88,7 @@ namespace cutl
 
     //
     //
-    class invalid_path_base: exception
+    class LIBCUTL_EXPORT invalid_path_base: exception
     {
     public:
       virtual char const*

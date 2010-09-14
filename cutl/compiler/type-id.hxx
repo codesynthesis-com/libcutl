@@ -8,11 +8,13 @@
 
 #include <typeinfo> // std::type_info
 
+#include <cutl/details/export.hxx>
+
 namespace cutl
 {
   namespace compiler
   {
-    class type_id
+    class LIBCUTL_EXPORT type_id
     {
     public:
       template<typename X>
