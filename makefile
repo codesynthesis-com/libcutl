@@ -17,7 +17,7 @@ $(default): $(addprefix $(out_base)/,$(addsuffix /,$(dirs)))
 $(test): $(addprefix $(out_base)/,$(addsuffix /.test,$(dirs)))
 
 $(dist): export dirs := $(dirs)
-$(dist): export docs := LICENSE NEWS README version
+$(dist): export docs := LICENSE NEWS README INSTALL version
 $(dist): data_dist := libcutl-vc9.sln libcutl-vc10.sln
 $(dist): exec_dist := bootstrap
 $(dist): export extra_dist := $(data_dist) $(exec_dist)

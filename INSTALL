@@ -1,53 +1,69 @@
-UNIX
-----
+Building on UNIX
+================
 
-Building on UNIX-like operating systems requires GNU make 3.81 or later.
-Most recent GNU/Linux distributions should already have this version
-installed. To check the GNU make version run make (or gmake) with the
---version option.
+The following build instructions are for the Linux/UNIX/Mac OS X
+operating systems as well as for Cygwin and MinGW on Windows.
 
-Unless you are using the libcutl+dep package, you will also need to 
-install the following dependencies:
+The standard autotools-based build system is used on these platforms. After
+unpacking the source code archive, change to the libcutl package directory
+(referred to as libcutl/ from now on) and run the configure script:
 
-  build   >= 0.3.5 http://www.codesynthesis.com/projects/build/
+./configure
 
-The libcutl+dep package comes with the necessary dependencies bundled.
+To see the available configuration options run configure with --help:
 
-To build the library, tests, and examples simply run make in the root
-directory of the package. To run the automated test suite, run 'make test'.
-To clean the object files, executables, etc., run 'make clean'. To de-
-configure the package (that is, remove configuration files in addition
-to objects, executables, etc.), run 'make disfigure'.
+./configure --help
 
-To install the libcutl library, header files, and documentation use the
-install target, for example:
+As an example, the following configure command only builds shared libraries,
+uses the specified C++ compiler, and compiles with optimization and without
+the debug information:
 
-$ make install_prefix=/usr install
+./configure --disable-static CXX=g++-4.5 CXXFLAGS=-O3
 
-You can fine-tune the installation locations with the following make
-variables:
+Once configuration is complete, run make to build libcutl:
 
-install_prefix       default is /usr/local
-install_data_prefix  default is install_prefix
-install_exec_prefix  default is install_prefix
+make
 
-install_bin_dir      default is install_exec_prefix/bin
-install_sbin_dir     default is install_exec_prefix/sbin
-install_lib_dir      default is install_exec_prefix/lib
+Once the build completes successfully, you can install the libcutl headers
+and libraries using the install target (you may need to do this step as 
+root depending on the installation directory):
 
-install_data_dir     default is install_data_prefix/share
-install_inc_dir      default is install_data_prefix/include
-
-install_doc_dir      default is install_data_dir/doc
-install_man_dir      default is install_data_dir/man
-install_info_dir     default is install_data_dir/info
+make install
 
 
-Windows
--------
+Building on Windows
+===================
 
-Project and solution files are provided for Visual C++ 8.0 (2005) and 9.0
-(2008). To build the libcutl library, open and build the corresponding
-solution file in the cutl\ directory. After the build is complete, the
-library can be found in the cutl\ directory.
+The following build instructions are for Windows using Microsoft Visual
+Studio. If you would like to build libcutl with GCC either using Cygwin
+or MinGW, refer to the "Building on UNIX" section above.
 
+The standard Visual Studio project and solution files are used on this
+platform. To build libcutl, unpack the source code archive and open the
+libcutl-vc<N>.sln file located in the libcutl package directory (referred
+to as libcutl\ from now on). Here <N> is the version of Visual Studio that
+you are using. Once the solution is open, select the desired build
+configuration (Debug or Release) and platform (Win32 or x64) and build
+the solution.
+
+The resulting 32-bit DLLs and import libraries are placed into the 
+libcutl\bin\ and libcutl\lib\ directories, respectively. Similarly, the
+64-bit DLLs and import libraries are placed into libcutl\bin64\ and
+libcutl\lib64\. The Release versions of import libraries are named
+cutl.lib and the Debug versions are named cutl-d.lib.
+
+To configure Visual Studio to automatically locate the libcutl headers,
+DLLs, and import libraries, add the following paths to your VC++
+Directories:
+
+Win32:
+
+  Include:    ...\libcutl
+  Library:    ...\libcutl\lib
+  Executable: ...\libcutl\bin    
+
+x64:
+
+  Include:    ...\libcutl
+  Library:    ...\libcutl\lib64
+  Executable: ...\libcutl\bin64    
