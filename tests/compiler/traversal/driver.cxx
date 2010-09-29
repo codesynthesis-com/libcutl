@@ -57,6 +57,11 @@ template <typename X>
 struct traverser: compiler::traverser_impl<X, base>,
                   virtual compiler::dispatcher<base>
 {
+  void
+  add_traverser (compiler::traverser_map<base>& m)
+  {
+    compiler::dispatcher<base>::traverser (m);
+  }
 };
 
 typedef traverser<base> base_trav;
@@ -123,13 +128,13 @@ main ()
 
   cout << endl;
 
-  base.traverser (derived1);
+  base.add_traverser (derived1);
   for (objects::iterator i (o.begin ()); i != o.end (); ++i)
     base.dispatch (**i);
 
   cout << endl;
 
-  derived1.traverser (combined);
+  derived1.add_traverser (combined);
   for (objects::iterator i (o.begin ()); i != o.end (); ++i)
     derived1.dispatch (**i);
 }
