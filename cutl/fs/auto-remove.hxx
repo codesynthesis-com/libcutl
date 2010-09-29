@@ -51,7 +51,7 @@ namespace cutl
     //
     struct LIBCUTL_EXPORT auto_removes
     {
-      auto_removes () {}
+      auto_removes (): canceled_ (false) {}
       ~auto_removes ();
 
       void
