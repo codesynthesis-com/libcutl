@@ -16,7 +16,7 @@ To see the available configuration options run configure with --help:
 
 As an example, the following configure command only builds shared libraries,
 uses the specified C++ compiler, and compiles with optimization and without
-the debug information:
+debug information:
 
 ./configure --disable-static CXX=g++-4.5 CXXFLAGS=-O3
 
@@ -24,9 +24,9 @@ Once configuration is complete, run make to build libcutl:
 
 make
 
-Once the build completes successfully, you can install the libcutl headers
-and libraries using the install target (you may need to do this step as 
-root depending on the installation directory):
+Once the build is completed successfully, you can install the libcutl headers
+and libraries using the install target (you may need to do this step as root
+depending on the installation directory):
 
 make install
 
@@ -49,7 +49,7 @@ the solution.
 The resulting 32-bit DLLs and import libraries are placed into the 
 libcutl\bin\ and libcutl\lib\ directories, respectively. Similarly, the
 64-bit DLLs and import libraries are placed into libcutl\bin64\ and
-libcutl\lib64\. The Release versions of import libraries are named
+libcutl\lib64\. The Release versions of the import libraries are named
 cutl.lib and the Debug versions are named cutl-d.lib.
 
 To configure Visual Studio to automatically locate the libcutl headers,
