@@ -1,3 +1,10 @@
+Version 1.2.0
+
+  * Add support for automake and VC++ builds via meta-build.
+  * Add support for resetting nodes/edges and deleting nodes in
+    container::graph.
+  * Redesign fs::path, add comparison operators.
+
 Version 1.1.1
  
   * Bugfix release.
