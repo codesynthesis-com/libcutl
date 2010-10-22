@@ -29,11 +29,11 @@ namespace cutl
       // Canonical directory and path seperators.
       //
 #ifdef _WIN32
-      static char const directory_separator = '\\';
-      static char const path_separator = ';';
+      static C const directory_separator = '\\';
+      static C const path_separator = ';';
 #else
-      static char const directory_separator = '/';
-      static char const path_separator = ':';
+      static C const directory_separator = '/';
+      static C const path_separator = ':';
 #endif
 
       // Directory separator tests. On some platforms there
@@ -52,24 +52,29 @@ namespace cutl
       }
 
       static size_type
-      find_separator (string_type const& s)
+      find_separator (string_type const& s, size_type pos = 0)
       {
-        for (size_type i (0), n (s.size ()); i < n; ++i)
+        for (size_type n (s.size ()); pos < n; ++pos)
         {
-          if (is_separator (s[i]))
-            return i;
+          if (is_separator (s[pos]))
+            return pos;
         }
 
         return string_type::npos;
       }
 
       static size_type
-      rfind_separator (string_type const& s)
+      rfind_separator (string_type const& s, size_type pos = string_type::npos)
       {
-        for (size_type i (s.size ()) ; i > 0; --i)
+        if (pos == string_type::npos)
+          pos = s.size ();
+        else
+          pos++;
+
+        for (; pos > 0; --pos)
         {
-          if (is_separator (s[i - 1]))
-            return i - 1;
+          if (is_separator (s[pos - 1]))
+            return pos - 1;
         }
 
         return string_type::npos;
@@ -150,6 +155,34 @@ namespace cutl
         init ();
       }
 
+      void
+      swap (basic_path& p)
+      {
+        path_.swap (p.path_);
+      }
+
+      static basic_path
+      current ();
+
+    public:
+      bool
+      empty () const
+      {
+        return path_.empty ();
+      }
+
+      bool
+      absolute () const;
+
+      bool
+      relative () const
+      {
+        return !absolute ();
+      }
+
+      bool
+      root () const;
+
     public:
       // Return the path without the directory part.
       //
@@ -166,6 +199,23 @@ namespace cutl
       //
       basic_path
       base () const;
+
+    public:
+      // Normalize the path. This includes collapsing the '.' and '..'
+      // directories if possible, collapsing multiple directory
+      // separators, converting all directory separators to the
+      // canonical form, and making the path lower-case if the
+      // filesystem is not case-sensitive (e.g., Windows). Returns
+      // *this.
+      //
+      basic_path&
+      normalize ();
+
+      // Make the path absolute using the current directory unless
+      // it is already absolute.
+      //
+      basic_path&
+      complete ();
 
     public:
       basic_path
@@ -204,13 +254,13 @@ namespace cutl
         return !(*this == x);
       }
 
-    public:
       bool
-      empty () const
+      operator< (basic_path const& x) const
       {
-        return path_.empty ();
+        return path_ < x.path_;
       }
 
+    public:
       string_type
       string () const
       {
@@ -221,11 +271,10 @@ namespace cutl
       void
       init ();
 
-      bool
-      root () const
-      {
-        return path_.size () == 1 && traits::is_separator (path_[0]);
-      }
+#ifdef _WIN32
+      static C
+      tolower (C);
+#endif
 
     private:
       string_type path_;
@@ -240,6 +289,7 @@ namespace cutl
   }
 }
 
+#include <cutl/fs/path.ixx>
 #include <cutl/fs/path.txx>
 
 #endif // CUTL_FS_PATH_HXX

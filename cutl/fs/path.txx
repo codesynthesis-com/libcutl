@@ -3,6 +3,8 @@
 // copyright : Copyright (c) 2009-2010 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
+#include <vector>
+
 namespace cutl
 {
   namespace fs
@@ -67,7 +69,7 @@ namespace cutl
     basic_path<C>& basic_path<C>::
     operator/= (basic_path<C> const& r)
     {
-      if (r.root ())
+      if (r.absolute ())
         throw invalid_basic_path<C> (r.path_);
 
       if (path_.empty () || r.path_.empty ())
@@ -76,11 +78,107 @@ namespace cutl
         return *this;
       }
 
-      if (!root ())
+      if (!traits::is_separator (path_[path_.size () - 1]))
         path_ += traits::directory_separator;
 
       path_ += r.path_;
 
+      return *this;
+    }
+
+    template <typename C>
+    basic_path<C>& basic_path<C>::
+    normalize ()
+    {
+      if (empty ())
+        return *this;
+
+      bool abs (absolute ());
+
+      typedef std::vector<string_type> paths;
+      paths ps;
+
+      for (size_type b (0), e (traits::find_separator (path_)),
+             n (path_.size ());;
+           e = traits::find_separator (path_, b))
+      {
+        string_type s (path_, b, e == string_type::npos ? e : e - b);
+        ps.push_back (s);
+
+        if (e == string_type::npos)
+          break;
+
+        ++e;
+
+        while (e < n && traits::is_separator (path_[e]))
+          ++e;
+
+        if (e == n)
+          break;
+
+        b = e;
+      }
+
+      // First collapse '.' and '..'.
+      //
+      paths r;
+
+      for (typename paths::const_iterator i (ps.begin ()), e (ps.end ());
+           i != e; ++i)
+      {
+        string_type const& s (*i);
+        size_type n (s.size ());
+
+        if (n == 1 && s[0] == '.')
+          continue;
+
+        if (n == 2 && s[0] == '.' && s[1] == '.')
+        {
+          // Pop the last directory from r unless it is '..'.
+          //
+          if (!r.empty ())
+          {
+            string_type const& s1 (r.back ());
+
+            if (!(s1.size () == 2 && s1[0] == '.' && s1[1] == '.'))
+            {
+              // Cannot go past the root directory.
+              //
+              if (abs && r.size () == 1)
+                throw invalid_basic_path<C> (path_);
+
+              r.pop_back ();
+              continue;
+            }
+          }
+        }
+
+        r.push_back (s);
+      }
+
+      // Reassemble the path.
+      //
+      string_type p;
+
+      for (typename paths::const_iterator i (r.begin ()), e (r.end ());
+           i != e;)
+      {
+#ifdef _WIN32
+        for (size_type j (0), n (i->size ()); j < n; ++j)
+          p += tolower ((*i)[j]);
+#else
+        p += *i;
+#endif
+        ++i;
+
+        if (i != e)
+          p += traits::directory_separator;
+      }
+
+      if (p.empty () && !r.empty ())
+        p += traits::directory_separator; // Root directory.
+
+      path_.swap (p);
       return *this;
     }
 

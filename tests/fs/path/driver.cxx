@@ -4,8 +4,12 @@
 // license   : MIT; see accompanying LICENSE file
 
 #include <cassert>
+#include <iostream>
 
 #include <cutl/fs/path.hxx>
+
+using std::cerr;
+using std::endl;
 
 using namespace cutl::fs;
 
@@ -23,12 +27,30 @@ main ()
   assert (path ("C:\\tmp\\foo\\").string () == "C:\\tmp\\foo");
 #endif
 
+  // abslote/relative/root
+  //
+#ifndef _WIN32
+  assert (path ("/").root ());
+  assert (path ("//").root ());
+  assert (path ("/").absolute ());
+  assert (path ("/foo/bar").absolute ());
+  assert (path ("bar/baz").relative ());
+#else
+  assert (path ("C:").root ());
+  assert (path ("C:\\").root ());
+  assert (path ("C:\\").absolute ());
+  assert (path ("C:\\foo\\bar").absolute ());
+  assert (path ("bar\\baz").relative ());
+#endif
+
+
   // leaf
   //
+#ifndef _WIN32
   assert (path ("/").leaf ().string () == "");
   assert (path ("/tmp").leaf ().string () == "tmp");
   assert (path ("//tmp").leaf ().string () == "tmp");
-#ifdef _WIN32
+#else
   assert (path ("C:").leaf ().string () == "C:");
   assert (path ("C:\\tmp").leaf ().string () == "tmp");
   assert (path ("C:\\\\tmp").leaf ().string () == "tmp");
@@ -36,10 +58,11 @@ main ()
 
   // directory
   //
+#ifndef _WIN32
   assert (path ("/").directory ().string () == "");
   assert (path ("/tmp").directory ().string () == "/");
   assert (path ("//tmp").directory ().string () == "/");
-#ifdef _WIN32
+#else
   assert (path ("C:").directory ().string () == "");
   assert (path ("C:\\tmp").directory ().string () == "C:");
   assert (path ("C:\\\\tmp").directory ().string () == "C:");
@@ -68,4 +91,42 @@ main ()
   assert ((path ("foo") / path ("bar")).string () == "foo\\bar");
 #endif
 
+  // normalize
+  //
+#ifndef _WIN32
+  assert (path ("../foo").normalize ().string () == "../foo");
+  assert (path ("..///foo").normalize ().string () == "../foo");
+  assert (path ("../../foo").normalize ().string () == "../../foo");
+  assert (path (".././foo").normalize ().string () == "../foo");
+  assert (path (".").normalize ().string () == "");
+  assert (path ("./..").normalize ().string () == "..");
+  assert (path ("../.").normalize ().string () == "..");
+  assert (path ("foo/./..").normalize ().string () == "");
+  assert (path ("/foo/./..").normalize ().string () == "/");
+  assert (path ("./foo").normalize ().string () == "foo");
+#else
+  assert (path ("../foo").normalize ().string () == "..\\foo");
+  assert (path ("..///foo").normalize ().string () == "..\\foo");
+  assert (path ("..\\../foo").normalize ().string () == "..\\..\\foo");
+  assert (path (".././foo").normalize ().string () == "..\\foo");
+  assert (path (".").normalize ().string () == "");
+  assert (path ("./..").normalize ().string () == "..");
+  assert (path ("../.").normalize ().string () == "..");
+  assert (path ("foo/./..").normalize ().string () == "");
+  assert (path ("C:/foo/./..").normalize ().string () == "c:");
+  assert (path ("./foo").normalize ().string () == "foo");
+
+  assert (path ("C:").normalize ().string () == "c:");
+  assert (path ("C:\\Foo12//Bar").normalize ().string () == "c:\\foo12\\bar");
+#endif
+
+  /*
+  path p ("../foo");
+  p.complete ();
+
+  cerr << path::current () << endl;
+  cerr << p << endl;
+  p.normalize ();
+  cerr << p << endl;
+  */
 }
