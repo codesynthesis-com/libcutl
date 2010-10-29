@@ -164,6 +164,9 @@ namespace cutl
       static basic_path
       current ();
 
+      static void
+      current (basic_path const&);
+
     public:
       bool
       empty () const

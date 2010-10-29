@@ -4,11 +4,11 @@
 // license   : MIT; see accompanying LICENSE file
 
 #ifdef _WIN32
-#  include <direct.h> // _getcwd, _wgetcwd, _MAX_PATH
+#  include <direct.h> // _[w]getcwd, _[w]chdir, _MAX_PATH
 #else
-#  include <stdlib.h> // mbstowcs
+#  include <stdlib.h> // mbstowcs, wcstombs
 #  include <limits.h> // PATH_MAX
-#  include <unistd.h> // getcwd
+#  include <unistd.h> // getcwd, chdir
 #endif
 
 #include <cutl/fs/path.hxx>
@@ -22,6 +22,10 @@ namespace cutl
     {
       return "invalid filesystem path";
     }
+
+    //
+    // char
+    //
 
     template <>
     basic_path<char> basic_path<char>::
@@ -39,6 +43,28 @@ namespace cutl
 
       return basic_path<char> (cwd);
     }
+
+    template <>
+    void basic_path<char>::
+    current (basic_path const& p)
+    {
+      string_type const& s (p.string ());
+
+      if (p.empty ())
+        throw invalid_basic_path<char> (s);
+
+#ifdef _WIN32
+      if(_chdir(s.c_str ()) != 0)
+        throw invalid_basic_path<char> (s);
+#else
+      if (chdir (s.c_str ()) != 0)
+        throw invalid_basic_path<char> (s);
+#endif
+    }
+
+    //
+    // wchar_t
+    //
 
     template <>
     basic_path<wchar_t> basic_path<wchar_t>::
@@ -59,6 +85,31 @@ namespace cutl
 #endif
 
       return basic_path<wchar_t> (wcwd);
+    }
+
+    template <>
+    void basic_path<wchar_t>::
+    current (basic_path const& p)
+    {
+      string_type const& s (p.string ());
+
+      if (p.empty ())
+        throw invalid_basic_path<wchar_t> (s);
+
+#ifdef _WIN32
+      if(_wchdir(s.c_str ()) != 0)
+        throw invalid_basic_path<wchar_t> (s);
+#else
+      char ns[PATH_MAX + 1];
+
+      if (wcstombs (ns, s.c_str (), PATH_MAX) == size_type (-1))
+        throw invalid_basic_path<wchar_t> (s);
+
+      ns[PATH_MAX] = '\0';
+
+      if (chdir (ns) != 0)
+        throw invalid_basic_path<wchar_t> (s);
+#endif
     }
   }
 }
