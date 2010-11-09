@@ -4,7 +4,8 @@
 // license   : MIT; see accompanying LICENSE file
 
 #ifdef _WIN32
-#  include <direct.h> // _[w]getcwd, _[w]chdir, _MAX_PATH
+#  include <stdlib.h> // _MAX_PATH
+#  include <direct.h> // _[w]getcwd, _[w]chdir
 #else
 #  include <stdlib.h> // mbstowcs, wcstombs
 #  include <limits.h> // PATH_MAX
@@ -73,7 +74,7 @@ namespace cutl
 #ifdef _WIN32
       wchar_t wcwd[_MAX_PATH];
       if(_wgetcwd(wcwd, _MAX_PATH) == 0)
-        throw invalid_basic_path<wchar_t> (".");
+        throw invalid_basic_path<wchar_t> (L".");
 #else
       char cwd[PATH_MAX];
       if (getcwd (cwd, PATH_MAX) == 0)
