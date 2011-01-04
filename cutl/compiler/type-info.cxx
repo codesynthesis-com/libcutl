@@ -1,6 +1,6 @@
 // file      : cutl/compiler/type-info.cxx
 // author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2009-2010 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2011 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #include <cutl/compiler/type-info.hxx>
