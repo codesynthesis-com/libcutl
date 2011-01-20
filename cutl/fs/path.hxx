@@ -222,7 +222,7 @@ namespace cutl
 
     public:
       basic_path
-      operator/ (basic_path const& x)
+      operator/ (basic_path const& x) const
       {
         basic_path r (*this);
         r /= x;
@@ -233,7 +233,7 @@ namespace cutl
       operator/= (basic_path const&);
 
       basic_path
-      operator+ (string_type const& s)
+      operator+ (string_type const& s) const
       {
         return basic_path (path_ + s);
       }
