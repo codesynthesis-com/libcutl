@@ -36,7 +36,19 @@ namespace cutl
     {
     public:
       typedef std::vector<traverser<B>*> traversers;
-      typedef std::map<type_id, traversers> map_type;
+
+      struct map_type: std::map<type_id, traversers>
+      {
+        map_type () {}
+
+        // Don't copy traverser maps. We do it here instead of in
+        // traverser_map to pacify GCC's -Wextra insisting we must
+        // explicitly initialize virtual bases in copy constructor.
+        //
+        map_type (map_type const&): std::map<type_id, traversers> () {}
+        map_type& operator= (map_type const&) {return *this;}
+      };
+
       typedef typename map_type::const_iterator iterator;
 
       iterator
@@ -72,6 +84,11 @@ namespace cutl
       typedef X type;
 
       traverser_impl ()
+      {
+        add (typeid (type), *this);
+      }
+
+      traverser_impl (traverser_impl const&)
       {
         add (typeid (type), *this);
       }
