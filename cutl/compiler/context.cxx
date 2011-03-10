@@ -19,5 +19,16 @@ namespace cutl
 
       map_.erase (i);
     }
+
+    std::type_info const& context::
+    type_info (std::string const& key) const
+    {
+      map::const_iterator i (map_.find (key));
+
+      if (i == map_.end ())
+        throw no_entry ();
+
+      return i->second.type_info ();
+    }
   }
 }

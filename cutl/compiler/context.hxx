@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 #include <cstddef> // std::size_t
+#include <typeinfo>
 
 #include <cutl/exception.hxx>
 #include <cutl/container/any.hxx>
@@ -79,7 +80,7 @@ namespace cutl
       X const&
       get (char const* key, X const& default_value) const
       {
-        return get<X> (std::string (key) ,default_value);
+        return get<X> (std::string (key), default_value);
       }
 
       template <typename X>
@@ -105,6 +106,15 @@ namespace cutl
 
       void
       remove (std::string const& key);
+
+      std::type_info const&
+      type_info (char const* key) const
+      {
+        return type_info (std::string (key));
+      }
+
+      std::type_info const&
+      type_info (std::string const& key) const;
 
     private:
       typedef std::map<std::string, container::any> map;
