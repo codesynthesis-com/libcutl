@@ -1,7 +1,7 @@
 Version 1.4.0
 
- * Add support for querying type_info of context entries (compiler).
- * Do sensible things if traversers are copied (compiler).
+  * Add support for querying type_info of context entries (compiler).
+  * Do sensible things if traversers are copied (compiler).
 
 Version 1.3.0
 
