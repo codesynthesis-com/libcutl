@@ -10,6 +10,7 @@ libcutl_la_SOURCES = __path__(sources)
 
 cutlincludedir = $(includedir)/cutl
 nobase_cutlinclude_HEADERS = __path__(headers)
+nobase_nodist_cutlinclude_HEADERS = details/config.h
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 libcutl_la_LDFLAGS = -release __value__(interface_version)
