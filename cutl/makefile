@@ -16,6 +16,26 @@ compiler/context.cxx      \
 compiler/type-info.cxx    \
 compiler/cxx-indenter.cxx
 
+cxx_tun   +=                                      \
+details/boost/regex/src/regex.cxx                 \
+details/boost/regex/src/usinstances.cxx           \
+details/boost/regex/src/regex_raw_buffer.cxx      \
+details/boost/regex/src/fileiter.cxx              \
+details/boost/regex/src/cpp_regex_traits.cxx      \
+details/boost/regex/src/instances.cxx             \
+details/boost/regex/src/wide_posix_api.cxx        \
+details/boost/regex/src/regex_debug.cxx           \
+details/boost/regex/src/c_regex_traits.cxx        \
+details/boost/regex/src/posix_api.cxx             \
+details/boost/regex/src/wc_regex_traits.cxx       \
+details/boost/regex/src/cregex.cxx                \
+details/boost/regex/src/w32_regex_traits.cxx      \
+details/boost/regex/src/regex_traits_defaults.cxx \
+details/boost/regex/src/static_mutex.cxx          \
+details/boost/regex/src/icu.cxx                   \
+details/boost/regex/src/winstances.cxx
+
+
 cxx_obj   := $(addprefix $(out_base)/,$(cxx_tun:.cxx=.o))
 cxx_od    := $(cxx_obj:.o=.o.d)
 

@@ -5,7 +5,7 @@
 
 include $(dir $(lastword $(MAKEFILE_LIST)))../build/bootstrap.make
 
-tests := compiler fs shared-ptr
+tests := compiler fs re shared-ptr
 
 default   := $(out_base)/
 test      := $(out_base)/.test
