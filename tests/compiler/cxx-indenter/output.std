@@ -73,3 +73,9 @@ do
 }
 while (false);
 
+{
+  f ("CREATE TABLE \"test\" ("
+     "'id',"
+     "'name')");
+}
+

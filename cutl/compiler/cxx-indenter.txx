@@ -541,7 +541,10 @@ namespace cutl
             }
           }
         }
-        else if (token_ != rbrace_)
+
+        // Stop buffering unless we have another closing brace.
+        //
+        if (token_ != rbrace_)
         {
           buffering_ = false;
         }

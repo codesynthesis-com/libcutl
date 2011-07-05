@@ -101,4 +101,10 @@ main ()
      << "}"
      << "while (false);"
      << endl;
+
+  os << "{"
+     << "f (\"CREATE TABLE \\\"test\\\" (\"" << endl
+     << "\"'id',\"" << endl
+     << "\"'name')\");"
+     << "}";
 }
