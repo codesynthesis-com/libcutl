@@ -77,15 +77,15 @@ $(out_base)/: $(cutl.l)
 $(dist): export sources := $(cxx_tun)
 $(dist): export headers := $(subst $(src_base)/,,$(shell find $(src_base) \
 -name '*.hxx' -o -name '*.ixx' -o -name '*.txx'))
-$(dist): export extra_dist := libcutl-vc9.vcproj libcutl-vc10.vcxproj \
-libcutl-vc10.vcxproj.filters
-$(dist): boost := $(subst $(src_base)/,,$(shell find \
-$(src_base)/details/boost -type f))
+$(dist): data_dist := $(subst $(src_base)/,,$(shell find \
+$(src_base)/details/boost -type f ! -name '*.cxx'))
+$(dist): export extra_dist := $(data_dist) libcutl-vc9.vcproj \
+libcutl-vc10.vcxproj libcutl-vc10.vcxproj.filters
 $(dist): export interface_version = $(shell sed -e \
 's/^\([0-9]*\.[0-9]*\).*/\1/' $(src_root)/version)
 
 $(dist):
-	$(call dist-data,$(sources) $(headers) $(boost) details/config.h.in)
+	$(call dist-data,$(sources) $(headers) $(data_dist) details/config.h.in)
 	$(call meta-vc9proj,libcutl-vc9.vcproj)
 	$(call meta-vc10proj,libcutl-vc10.vcxproj)
 	$(call meta-automake)
