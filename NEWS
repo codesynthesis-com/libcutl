@@ -1,3 +1,8 @@
+Version 1.5.0
+
+  * Add support for regular expressions. Underneath regex support is
+    provided by a Boost subset.
+
 Version 1.4.0
 
   * Add support for querying type_info of context entries (compiler).
