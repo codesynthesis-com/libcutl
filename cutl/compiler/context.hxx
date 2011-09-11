@@ -99,6 +99,15 @@ namespace cutl
       set (std::string const& key, X const& value);
 
       void
+      set (char const* key, container::any const& value)
+      {
+        return set (std::string (key), value);
+      }
+
+      void
+      set (std::string const& key, container::any const& value);
+
+      void
       remove (char const* key)
       {
         remove (std::string (key));

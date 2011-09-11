@@ -5,12 +5,33 @@
 
 #include <cutl/compiler/context.hxx>
 
+using namespace std;
+
 namespace cutl
 {
   namespace compiler
   {
     void context::
-    remove (std::string const& key)
+    set (string const& key, container::any const& value)
+    {
+      using container::any;
+
+      std::pair<map::iterator, bool> r (
+        map_.insert (map::value_type (key, value)));
+
+      any& x (r.first->second);
+
+      if (!r.second)
+      {
+        if (value.type_info () != x.type_info ())
+          throw typing ();
+
+        x = value;
+      }
+    }
+
+    void context::
+    remove (string const& key)
     {
       map::iterator i (map_.find (key));
 
@@ -20,8 +41,8 @@ namespace cutl
       map_.erase (i);
     }
 
-    std::type_info const& context::
-    type_info (std::string const& key) const
+    type_info const& context::
+    type_info (string const& key) const
     {
       map::const_iterator i (map_.find (key));
 
