@@ -65,7 +65,7 @@ namespace cutl
     }
 
     template <typename X>
-    void context::
+    X& context::
     set (std::string const& key, X const& value)
     {
       try
@@ -73,8 +73,12 @@ namespace cutl
         std::pair<map::iterator, bool> r (
           map_.insert (map::value_type (key, value)));
 
+        X& x (r.first->second. template value<X> ());
+
         if (!r.second)
-          r.first->second. template value<X> () = value;
+          x = value;
+
+        return x;
       }
       catch (container::any::typing const&)
       {

@@ -88,14 +88,14 @@ namespace cutl
       get (std::string const& key, X const& default_value) const;
 
       template <typename X>
-      void
+      X&
       set (char const* key, X const& value)
       {
-        set<X> (std::string (key), value);
+        return set<X> (std::string (key), value);
       }
 
       template <typename X>
-      void
+      X&
       set (std::string const& key, X const& value);
 
       void
