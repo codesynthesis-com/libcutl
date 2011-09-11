@@ -23,6 +23,10 @@ namespace cutl
       struct LIBCUTL_EXPORT typing: exception {};
 
     public:
+      any ()
+      {
+      }
+
       template <typename X>
       any (X const& x)
           : holder_ (new holder_impl<X> (x))
@@ -70,11 +74,23 @@ namespace cutl
           throw typing ();
       }
 
-    public:
       std::type_info const&
       type_info () const
       {
         return holder_->type_info ();
+      }
+
+    public:
+      bool
+      empty () const
+      {
+        return holder_.get () == 0;
+      }
+
+      void
+      reset ()
+      {
+        return holder_.reset ();
       }
 
     private:
