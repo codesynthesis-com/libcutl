@@ -212,9 +212,11 @@ namespace cutl
             {
               // Pop all the blocks until the one that was indented.
               //
-              while (!indent_stack_.top ().indented_)
+              while (indent_stack_.top ().indentation_ == 0)
                 indent_stack_.pop ();
 
+              // Pop the indented block and one level of indentation.
+              //
               if (indentation_.size () > 1)
                 indentation_.pop ();
 
@@ -257,12 +259,34 @@ namespace cutl
 
             hold_.push_back (c);
 
-
             // Add double newline after '}'.
             //
             hold_.push_back ('\n');
             hold_.push_back ('\n');
             position_ = 0;
+
+            if (!indent_stack_.empty ())
+            {
+              // Pop all the blocks until the one that was indented.
+              //
+              while (indent_stack_.top ().indentation_ == 0)
+                indent_stack_.pop ();
+
+              // Now pop all the indented blocks while also popping the
+              // indentation stack. Do it only if the indentation match.
+              // If it doesn't then that means this inden_stack entry is
+              // for some other, outer block.
+              //
+              while (!indent_stack_.empty () &&
+                     indent_stack_.top ().indentation_ ==
+                     indentation_.size ())
+              {
+                if (indentation_.size () > 1)
+                  indentation_.pop ();
+
+                indent_stack_.pop ();
+              }
+            }
 
             buffering_ = true;
           }
@@ -281,13 +305,23 @@ namespace cutl
             {
               // Pop all the blocks until the one that was indented.
               //
-              while (!indent_stack_.top ().indented_)
+              while (indent_stack_.top ().indentation_ == 0)
                 indent_stack_.pop ();
 
-              if (indentation_.size () > 1)
-                indentation_.pop ();
+              // Now pop all the indented blocks while also popping the
+              // indentation stack. Do it only if the indentation match.
+              // If they don't then it means we are inside a block and
+              // the stack should be popped after seeing '}', not ';'.
+              //
+              while (!indent_stack_.empty () &&
+                     indent_stack_.top ().indentation_ ==
+                     indentation_.size ())
+              {
+                if (indentation_.size () > 1)
+                  indentation_.pop ();
 
-              indent_stack_.pop ();
+                indent_stack_.pop ();
+              }
             }
 
             if (paren_balance_ != 0)
@@ -453,7 +487,6 @@ namespace cutl
         }
       }
 
-
       if (defaulting)
       {
         output_indentation ();
@@ -485,10 +518,11 @@ namespace cutl
         bool indent (indent_stack_.empty () ||
                      indent_stack_.top ().newline_);
 
-        indent_stack_.push (indent_block (c == '\n', indent));
-
         if (indent)
           indentation_.push (indentation_.top () + spaces_);
+
+        indent_stack_.push (
+          indent_block (c == '\n', (indent ? indentation_.size () : 0)));
       }
 
       // Keep track of the do ... while construct in order to suppress
@@ -545,9 +579,7 @@ namespace cutl
         // Stop buffering unless we have another closing brace.
         //
         if (token_ != rbrace_)
-        {
           buffering_ = false;
-        }
       }
     }
 

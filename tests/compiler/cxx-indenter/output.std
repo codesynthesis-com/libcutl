@@ -9,6 +9,13 @@ else
   b ();
 }
 
+if (true)
+  // Hello there
+  //
+  a ();
+else
+  b ();
+
 if (false)
 {
   if (true)

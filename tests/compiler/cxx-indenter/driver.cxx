@@ -32,6 +32,14 @@ main ()
      << "b ();"
      << "}";
 
+  os << "if (true)" << endl
+     << "// Hello there" << endl
+     << "//" << endl
+     << "a ();"
+     << "else" << endl
+     << "b ();"
+     << endl;
+
   os << "if (false)"
      << "{"
      << "if (true)"
@@ -107,4 +115,50 @@ main ()
      << "\"'id',\"" << endl
      << "\"'name')\");"
      << "}";
+
+/*
+  @@ TODO: still misindents (if-else association problem)
+
+  os << "{"
+     << "if (foo != bar)" << endl
+     << "if (foo (bar))" << endl
+     << "baz = true;"
+     << "else" << endl
+     << "baz = false;"
+     << "else" << endl
+     << "biz = true;"
+     << endl
+     << "biz = false;"
+     << "}";
+
+  os << "{"
+     << "if (foo != bar)" << endl
+     << "if (foo (bar))"
+     << "{"
+     << "baz = true;"
+
+     << "if (x)" << endl
+     << "test ();"
+     << "else" << endl
+     << "test ();"
+     << endl
+
+     << "if (x)" << endl
+     << "if (y)"
+     << "{"
+     << "test ();"
+     << "}"
+     << "else"
+     << "{"
+     << "test ();"
+     << "}"
+
+     << "}"
+     << "else"
+     << "{"
+     << "test ();"
+     << "}"
+     << "biz = false;"
+     << "}";
+*/
 }

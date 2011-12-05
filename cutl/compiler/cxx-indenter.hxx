@@ -108,7 +108,7 @@ namespace cutl
       bool suppress_nl_;
       construct construct_;
 
-      // Special state stach for the do-while construct. The presence
+      // Special state stack for the do-while construct. The presence
       // of an element in the stack indicates that we are in a braced
       // do-while construct. The value of the element is the brace
       // balance.
@@ -150,13 +150,15 @@ namespace cutl
       //
       struct indent_block
       {
-        indent_block (bool newline, bool indented)
-            : newline_ (newline), indented_ (indented)
+        indent_block (bool newline, std::size_t indentation)
+            : newline_ (newline), indentation_ (indentation)
         {
         }
 
         bool newline_;
-        bool indented_;
+        std::size_t indentation_; // Size of the indentation_ stack
+                                  // corresponding to this block, or
+                                  // 0 if it is not indented.
       };
 
       std::stack<indent_block> indent_stack_;
