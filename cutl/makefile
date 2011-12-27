@@ -77,7 +77,7 @@ $(out_base)/: $(cutl.l)
 $(dist): export sources := $(cxx_tun)
 $(dist): export headers := $(subst $(src_base)/,,$(shell find $(src_base) \
 -name '*.hxx' -o -name '*.ixx' -o -name '*.txx'))
-$(dist): data_dist := $(subst $(src_base)/,,$(shell find \
+$(dist): data_dist := details/config-vc.h $(subst $(src_base)/,,$(shell find \
 $(src_base)/details/boost -type f -name '*.hpp')) details/boost/LICENSE \
 details/boost/README
 $(dist): export extra_dist := $(data_dist) libcutl-vc9.vcproj \
