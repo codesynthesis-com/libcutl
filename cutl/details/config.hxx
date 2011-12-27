@@ -7,6 +7,7 @@
 #define CUTL_DETAILS_CONFIG_HXX
 
 #ifdef _MSC_VER
+#  include <cutl/details/config-vc.h>
 #else
 #  include <cutl/details/config.h>
 #endif
