@@ -1,3 +1,8 @@
+Version 1.6.2
+
+  * Support for using external Boost instead of the internal subset in
+    the autotools build system.
+
 Version 1.6.0
 
   * Add support for setting a compiler::context value as container::any.
