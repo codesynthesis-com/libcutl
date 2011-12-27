@@ -1,5 +1,4 @@
 // file      : cutl/fs/auto-remove.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
 // copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 

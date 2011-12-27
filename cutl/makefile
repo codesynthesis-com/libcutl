@@ -1,5 +1,4 @@
 # file      : cutl/makefile
-# author    : Boris Kolpackov <boris@codesynthesis.com>
 # copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
@@ -58,7 +57,7 @@ $(cxx_obj) $(cxx_od): $(odb_tracer.l.cpp-options) $(out_base)/details/config.h
 
 $(out_base)/details/config.h:
 	@echo '// file      : cutl/details/config.h'               >$@
-	@echo '// author    : automatically generated'            >>$@
+	@echo '// note      : automatically generated'            >>$@
 	@echo ''                                                  >>$@
 	@echo '#ifndef CUTL_DETAILS_CONFIG_H'                     >>$@
 	@echo '#define CUTL_DETAILS_CONFIG_H'                     >>$@
