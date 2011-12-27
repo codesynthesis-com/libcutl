@@ -1,6 +1,6 @@
 // file      : cutl/meta/remove-v.hxx
 // author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2009-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_META_REMOVE_V_HXX

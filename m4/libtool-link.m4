@@ -1,6 +1,6 @@
 dnl file      : m4/libtool-link.m4
 dnl author    : Boris Kolpackov <boris@codesynthesis.com>
-dnl copyright : Copyright (c) 2009-2011 Code Synthesis Tools CC
+dnl copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
 dnl license   : MIT; see accompanying LICENSE file
 dnl
 dnl
