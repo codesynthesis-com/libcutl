@@ -8,6 +8,10 @@ EXTRA_DIST = __file__(extra_dist)
 lib_LTLIBRARIES = libcutl.la
 libcutl_la_SOURCES = __path__(sources)
 
+if !LIBCUTL_EXTERNAL_BOOST
+libcutl_la_SOURCES += __path__(boost_sources)
+endif
+
 cutlincludedir = $(includedir)/cutl
 nobase_cutlinclude_HEADERS = __path__(headers)
 nobase_nodist_cutlinclude_HEADERS = details/config.h

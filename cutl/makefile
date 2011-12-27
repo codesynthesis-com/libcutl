@@ -5,18 +5,18 @@
 
 include $(dir $(lastword $(MAKEFILE_LIST)))../build/bootstrap.make
 
-cxx_tun   := exception.cxx shared-ptr/base.cxx
+sources   := exception.cxx shared-ptr/base.cxx
 
-cxx_tun   += fs/exception.cxx fs/path.cxx fs/auto-remove.cxx
+sources   += fs/exception.cxx fs/path.cxx fs/auto-remove.cxx
 
-cxx_tun   += re/re.cxx
+sources   += re/re.cxx
 
-cxx_tun   +=              \
+sources   +=              \
 compiler/context.cxx      \
 compiler/type-info.cxx    \
 compiler/cxx-indenter.cxx
 
-cxx_tun   +=                                      \
+boost_sources   :=                                \
 details/boost/regex/src/regex.cxx                 \
 details/boost/regex/src/usinstances.cxx           \
 details/boost/regex/src/regex_raw_buffer.cxx      \
@@ -35,7 +35,7 @@ details/boost/regex/src/static_mutex.cxx          \
 details/boost/regex/src/icu.cxx                   \
 details/boost/regex/src/winstances.cxx
 
-
+cxx_tun   := $(sources) $(boost_sources)
 cxx_obj   := $(addprefix $(out_base)/,$(cxx_tun:.cxx=.o))
 cxx_od    := $(cxx_obj:.o=.o.d)
 
@@ -74,7 +74,8 @@ $(out_base)/: $(cutl.l)
 
 # Dist.
 #
-$(dist): export sources := $(cxx_tun)
+$(dist): export sources := $(sources)
+$(dist): export boost_sources := $(boost_sources)
 $(dist): export headers := $(subst $(src_base)/,,$(shell find $(src_base) \
 -name '*.hxx' -o -name '*.ixx' -o -name '*.txx'))
 $(dist): data_dist := details/config-vc.h $(subst $(src_base)/,,$(shell find \
@@ -86,7 +87,7 @@ $(dist): export interface_version = $(shell sed -e \
 's/^\([0-9]*\.[0-9]*\).*/\1/' $(src_root)/version)
 
 $(dist):
-	$(call dist-data,$(sources) $(headers) $(data_dist) details/config.h.in)
+	$(call dist-data,$(sources) $(boost_sources) $(headers) $(data_dist) details/config.h.in)
 	$(call meta-vc9proj,libcutl-vc9.vcproj)
 	$(call meta-vc10proj,libcutl-vc10.vcxproj)
 	$(call meta-automake)

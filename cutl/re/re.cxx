@@ -7,7 +7,11 @@
 
 #include <cutl/re.hxx>
 
-#include <cutl/details/boost/tr1/regex.hpp>
+#ifndef LIBCUTL_EXTERNAL_BOOST
+#  include <cutl/details/boost/tr1/regex.hpp>
+#else
+#  include <boost/tr1/regex.hpp>
+#endif
 
 using namespace std;
 

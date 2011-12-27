@@ -24,6 +24,38 @@ AC_LANG(C++)
 #
 LT_OUTPUT
 
+# Check if we need to use external Boost.
+#
+AC_MSG_CHECKING([if we should use external boost])
+
+AC_ARG_WITH(
+  [external-boost],
+  [AC_HELP_STRING([--with-external-boost],[use external boost instead of the internal subset])],
+  [external_boost=${withval}],
+  [external_boost=no])
+
+if test x"$external_boost" != xno; then
+  AC_MSG_RESULT([yes])
+
+  # Check if we have Boost.
+  #
+  boost_found=yes
+  LIBBOOST([],[boost_found=no])
+  LIBBOOST_REGEX([],[boost_found=no])
+  LIBBOOST_SYSTEM
+
+  if test x"$boost_found" == xno; then
+    AC_MSG_ERROR([boost regex is not found; consider using CPPFLAGS/LDFLAGS or --with-boost=DIR to specify its location])
+  fi
+
+  AC_DEFINE([LIBCUTL_EXTERNAL_BOOST], [1], [Use external boost.])
+else
+  AC_MSG_RESULT([no])
+fi
+
+AM_CONDITIONAL([LIBCUTL_EXTERNAL_BOOST], [test x"$external_boost" != xno])
+
+
 # Define LIBODB_STATIC_LIB if we are build static library on certain platforms.
 #
 STATIC_LIB([LIBCUTL_STATIC_LIB], [Static library interface.])
