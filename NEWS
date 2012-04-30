@@ -1,3 +1,7 @@
+Version 1.6.3
+
+  * Minor fixes to make libcutl compilable with more pedantic GCC 4.7.
+
 Version 1.6.2
 
   * Support for using external Boost instead of the internal subset in
