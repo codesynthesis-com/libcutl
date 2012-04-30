@@ -84,12 +84,12 @@ namespace cutl
 
       traverser_impl ()
       {
-        add (typeid (type), *this);
+        this->add (typeid (type), *this);
       }
 
       traverser_impl (traverser_impl const&)
       {
-        add (typeid (type), *this);
+        this->add (typeid (type), *this);
       }
 
       virtual void
