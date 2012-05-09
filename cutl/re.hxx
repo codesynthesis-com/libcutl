@@ -6,7 +6,7 @@
 #define CUTL_RE_HXX
 
 #include <string>
-#include <iosfwd> // std::ostream
+#include <ostream>
 
 #include <cutl/exception.hxx>
 #include <cutl/details/export.hxx>
@@ -15,21 +15,12 @@ namespace cutl
 {
   namespace re
   {
-    struct LIBCUTL_EXPORT format: exception
+    struct LIBCUTL_EXPORT format_base: exception
     {
       virtual
-      ~format () throw ();
+      ~format_base () throw ();
 
-      format (std::string const& e, std::string const& d)
-          : regex_ (e), description_ (d)
-      {
-      }
-
-      std::string const&
-      regex () const
-      {
-        return regex_;
-      }
+      format_base (std::string const& d): description_ (d) {}
 
       std::string const&
       description () const
@@ -40,56 +31,72 @@ namespace cutl
       virtual char const*
       what () const throw ();
 
-    private:
-      std::string regex_;
+    protected:
       std::string description_;
     };
 
+    template <typename C>
+    struct basic_format: format_base
+    {
+      virtual
+      ~basic_format () throw () {}
+
+      basic_format (std::basic_string<C> const& e, std::string const& d)
+          : format_base (d), regex_ (e) {}
+
+      std::basic_string<C> const&
+      regex () const
+      {
+        return regex_;
+      }
+
+    private:
+      std::basic_string<C> regex_;
+    };
+
+    typedef basic_format<char> format;
+    typedef basic_format<wchar_t> wformat;
+
     // Regular expression pattern.
     //
-    struct LIBCUTL_EXPORT regex
+    template <typename C>
+    struct basic_regex
     {
-      ~regex ();
+      typedef std::basic_string<C> string_type;
 
-      regex ()
-          : impl_ (0)
-      {
-        init (0);
-      }
+      ~basic_regex ();
+
+      basic_regex (): impl_ (0) {init (0);}
 
       explicit
-      regex (std::string const& s)
-          : impl_ (0)
-      {
-        init (&s);
-      }
+      basic_regex (string_type const& s): impl_ (0) {init (&s);}
 
-      regex&
-      operator= (std::string const& s)
+      basic_regex&
+      operator= (string_type const& s)
       {
         init (&s);
         return *this;
       }
 
-      regex (regex const&);
+      basic_regex (basic_regex const&);
 
-      regex&
-      operator= (regex const&);
+      basic_regex&
+      operator= (basic_regex const&);
 
     public:
       bool
-      match (std::string const&) const;
+      match (string_type const&) const;
 
       bool
-      search (std::string const&) const;
+      search (string_type const&) const;
 
-      std::string
-      replace (std::string const& s,
-               std::string const& sub,
+      string_type
+      replace (string_type const& s,
+               string_type const& sub,
                bool first_only = false) const;
 
     public:
-      std::string
+      string_type
       str () const;
 
       bool
@@ -97,25 +104,32 @@ namespace cutl
 
     private:
       void
-      init (std::string const*);
+      init (string_type const*);
 
     private:
       struct impl;
       impl* impl_;
     };
 
-    LIBCUTL_EXPORT std::ostream&
-    operator<< (std::ostream&, regex const&);
+    template <typename C>
+    inline std::basic_ostream<C>&
+    operator<< (std::basic_ostream<C>& os, basic_regex<C> const& r)
+    {
+      return os << r.str ();
+    }
+
+    typedef basic_regex<char> regex;
+    typedef basic_regex<wchar_t> wregex;
 
     // Regular expression pattern and substituation.
     //
-    struct LIBCUTL_EXPORT regexsub
+    template <typename C>
+    struct basic_regexsub
     {
-      typedef re::regex regex_type;
+      typedef basic_regex<C> regex_type;
+      typedef std::basic_string<C> string_type;
 
-      regexsub ()
-      {
-      }
+      basic_regexsub () {}
 
       // Expression is of the form /regex/substitution/ where '/' can
       // be replaced with any delimiter. Delimiters must be escaped in
@@ -124,23 +138,20 @@ namespace cutl
       // sequence (e.g., "\\").
       //
       explicit
-      regexsub (std::string const& e)
-      {
-        init (e);
-      }
+      basic_regexsub (string_type const& e) {init (e);}
 
-      regexsub (std::string const& regex, std::string const& sub)
+      basic_regexsub (string_type const& regex, string_type const& sub)
           : regex_ (regex), sub_ (sub)
       {
       }
 
-      regexsub (regex_type const& regex, std::string const& sub)
+      basic_regexsub (regex_type const& regex, string_type const& sub)
           : regex_ (regex), sub_ (sub)
       {
       }
 
-      regexsub&
-      operator= (std::string const& e)
+      basic_regexsub&
+      operator= (string_type const& e)
       {
         init (e);
         return *this;
@@ -148,19 +159,19 @@ namespace cutl
 
     public:
       bool
-      match (std::string const& s) const
+      match (string_type const& s) const
       {
         return regex_.match (s);
       }
 
       bool
-      search (std::string const& s) const
+      search (string_type const& s) const
       {
         return regex_.search (s);
       }
 
-      std::string
-      replace (std::string const& s, bool first_only = false) const
+      string_type
+      replace (string_type const& s, bool first_only = false) const
       {
         return regex_.replace (s, sub_, first_only);
       }
@@ -172,7 +183,7 @@ namespace cutl
         return regex_;
       }
 
-      const std::string&
+      const string_type&
       substitution () const
       {
         return sub_;
@@ -186,45 +197,52 @@ namespace cutl
 
     private:
       void
-      init (std::string const&);
+      init (string_type const&);
 
     private:
       regex_type regex_;
-      std::string sub_;
+      string_type sub_;
     };
+
+    typedef basic_regexsub<char> regexsub;
+    typedef basic_regexsub<wchar_t> wregexsub;
 
     // Once-off regex execution.
     //
+    template <typename C>
     inline bool
-    match (std::string const& s, std::string const& regex)
+    match (std::basic_string<C> const& s, std::basic_string<C> const& regex)
     {
-      re::regex r (regex);
+      basic_regex<C> r (regex);
       return r.match (s);
     }
 
+    template <typename C>
     inline bool
-    search (std::string const& s, std::string const& regex)
+    search (std::basic_string<C> const& s, std::basic_string<C> const& regex)
     {
-      re::regex r (regex);
+      basic_regex<C> r (regex);
       return r.search (s);
     }
 
-    inline std::string
-    replace (std::string const& s,
-             std::string const& regex,
-             std::string const& sub,
+    template <typename C>
+    inline std::basic_string<C>
+    replace (std::basic_string<C> const& s,
+             std::basic_string<C> const& regex,
+             std::basic_string<C> const& sub,
              bool first_only = false)
     {
-      re::regex r (regex);
+      basic_regex<C> r (regex);
       return r.replace (s, sub, first_only);
     }
 
-    inline std::string
-    replace (std::string const& s,
-             std::string const& regexsub, // /regex/subst/
+    template <typename C>
+    inline std::basic_string<C>
+    replace (std::basic_string<C> const& s,
+             std::basic_string<C> const& regexsub, // /regex/subst/
              bool first_only = false)
     {
-      re::regexsub r (regexsub);
+      basic_regexsub<C> r (regexsub);
       return r.replace (s, first_only);
     }
 
@@ -234,11 +252,14 @@ namespace cutl
     // the unescaped chunk in result or throws the format exception if
     // the expression is invalid.
     //
-    LIBCUTL_EXPORT std::string::size_type
-    parse (std::string const& s,
-           std::string::size_type start,
-           std::string& result);
+    template <typename C>
+    typename std::basic_string<C>::size_type
+    parse (std::basic_string<C> const& s,
+           typename std::basic_string<C>::size_type start,
+           std::basic_string<C>& result);
   }
 }
+
+#include <cutl/re/re.txx>
 
 #endif // CUTL_RE_HXX

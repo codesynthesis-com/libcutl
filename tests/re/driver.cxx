@@ -62,7 +62,7 @@ main ()
   // regexsub escaping
   //
   {
-    regexsub r ("#a\\#\\\\\\\\#a?\\\\\\\\#");
+    regexsub r ("#a\\#\\\\#a?\\\\#");
 
     assert (r.replace ("a#\\") == "a?\\");
   }

@@ -1,3 +1,8 @@
+Version 1.7.0
+
+  * Make regex a class template with character type as a template argument
+    (currently can only be char or wchar_t).
+
 Version 1.6.3
 
   * Minor fixes to make libcutl compilable with more pedantic GCC 4.7.
