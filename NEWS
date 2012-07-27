@@ -2,6 +2,8 @@ Version 1.7.0
 
   * Make regex a class template with character type as a template argument
     (currently can only be char or wchar_t).
+  * Add support for case-insensitive regex.
+  * Add clear() to fs::path.
 
 Version 1.6.3
 
