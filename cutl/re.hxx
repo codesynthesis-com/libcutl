@@ -66,15 +66,26 @@ namespace cutl
 
       ~basic_regex ();
 
-      basic_regex (): impl_ (0) {init (0);}
+      basic_regex (): impl_ (0) {init (0, false);}
 
       explicit
-      basic_regex (string_type const& s): impl_ (0) {init (&s);}
+      basic_regex (string_type const& s, bool icase = false)
+          : impl_ (0)
+      {
+        init (&s, icase);
+      }
 
       basic_regex&
       operator= (string_type const& s)
       {
-        init (&s);
+        init (&s, false);
+        return *this;
+      }
+
+      basic_regex&
+      assign (string_type const& s, bool icase = false)
+      {
+        init (&s, icase);
         return *this;
       }
 
@@ -104,7 +115,7 @@ namespace cutl
 
     private:
       void
-      init (string_type const*);
+      init (string_type const*, bool);
 
     private:
       struct impl;
