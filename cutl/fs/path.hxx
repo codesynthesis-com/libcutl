@@ -160,6 +160,12 @@ namespace cutl
         path_.swap (p.path_);
       }
 
+      void
+      clear ()
+      {
+        path_.clear ();
+      }
+
       static basic_path
       current ();
 
