@@ -55,6 +55,8 @@ $(cxx_obj) $(cxx_od): $(cutl.l.cpp-options)
 $(cutl.l.cpp-options): value := -I$(out_root) -I$(src_root)
 $(cxx_obj) $(cxx_od): $(odb_tracer.l.cpp-options) $(out_base)/details/config.h
 
+$(call include,$(bld_root)/ld/configuration-lib.make) # ld_lib_type
+
 $(out_base)/details/config.h:
 	@echo '// file      : cutl/details/config.h'               >$@
 	@echo '// note      : automatically generated'            >>$@
@@ -62,6 +64,9 @@ $(out_base)/details/config.h:
 	@echo '#ifndef CUTL_DETAILS_CONFIG_H'                     >>$@
 	@echo '#define CUTL_DETAILS_CONFIG_H'                     >>$@
 	@echo ''                                                  >>$@
+ifeq ($(ld_lib_type),archive)
+	@echo '#define LIBCUTL_STATIC_LIB'                        >>$@
+endif
 	@echo ''                                                  >>$@
 	@echo '#endif // CUTL_DETAILS_CONFIG_H'                   >>$@
 
