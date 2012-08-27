@@ -107,11 +107,17 @@ namespace cutl
                bool first_only = false) const;
 
     public:
-      string_type
-      str () const;
+      string_type const&
+      str () const
+      {
+        return str_;
+      }
 
       bool
-      empty () const;
+      empty () const
+      {
+        return str_.empty ();
+      }
 
     private:
       void
@@ -119,6 +125,8 @@ namespace cutl
 
     private:
       struct impl;
+
+      string_type str_; // Text representation of regex.
       impl* impl_;
     };
 

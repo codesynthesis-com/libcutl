@@ -67,14 +67,14 @@ namespace cutl
     template <>
     basic_regex<char>::
     basic_regex (basic_regex const& r)
-        : impl_ (new impl (r.impl_->r))
+        : str_ (r.str_), impl_ (new impl (r.impl_->r))
     {
     }
 
     template <>
     basic_regex<wchar_t>::
     basic_regex (basic_regex const& r)
-        : impl_ (new impl (r.impl_->r))
+        : str_ (r.str_), impl_ (new impl (r.impl_->r))
     {
     }
 
@@ -82,7 +82,9 @@ namespace cutl
     basic_regex<char>& basic_regex<char>::
     operator= (basic_regex const& r)
     {
+      string_type tmp (r.str_);
       impl_->r = r.impl_->r;
+      str_.swap (tmp);
       return *this;
     }
 
@@ -90,7 +92,9 @@ namespace cutl
     basic_regex<wchar_t>& basic_regex<wchar_t>::
     operator= (basic_regex const& r)
     {
+      string_type tmp (r.str_);
       impl_->r = r.impl_->r;
+      str_.swap (tmp);
       return *this;
     }
 
@@ -98,6 +102,8 @@ namespace cutl
     void basic_regex<char>::
     init (string_type const* s, bool icase)
     {
+      string_type tmp (s == 0 ? string_type () : *s);
+
       try
       {
         if (impl_ == 0)
@@ -111,12 +117,16 @@ namespace cutl
       {
         throw basic_format<char> (s == 0 ? "" : *s, e.what ());
       }
+
+      str_.swap (tmp);
     }
 
     template <>
     void basic_regex<wchar_t>::
     init (string_type const* s, bool icase)
     {
+      string_type tmp (s == 0 ? string_type () : *s);
+
       try
       {
         if (impl_ == 0)
@@ -130,6 +140,8 @@ namespace cutl
       {
         throw basic_format<wchar_t> (s == 0 ? L"" : *s, e.what ());
       }
+
+      str_.swap (tmp);
     }
 
     template <>
@@ -188,34 +200,6 @@ namespace cutl
         f |= tr1::regex_constants::format_first_only;
 
       return tr1::regex_replace (s, impl_->r, sub, f);
-    }
-
-    template <>
-    string basic_regex<char>::
-    str () const
-    {
-      return impl_->r.str ();
-    }
-
-    template <>
-    wstring basic_regex<wchar_t>::
-    str () const
-    {
-      return impl_->r.str ();
-    }
-
-    template <>
-    bool basic_regex<char>::
-    empty () const
-    {
-      return impl_->r.empty ();
-    }
-
-    template <>
-    bool basic_regex<wchar_t>::
-    empty () const
-    {
-      return impl_->r.empty ();
     }
   }
 }
