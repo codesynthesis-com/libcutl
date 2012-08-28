@@ -39,13 +39,19 @@ namespace cutl
     {
       typedef basic_string<C> string_type;
       typedef tr1::basic_regex<C> regex_type;
+      typedef typename regex_type::flag_type flag_type;
 
       impl () {}
-      impl (string_type const& s, bool icase)
-          : r (s,
-               tr1::regex_constants::ECMAScript |
-               (icase ? tr1::regex_constants::icase : 0)) {}
       impl (regex_type const& r): r (r) {}
+      impl (string_type const& s, bool icase)
+      {
+        flag_type f (tr1::regex_constants::ECMAScript);
+
+        if (icase)
+          f |= tr1::regex_constants::icase;
+
+        r.assign (s, f);
+      }
 
       regex_type r;
     };
@@ -109,9 +115,14 @@ namespace cutl
         if (impl_ == 0)
           impl_ = s == 0 ? new impl : new impl (*s, icase);
         else
-          impl_->r.assign (*s,
-                           tr1::regex_constants::ECMAScript |
-                           (icase ? tr1::regex_constants::icase : 0));
+        {
+          impl::flag_type f (tr1::regex_constants::ECMAScript);
+
+          if (icase)
+            f |= tr1::regex_constants::icase;
+
+          impl_->r.assign (*s, f);
+        }
       }
       catch (tr1::regex_error const& e)
       {
@@ -132,9 +143,14 @@ namespace cutl
         if (impl_ == 0)
           impl_ = s == 0 ? new impl : new impl (*s, icase);
         else
-          impl_->r.assign (*s,
-                           tr1::regex_constants::ECMAScript |
-                           (icase ? tr1::regex_constants::icase : 0));
+        {
+          impl::flag_type f (tr1::regex_constants::ECMAScript);
+
+          if (icase)
+            f |= tr1::regex_constants::icase;
+
+          impl_->r.assign (*s, f);
+        }
       }
       catch (tr1::regex_error const& e)
       {
