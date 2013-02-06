@@ -28,8 +28,8 @@ if test x"$libboost_dir" != x; then
   LDFLAGS="$LDFLAGS -L$abs_libboost_dir/stage/lib"
 fi
 
-CXX_LIBTOOL_LINK_IFELSE(
-AC_LANG_SOURCE([[
+CXX_LIBTOOL_LINK_IFELSE([
+AC_LANG_SOURCE([
 #include <boost/version.hpp>
 
 #ifndef BOOST_VERSION
@@ -40,7 +40,7 @@ int
 main ()
 {
 }
-]]),
+])],
 [
 libboost_found=yes
 ])
@@ -113,13 +113,13 @@ dnl
 dnl LIBBOOST_SYSTEM([ACTION-IF-FOUND[, ACTION-IF-NOT-FOUND]])
 dnl
 AC_DEFUN([LIBBOOST_SYSTEM], [
-LIBBOOST_LIB([system],
-AC_LANG_SOURCE([[
+LIBBOOST_LIB([system],[
+AC_LANG_SOURCE([
 int
 main ()
 {
 }
-]]),
+])],
 [$1],
 [$2])
 ])dnl
@@ -127,8 +127,8 @@ dnl
 dnl LIBBOOST_REGEX([ACTION-IF-FOUND[, ACTION-IF-NOT-FOUND]])
 dnl
 AC_DEFUN([LIBBOOST_REGEX], [
-LIBBOOST_LIB([regex],
-AC_LANG_SOURCE([[
+LIBBOOST_LIB([regex],[
+AC_LANG_SOURCE([
 #include <boost/tr1/regex.hpp>
 
 int
@@ -137,7 +137,7 @@ main ()
   std::tr1::regex r ("te.t", std::tr1::regex_constants::ECMAScript);
   return std::tr1::regex_match ("test", r) ? 0 : 1;
 }
-]]),
+])],
 [$1],
 [$2])
 ])dnl
