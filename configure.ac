@@ -44,7 +44,7 @@ if test x"$external_boost" != xno; then
   LIBBOOST_REGEX([],[boost_found=no])
   LIBBOOST_SYSTEM
 
-  if test x"$boost_found" == xno; then
+  if test x"$boost_found" = xno; then
     AC_MSG_ERROR([boost regex is not found; consider using CPPFLAGS/LDFLAGS or --with-boost=DIR to specify its location])
   fi
 
@@ -55,6 +55,14 @@ fi
 
 AM_CONDITIONAL([LIBCUTL_EXTERNAL_BOOST], [test x"$external_boost" != xno])
 
+# Check for threads. For now only internal Boost uses threads so don't
+# configure them if we are using external Boost.
+#
+if test x"$external_boost" = xno; then
+  THREADS
+  AS_IF([test x$threads = xnone],
+        [AC_DEFINE([LIBCUTL_DISABLE_THREADS], [1], [Disable threads.])])
+fi
 
 # Define LIBODB_STATIC_LIB if we are build static library on certain platforms.
 #
