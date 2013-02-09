@@ -1,5 +1,5 @@
 # file      : tests/shared-ptr/makefile
-# copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
+# copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
 include $(dir $(lastword $(MAKEFILE_LIST)))../../build/bootstrap.make

@@ -1,5 +1,5 @@
 # file      : configure.ac
-# copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
+# copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
 AC_PREREQ(2.60)
@@ -9,7 +9,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([cutl/exception.hxx])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign nostdinc subdir-objects dist-bzip2 dist-zip tar-ustar])
-m4_ifdef([AM_PROG_AR], [AM_PROG_AR]) # Required by automake 1.12.
+m4_equote()[m4_ifdef]m4_dquote()([AM_PROG_AR], [AM_PROG_AR]) # Required by automake 1.12.
 
 LT_INIT([win32-dll])
 

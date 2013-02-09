@@ -1,5 +1,5 @@
 // file      : cutl/re/re.cxx
-// copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #include <cutl/re.hxx>

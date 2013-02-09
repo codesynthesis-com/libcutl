@@ -1,5 +1,5 @@
 // file      : cutl/container/graph.hxx
-// copyright : Copyright (c) 2009-2012 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_CONTAINER_GRAPH_HXX
