@@ -20,7 +20,9 @@
 
 #ifdef __GNUC__
    // GNU C on IRIX does not support threads (checked up to gcc 3.3)
-#  define BOOST_DISABLE_THREADS
+#  ifndef BOOST_DISABLE_THREADS
+#    define BOOST_DISABLE_THREADS
+#  endif
 #endif
 
 // boilerplate code:
