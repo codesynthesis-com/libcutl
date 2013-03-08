@@ -4,16 +4,25 @@
 
 EXTRA_DIST = __file__(extra_dist)
 
+cutlincludedir = $(includedir)/cutl
+
 lib_LTLIBRARIES = libcutl.la
 libcutl_la_SOURCES = __path__(sources)
+
+nobase_cutlinclude_HEADERS = __path__(headers)
+nobase_nodist_cutlinclude_HEADERS = details/config.h
 
 if !LIBCUTL_EXTERNAL_BOOST
 libcutl_la_SOURCES += __path__(boost_sources)
 endif
 
-cutlincludedir = $(includedir)/cutl
-nobase_cutlinclude_HEADERS = __path__(headers)
-nobase_nodist_cutlinclude_HEADERS = details/config.h
+if !LIBCUTL_EXTERNAL_EXPAT
+libcutl_la_SOURCES += __path__(expat_sources)
+nobase_cutlinclude_HEADERS += __path__(expat_headers)
+endif
+
+libcutl_la_SOURCES += __path__(genx_sources)
+nobase_cutlinclude_HEADERS += __path__(genx_headers)
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 libcutl_la_LDFLAGS = -release __value__(interface_version)

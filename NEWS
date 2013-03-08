@@ -1,3 +1,8 @@
+Version 1.8.0
+
+  * Add support for XML parsing (based in Expat) and serialization (based
+    on Genx).
+
 Version 1.7.0
 
   * Add building blocks for multi-index containers.

@@ -64,6 +64,42 @@ if test x"$external_boost" = xno; then
         [AC_DEFINE([LIBCUTL_DISABLE_THREADS], [1], [Disable threads.])])
 fi
 
+# Check if we need to use external Expat.
+#
+AC_MSG_CHECKING([if we should use external expat])
+
+AC_ARG_WITH(
+  [external-expat],
+  [AC_HELP_STRING([--with-external-expat],[use external expat instead of the internal subset])],
+  [external_expat=${withval}],
+  [external_expat=no])
+
+if test x"$external_expat" != xno; then
+  AC_MSG_RESULT([yes])
+
+  # Check if we have Expat.
+  #
+  expat_found=yes
+  LIBEXPAT([],[expat_found=no])
+
+  if test x"$expat_found" = xno; then
+    AC_MSG_ERROR([expat is not found; consider using CPPFLAGS/LDFLAGS to specify its location])
+  fi
+
+  AC_DEFINE([LIBCUTL_EXTERNAL_EXPAT], [1], [Use external expat.])
+else
+  AC_MSG_RESULT([no])
+fi
+
+AM_CONDITIONAL([LIBCUTL_EXTERNAL_EXPAT], [test x"$external_expat" != xno])
+
+# If we have internal Expat, then determine the byteorder.
+#
+if test x"$external_expat" = xno; then
+  AC_C_BIGENDIAN([byteorder=4321], [byteorder=1234])
+  AC_DEFINE_UNQUOTED([LIBCUTL_BYTEORDER], [$byteorder], [1234 = little, 4321 = big])
+fi
+
 # Define LIBODB_STATIC_LIB if we are build static library on certain platforms.
 #
 STATIC_LIB([LIBCUTL_STATIC_LIB], [Static library interface.])

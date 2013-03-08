@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -160,9 +160,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
 __header_entries__(headers)
+__header_entries__(expat_headers)
+__header_entries__(genx_headers)
   </ItemGroup>
   <ItemGroup>
 __source_entries__(sources)
+__source_entries__(boost_sources)
+__source_entries__(expat_sources)
+__source_entries__(genx_sources)
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

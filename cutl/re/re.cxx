@@ -4,6 +4,8 @@
 
 #include <cutl/re.hxx>
 
+#include <cutl/details/config.hxx> // LIBCUTL_EXTERNAL_BOOST
+
 #ifndef LIBCUTL_EXTERNAL_BOOST
 #  include <cutl/details/boost/tr1/regex.hpp>
 #else

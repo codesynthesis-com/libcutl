@@ -337,10 +337,13 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cxx"
+			Filter="c;cxx"
 			UniqueIdentifier="{08953974-D0EB-4BDD-B84E-F78FBE580362}"
 			>
 __source_entries__(sources)
+__source_entries__(boost_sources)
+__source_entries__(expat_sources)
+__source_entries__(genx_sources)
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -348,6 +351,8 @@ __source_entries__(sources)
 			UniqueIdentifier="{A8A5593E-EED1-407F-BA73-490CD9747712}"
 			>
 __file_entries__(headers)
+__file_entries__(expat_headers)
+__file_entries__(genx_headers)
 		</Filter>
 	</Files>
 	<Globals>
