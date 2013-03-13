@@ -1294,8 +1294,11 @@ static genxStatus writeStartTag(genxWriter w, Boolean close)
       if (writeIndentation (w) != GENX_SUCCESS)
         return w->status;
 
-    w->ppDepth++;
-    w->ppSimple = True;
+    if (!close)
+    {
+      w->ppDepth++;
+      w->ppSimple = True;
+    }
   }
 
   SendCheck(w, "<");
@@ -1785,8 +1788,6 @@ genxStatus genxEndElement(genxWriter w)
       if (!w->ppSimple)
         if (writeIndentation (w) != GENX_SUCCESS)
           return w->status;
-
-      w->ppSimple = False;
     }
 
     SendCheck(w, "</");
@@ -1798,6 +1799,9 @@ genxStatus genxEndElement(genxWriter w)
     SendCheck(w, e->type);
     SendCheck(w, ">");
   }
+
+  if (w->ppIndent)
+    w->ppSimple = False;
 
   /*
    * pop zero or more namespace declarations, then a null, then the
