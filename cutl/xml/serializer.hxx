@@ -50,16 +50,19 @@ namespace cutl
 
       typedef xml::qname qname_type;
 
-      // Serialize to std::ostream. Name is used in diagnostics to identify
-      // the document being serialized. std::ios_base::failure exception is
-      // used to report io errors (badbit and failbit). The indentation
-      // argument specifies the number of indentation spaces that should
-      // be used for pretty-printing. If 0 is passed, no pretty-printing
-      // is performed.
+      // Serialize to std::ostream. Output name is used in diagnostics to
+      // identify the document being serialized. std::ios_base::failure
+      // exception is used to report io errors (badbit and failbit). The
+      // indentation argument specifies the number of indentation spaces
+      // that should be used for pretty-printing. If 0 is passed, no
+      // pretty-printing is performed.
       //
       serializer (std::ostream&,
-                  const std::string& name,
+                  const std::string& output_name,
                   unsigned short indentation = 2);
+
+      const std::string&
+      output_name () const {return oname_;}
 
       // Serialization functions.
       //
@@ -96,18 +99,36 @@ namespace cutl
       void
       attribute (const qname_type& qname, const std::string& value);
 
+      template <typename T>
+      void
+      attribute (const qname_type& qname, const T& value);
+
       void
       attribute (const std::string& name, const std::string& value);
+
+      template <typename T>
+      void
+      attribute (const std::string& name, const T& value);
 
       void
       attribute (const std::string& ns,
                  const std::string& name,
                  const std::string& value);
 
+      template <typename T>
+      void
+      attribute (const std::string& ns,
+                 const std::string& name,
+                 const T& value);
+
       // Characters.
       //
       void
       characters (const std::string& value);
+
+      template <typename T>
+      void
+      characters (const T& value);
 
       // Namespaces declaration. If prefix is empty, then the default
       // namespace is declared. If both prefix and namespace are empty,
@@ -140,7 +161,7 @@ namespace cutl
     private:
       std::ostream& os_;
       std::ostream::iostate os_state_; // Original exception state.
-      const std::string name_;
+      const std::string oname_;
 
       genxWriter s_;
       genxSender sender_;

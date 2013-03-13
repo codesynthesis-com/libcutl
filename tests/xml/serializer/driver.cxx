@@ -46,4 +46,18 @@ main ()
   catch (const ios_base::failure& e)
   {
   }
+
+  // Test value serialization.
+  //
+  {
+    ostringstream os;
+    serializer s (os, "test", 0);
+
+    s.start_element ("root");
+    s.attribute ("version", 123);
+    s.characters (true);
+    s.end_element ();
+
+    assert (os.str () == "<root version=\"123\">true</root>\n");
+  }
 }

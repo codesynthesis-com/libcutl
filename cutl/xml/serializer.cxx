@@ -78,8 +78,8 @@ namespace cutl
     }
 
     serializer::
-    serializer (ostream& os, const string& name, unsigned short ind)
-        : os_ (os), os_state_ (os.exceptions ()), name_ (name), depth_ (0)
+    serializer (ostream& os, const string& oname, unsigned short ind)
+        : os_ (os), os_state_ (os.exceptions ()), oname_ (oname), depth_ (0)
     {
       // Temporarily disable exceptions on the stream.
       //
@@ -106,7 +106,7 @@ namespace cutl
       {
         string m (genxGetErrorMessage (s_, e));
         genxDispose (s_);
-        throw serialization (name, m);
+        throw serialization (oname, m);
       }
     }
 
@@ -126,7 +126,7 @@ namespace cutl
         os_.exceptions (os_state_);
         // Fall through.
       default:
-        throw serialization (name_, genxGetErrorMessage (s_, e));
+        throw serialization (oname_, genxGetErrorMessage (s_, e));
       }
     }
 
