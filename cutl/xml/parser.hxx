@@ -106,7 +106,34 @@ namespace cutl
       };
 
       event_type
-      next ();
+      next ()
+      {
+        if (state_ == state_next)
+          return next_ ();
+        else
+        {
+          state_ = state_next;
+          return event_;
+        }
+      }
+
+      event_type
+      peek ()
+      {
+        if (state_ == state_peek)
+          return event_;
+        else
+        {
+          state_ = state_peek;
+          return next_ ();
+        }
+      }
+
+      // Return the even that was last returned by the call to next() or
+      // peek().
+      //
+      event_type
+      event () {return event_;}
 
       const qname_type& qname () const {return *pqname_;}
 
@@ -167,6 +194,9 @@ namespace cutl
       event_type
       next_ ();
 
+      event_type
+      next_body ();
+
       void
       handle_error ();
 
@@ -177,6 +207,7 @@ namespace cutl
 
       XML_Parser p_;
       std::size_t depth_;
+      enum {state_next, state_peek} state_;
       event_type event_;
       event_type queue_;
 

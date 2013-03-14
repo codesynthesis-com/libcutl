@@ -48,6 +48,51 @@ main ()
   {
   }
 
+  // Test peeking and getting the current event.
+  //
+  {
+    istringstream is ("<root x='x'>x<nested/></root>");
+    parser p (is, "peek");
+
+    assert (p.event () == parser::eof);
+
+    assert (p.peek () == parser::start_element);
+    assert (p.next () == parser::start_element);
+    assert (p.event () == parser::start_element);
+
+    assert (p.peek () == parser::start_attribute);
+    assert (p.event () == parser::start_attribute);
+    assert (p.next () == parser::start_attribute);
+
+    assert (p.peek () == parser::characters && p.value () == "x");
+    assert (p.next () == parser::characters && p.value () == "x");
+    assert (p.event () == parser::characters && p.value () == "x");
+
+    assert (p.peek () == parser::end_attribute);
+    assert (p.event () == parser::end_attribute);
+    assert (p.next () == parser::end_attribute);
+
+    assert (p.peek () == parser::characters && p.value () == "x");
+    assert (p.next () == parser::characters && p.value () == "x");
+    assert (p.event () == parser::characters && p.value () == "x");
+
+    assert (p.peek () == parser::start_element);
+    assert (p.next () == parser::start_element);
+    assert (p.event () == parser::start_element);
+
+    assert (p.peek () == parser::end_element);
+    assert (p.next () == parser::end_element);
+    assert (p.event () == parser::end_element);
+
+    assert (p.peek () == parser::end_element);
+    assert (p.next () == parser::end_element);
+    assert (p.event () == parser::end_element);
+
+    assert (p.peek () == parser::eof);
+    assert (p.next () == parser::eof);
+    assert (p.event () == parser::eof);
+  }
+
   // Test content processing.
   //
 

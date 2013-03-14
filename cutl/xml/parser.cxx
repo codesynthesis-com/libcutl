@@ -54,7 +54,7 @@ namespace cutl
     parser::
     parser (istream& is, const string& name, feature_type f)
         : is_ (is), name_ (name), feature_ (f),
-          depth_ (0), event_ (eof), queue_ (eof),
+          depth_ (0), state_ (state_next), event_ (eof), queue_ (eof),
           pqname_ (&qname_), pvalue_ (&value_),
           attr_i_ (0), start_ns_i_ (0), end_ns_i_ (0)
     {
@@ -156,9 +156,9 @@ namespace cutl
     };
 
     parser::event_type parser::
-    next ()
+    next_ ()
     {
-      event_type e (next_ ());
+      event_type e (next_body ());
 
       // Content-specific processing. Note that we handle characters in the
       // characters_() Expat handler for two reasons. Firstly, it is faster
@@ -200,7 +200,7 @@ namespace cutl
     }
 
     parser::event_type parser::
-    next_ ()
+    next_body ()
     {
       // See if we have any start namespace declarations we need to return.
       //
@@ -230,7 +230,7 @@ namespace cutl
         default:
           {
             assert (false);
-            return eof;
+            return event_ = eof;
           }
         }
       }
@@ -276,7 +276,7 @@ namespace cutl
         default:
           {
             assert (false);
-            return eof;
+            return event_ = eof;
           }
         }
       }
@@ -316,9 +316,9 @@ namespace cutl
       //
       if (queue_ != eof)
       {
-        event_type r (queue_);
+        event_ = queue_;
         queue_ = eof;
-        return r;
+        return event_;
       }
 
       XML_ParsingStatus ps;
@@ -334,11 +334,11 @@ namespace cutl
       case XML_PARSING:
         {
           assert (false);
-          return eof;
+          return event_ = eof;
         }
       case XML_FINISHED:
         {
-          return eof;
+          return event_ = eof;
         }
       case XML_SUSPENDED:
         {
@@ -357,7 +357,7 @@ namespace cutl
               // unless this was the last chunk, in which case this is eof.
               //
               if (ps.finalBuffer)
-                return eof;
+                return event_ = eof;
 
               break;
             }
