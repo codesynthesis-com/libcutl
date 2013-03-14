@@ -48,6 +48,39 @@ main ()
   {
   }
 
+  // Test the next_expect() functionality.
+  //
+  {
+    istringstream is ("<root/>");
+    parser p (is, "test");
+    p.next_expect (parser::start_element, "root");
+    p.next_expect (parser::end_element);
+  }
+
+  try
+  {
+    istringstream is ("<root/>");
+    parser p (is, "test");
+    p.next_expect (parser::end_element);
+    assert (false);
+  }
+  catch (const xml::exception& e)
+  {
+    // cerr << e.what () << endl;
+  }
+
+  try
+  {
+    istringstream is ("<root/>");
+    parser p (is, "test");
+    p.next_expect (parser::start_element, "root1");
+    assert (false);
+  }
+  catch (const xml::exception& e)
+  {
+    // cerr << e.what () << endl;
+  }
+
   // Test peeking and getting the current event.
   //
   {

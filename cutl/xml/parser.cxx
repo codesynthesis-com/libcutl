@@ -58,6 +58,26 @@ namespace cutl
       return what_.c_str ();
     }
 
+    // parser::event_type
+    //
+    static const char* parser_event_str[] =
+    {
+      "start element",
+      "end element",
+      "start attribute",
+      "end attribute",
+      "characters",
+      "start namespace declaration",
+      "end namespace declaration",
+      "end of file"
+    };
+
+    ostream&
+    operator<< (ostream& os, parser::event_type e)
+    {
+      return os << parser_event_str[e];
+    }
+
     // parser
     //
     parser::
@@ -117,9 +137,9 @@ namespace cutl
         switch (content ())
         {
         case empty:
-          throw parsing (iname_, line_, column_, "character in empty content");
+          throw parsing (*this, "character in empty content");
         case complex:
-          throw parsing (iname_, line_, column_, "character in complex content");
+          throw parsing (*this, "character in complex content");
         default:
           assert (false);
         }
@@ -171,6 +191,34 @@ namespace cutl
       istream::iostate old_state_;
     };
 
+    void parser::
+    next_expect (event_type e)
+    {
+      if (next () != e)
+        throw parsing (*this, parser_event_str[e] + string (" expected"));
+    }
+
+    void parser::
+    next_expect (event_type e, const string& ns, const string& n)
+    {
+      if (next () != e || namespace_ () != ns || name () != n)
+      {
+        string m (parser_event_str[e]);
+        m += " '";
+
+        if (!ns.empty ())
+        {
+          m += ns;
+          m += '#';
+        }
+
+        m += n;
+        m += "' expected";
+
+        throw parsing (*this, m);
+      }
+    }
+
     parser::event_type parser::
     next_ ()
     {
@@ -190,9 +238,9 @@ namespace cutl
           switch (content ())
           {
           case empty:
-            throw parsing (iname_, line_, column_, "element in empty content");
+            throw parsing (*this, "element in empty content");
           case simple:
-            throw parsing (iname_, line_, column_, "element in simple content");
+            throw parsing (*this, "element in simple content");
           default:
             break;
           }
@@ -629,24 +677,6 @@ namespace cutl
 
       p.end_ns_.push_back (qname_type ());
       p.end_ns_.back ().prefix () = (prefix != 0 ? prefix : "");
-    }
-
-    static const char* parser_event_str[] =
-    {
-      "start element",
-      "end element",
-      "start attribute",
-      "end attribute",
-      "characters",
-      "start namespace declaration",
-      "end namespace declaration",
-      "end of file"
-    };
-
-    ostream&
-    operator<< (ostream& os, parser::event_type e)
-    {
-      return os << parser_event_str[e];
     }
   }
 }

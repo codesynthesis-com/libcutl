@@ -131,6 +131,21 @@ namespace cutl
         }
       }
 
+      // Get the next event and make sure that it's what's expected. If it
+      // is not, then throw an appropriate parsing exception.
+      //
+      void
+      next_expect (event_type);
+
+      void
+      next_expect (event_type, const qname_type& qname);
+
+      void
+      next_expect (event_type, const std::string& name);
+
+      void
+      next_expect (event_type, const std::string& ns, const std::string& name);
+
       event_type
       peek ()
       {
@@ -282,5 +297,7 @@ namespace cutl
     operator<< (std::ostream&, parser::event_type);
   }
 }
+
+#include <cutl/xml/parser.ixx>
 
 #endif // CUTL_XML_PARSER_HXX
