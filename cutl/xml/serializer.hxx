@@ -20,6 +20,8 @@ namespace cutl
 {
   namespace xml
   {
+    class serializer;
+
     struct LIBCUTL_EXPORT serialization: exception
     {
       virtual
@@ -27,6 +29,8 @@ namespace cutl
 
       serialization (const std::string& name,
                      const std::string& description);
+
+      serialization (const serializer&, const std::string& description);
 
       const std::string&
       name () const {return name_;}
@@ -36,6 +40,10 @@ namespace cutl
 
       virtual const char*
       what () const throw ();
+
+    private:
+      void
+      init ();
 
     private:
       std::string name_;

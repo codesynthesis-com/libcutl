@@ -33,6 +33,8 @@ namespace cutl
 {
   namespace xml
   {
+    class parser;
+
     struct LIBCUTL_EXPORT parsing: exception
     {
       virtual
@@ -42,6 +44,8 @@ namespace cutl
                unsigned long long line,
                unsigned long long column,
                const std::string& description);
+
+      parsing (const parser&, const std::string& description);
 
       const std::string&
       name () const {return name_;}
@@ -57,6 +61,10 @@ namespace cutl
 
       virtual const char*
       what () const throw ();
+
+    private:
+      void
+      init ();
 
     private:
       std::string name_;
@@ -83,14 +91,20 @@ namespace cutl
                                                   receive_characters |
                                                   receive_attributes;
 
-      // Parse std::istream. Name is used in diagnostics to identify the
-      // document being parsed. std::ios_base::failure exception is used
-      // to report io errors (badbit and failbit).
+      // Parse std::istream. Input name is used in diagnostics to identify
+      // the document being parsed. std::ios_base::failure exception is
+      // used to report io errors (badbit and failbit).
       //
       parser (std::istream&,
-              const std::string& name,
+              const std::string& input_name,
               feature_type = receive_default);
 
+      const std::string&
+      input_name () const {return iname_;}
+
+      // Parsing events.
+      //
+    public:
       enum event_type
       {
         // If adding new events, also update the stream insertion operator.
@@ -135,6 +149,9 @@ namespace cutl
       event_type
       event () {return event_;}
 
+      // Event data.
+      //
+    public:
       const qname_type& qname () const {return *pqname_;}
 
       const std::string& namespace_ () const {return pqname_->namespace_ ();}
@@ -202,7 +219,7 @@ namespace cutl
 
     private:
       std::istream& is_;
-      const std::string name_;
+      const std::string iname_;
       feature_type feature_;
 
       XML_Parser p_;

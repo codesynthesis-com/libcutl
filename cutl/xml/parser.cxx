@@ -29,10 +29,26 @@ namespace cutl
              const string& d)
         : name_ (n), line_ (l), column_ (c), description_ (d)
     {
+      init ();
+    }
+
+    parsing::
+    parsing (const parser& p, const std::string& d)
+        : name_ (p.input_name ()),
+          line_ (p.line ()),
+          column_ (p.column ()),
+          description_ (d)
+    {
+      init ();
+    }
+
+    void parsing::
+    init ()
+    {
       ostringstream os;
-      if (!n.empty ())
-        os << n << ':';
-      os << l << ':' << c << ": error: " << d;
+      if (!name_.empty ())
+        os << name_ << ':';
+      os << line_ << ':' << column_ << ": error: " << description_;
       what_ = os.str ();
     }
 
@@ -52,8 +68,8 @@ namespace cutl
     }
 
     parser::
-    parser (istream& is, const string& name, feature_type f)
-        : is_ (is), name_ (name), feature_ (f),
+    parser (istream& is, const string& iname, feature_type f)
+        : is_ (is), iname_ (iname), feature_ (f),
           depth_ (0), state_ (state_next), event_ (eof), queue_ (eof),
           pqname_ (&qname_), pvalue_ (&value_),
           attr_i_ (0), start_ns_i_ (0), end_ns_i_ (0)
@@ -101,15 +117,15 @@ namespace cutl
         switch (content ())
         {
         case empty:
-          throw parsing (name_, line_, column_, "character in empty content");
+          throw parsing (iname_, line_, column_, "character in empty content");
         case complex:
-          throw parsing (name_, line_, column_, "character in complex content");
+          throw parsing (iname_, line_, column_, "character in complex content");
         default:
           assert (false);
         }
       }
       else
-        throw parsing (name_,
+        throw parsing (iname_,
                        XML_GetCurrentLineNumber (p_),
                        XML_GetCurrentColumnNumber (p_),
                        XML_ErrorString (e));
@@ -174,9 +190,9 @@ namespace cutl
           switch (content ())
           {
           case empty:
-            throw parsing (name_, line_, column_, "element in empty content");
+            throw parsing (iname_, line_, column_, "element in empty content");
           case simple:
-            throw parsing (name_, line_, column_, "element in simple content");
+            throw parsing (iname_, line_, column_, "element in simple content");
           default:
             break;
           }

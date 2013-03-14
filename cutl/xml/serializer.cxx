@@ -22,14 +22,27 @@ namespace cutl
     serialization (const string& n, const string& d)
         : name_ (n), description_ (d)
     {
-      if (!n.empty ())
+      init ();
+    }
+
+    serialization::
+    serialization (const serializer& s, const std::string& d)
+        : name_ (s.output_name ()), description_ (d)
+    {
+      init ();
+    }
+
+    void serialization::
+    init ()
+    {
+      if (!name_.empty ())
       {
-        what_ += n;
+        what_ += name_;
         what_ += ": ";
       }
 
       what_ += "error: ";
-      what_ += d;
+      what_ += description_;
     }
 
     char const* serialization::
