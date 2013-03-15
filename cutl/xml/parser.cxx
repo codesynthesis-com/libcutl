@@ -92,7 +92,7 @@ namespace cutl
         : is_ (is), iname_ (iname), feature_ (f),
           depth_ (0), state_ (state_next), event_ (eof), queue_ (eof),
           pqname_ (&qname_), pvalue_ (&value_),
-          attr_unhandled_ (0), attr_i_ (0), start_ns_i_ (0), end_ns_i_ (0)
+          attr_i_ (0), start_ns_i_ (0), end_ns_i_ (0)
     {
       if ((feature_ & receive_attributes_map) != 0 &&
           (feature_ & receive_attributes_event) != 0)
@@ -198,37 +198,43 @@ namespace cutl
     const string& parser::
     attribute (const qname_type& qn) const
     {
-      attribute_map::const_iterator i (attr_map_.find (qn));
-
-      if (i != attr_map_.end ())
+      if (const element_entry* e = get_element ())
       {
-        if (!i->second.handled)
+        attribute_map::const_iterator i (e->attr_map_.find (qn));
+
+        if (i != e->attr_map_.end ())
         {
-          i->second.handled = true;
-          attr_unhandled_--;
+          if (!i->second.handled)
+          {
+            i->second.handled = true;
+            e->attr_unhandled_--;
+          }
+          return i->second.value;
         }
-        return i->second.value;
       }
-      else
-        throw parsing (*this, "attribute '" + qn.string () + "' expected");
+
+      throw parsing (*this, "attribute '" + qn.string () + "' expected");
     }
 
     string parser::
     attribute (const qname_type& qn, const string& dv) const
     {
-      attribute_map::const_iterator i (attr_map_.find (qn));
-
-      if (i != attr_map_.end ())
+      if (const element_entry* e = get_element ())
       {
-        if (!i->second.handled)
+        attribute_map::const_iterator i (e->attr_map_.find (qn));
+
+        if (i != e->attr_map_.end ())
         {
-          i->second.handled = true;
-          attr_unhandled_--;
+          if (!i->second.handled)
+          {
+            i->second.handled = true;
+            e->attr_unhandled_--;
+          }
+          return i->second.value;
         }
-        return i->second.value;
       }
-      else
-        return dv;
+
+      return dv;
     }
 
     void parser::
@@ -247,8 +253,55 @@ namespace cutl
                        qname_type (ns, n).string () + "' expected");
     }
 
+    const parser::element_entry* parser::
+    get_element () const
+    {
+      // The start_element_() Expat handler may have already provisioned
+      // an entry in the element stack. In this case, we need to get the
+      // one before it, if any.
+      //
+      const element_entry* r (0);
+      element_state::size_type n (element_state_.size ());
+      if (n != 0)
+      {
+        n--;
+        if (element_state_[n].depth == depth_)
+          r = &element_state_[n];
+        else if (n != 0 && element_state_[n].depth > depth_)
+        {
+          n--;
+          if (element_state_[n].depth == depth_)
+            r = &element_state_[n];
+        }
+      }
+      return r;
+    }
+
+    void parser::
+    pop_element ()
+    {
+      // Make sure there are no unhandled attributes left.
+      //
+      const element_entry& e (element_state_.back ());
+      if (e.attr_unhandled_ != 0)
+      {
+        // Find the first unhandled attribute and report it.
+        //
+        for (attribute_map::const_iterator i (e.attr_map_.begin ());
+             i != e.attr_map_.end (); ++i)
+        {
+          if (!i->second.handled)
+            throw parsing (
+              *this, "unexpected attribute '" + i->first.string () + "'");
+        }
+        assert (false);
+      }
+
+      element_state_.pop_back ();
+    }
+
     parser::event_type parser::
-    next_ ()
+    next_ (bool peek)
     {
       event_type e (next_body ());
 
@@ -261,9 +314,26 @@ namespace cutl
       //
       switch (e)
       {
+      case end_element:
+        {
+          // If this is a peek, then avoid popping the stack just yet.
+          // This way, the attribute map will still be valid until we
+          // call next().
+          //
+          if (!peek)
+          {
+            if (!element_state_.empty () &&
+                element_state_.back ().depth == depth_)
+              pop_element ();
+
+            depth_--;
+          }
+          break;
+        }
       case start_element:
         {
-          switch (content ())
+          const element_entry* e (get_element ());
+          switch (e != 0 ? e->content : mixed)
           {
           case empty:
             throw parsing (*this, "element in empty content");
@@ -273,15 +343,11 @@ namespace cutl
             break;
           }
 
-          depth_++;
-          break;
-        }
-      case end_element:
-        {
-          if (!content_.empty () && content_.back ().depth == depth_)
-            content_.pop_back ();
+          // If this is a peek, then delay adjusting the depth.
+          //
+          if (!peek)
+            depth_++;
 
-          depth_--;
           break;
         }
       default:
@@ -294,29 +360,6 @@ namespace cutl
     parser::event_type parser::
     next_body ()
     {
-      // If the previous event is start_element and we return attributes
-      // as a map, make sure there are no unhandled attributes left. Also
-      // clear the map.
-      //
-      if (event_ == start_element && (feature_ & receive_attributes_map) != 0)
-      {
-        if (attr_unhandled_ != 0)
-        {
-          // Find the first unhandled attribute and report it.
-          //
-          for (attribute_map::const_iterator i (attr_map_.begin ());
-               i != attr_map_.end (); ++i)
-          {
-            if (!i->second.handled)
-              throw parsing (
-                *this, "unexpected attribute '" + i->first.string () + "'");
-          }
-          assert (false);
-        }
-
-        attr_map_.clear ();
-      }
-
       // See if we have any start namespace declarations we need to return.
       //
       if (start_ns_i_ < start_ns_.size ())
@@ -576,31 +619,44 @@ namespace cutl
 
       // Handle attributes.
       //
-      bool am ((p.feature_ & receive_attributes_map) != 0);
-      bool ae ((p.feature_ & receive_attributes_event) != 0);
-      if (am || ae)
+      if (*atts != 0)
       {
-        for (; *atts != 0; atts += 2)
+        bool am ((p.feature_ & receive_attributes_map) != 0);
+        bool ae ((p.feature_ & receive_attributes_event) != 0);
+
+        // Provision an entry for this element.
+        //
+        element_entry* pe (0);
+        if (am)
         {
-          if (am)
-          {
-            qname_type qn;
-            split_name (*atts, qn);
-            attribute_map::value_type v (qn, attribute_value ());
-            v.second.value = *(atts + 1);
-            v.second.handled = false;
-            p.attr_map_.insert (v);
-          }
-          else
-          {
-            p.attr_.push_back (attribute_type ());
-            split_name (*atts, p.attr_.back ().qname);
-            p.attr_.back ().value = *(atts + 1);
-          }
+          p.element_state_.push_back (element_entry (p.depth_ + 1));
+          pe = &p.element_state_.back ();
         }
 
-        if (am)
-          p.attr_unhandled_ = p.attr_map_.size ();
+        if (am || ae)
+        {
+          for (; *atts != 0; atts += 2)
+          {
+            if (am)
+            {
+              qname_type qn;
+              split_name (*atts, qn);
+              attribute_map::value_type v (qn, attribute_value ());
+              v.second.value = *(atts + 1);
+              v.second.handled = false;
+              pe->attr_map_.insert (v);
+            }
+            else
+            {
+              p.attr_.push_back (attribute_type ());
+              split_name (*atts, p.attr_.back ().qname);
+              p.attr_.back ().value = *(atts + 1);
+            }
+          }
+
+          if (am)
+            pe->attr_unhandled_ = pe->attr_map_.size ();
+        }
       }
 
       XML_StopParser (p.p_, true);
@@ -663,7 +719,7 @@ namespace cutl
       if (ps.parsing == XML_FINISHED)
         return;
 
-      // If this is empty of complex content, see if these are whitespaces.
+      // If this is empty or complex content, see if these are whitespaces.
       //
       switch (p.content ())
       {

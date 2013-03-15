@@ -98,6 +98,27 @@ main ()
     p.next_expect (parser::end_element);
   }
 
+  {
+    istringstream is ("<root a='a'><nested a='A'><inner/></nested></root>");
+    parser p (is, "test");
+    p.next_expect (parser::start_element, "root");
+    assert (p.attribute ("a") == "a");
+    assert (p.peek () == parser::start_element && p.name () == "nested");
+    assert (p.attribute ("a") == "a");
+    p.next_expect (parser::start_element, "nested");
+    assert (p.attribute ("a") == "A");
+    p.next_expect (parser::start_element, "inner");
+    assert (p.attribute ("a", "") == "");
+    p.next_expect (parser::end_element);
+    assert (p.attribute ("a") == "A");
+    assert (p.peek () == parser::end_element);
+    assert (p.attribute ("a") == "A"); // Still valid.
+    p.next_expect (parser::end_element);
+    assert (p.attribute ("a") == "a");
+    p.next_expect (parser::end_element);
+    assert (p.attribute ("a", "") == "");
+  }
+
   try
   {
     istringstream is ("<root a='a' b='b'/>");

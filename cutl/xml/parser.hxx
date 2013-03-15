@@ -10,6 +10,7 @@
 #include <string>
 #include <iosfwd>
 #include <cstddef> // std::size_t
+#include <cassert>
 
 #include <cutl/details/config.hxx> // LIBCUTL_EXTERNAL_EXPAT
 
@@ -128,9 +129,32 @@ namespace cutl
       next ()
       {
         if (state_ == state_next)
-          return next_ ();
+          return next_ (false);
         else
         {
+          // If we previously peeked at start/end_element, then adjust
+          // state accordingly.
+          //
+          switch (event_)
+          {
+          case end_element:
+            {
+              if (!element_state_.empty () &&
+                  element_state_.back ().depth == depth_)
+                pop_element ();
+
+              depth_--;
+              break;
+            }
+          case start_element:
+            {
+              depth_++;
+              break;
+            }
+          default:
+            break;
+          }
+
           state_ = state_next;
           return event_;
         }
@@ -158,8 +182,9 @@ namespace cutl
           return event_;
         else
         {
-          state_ = state_peek;
-          return next_ ();
+          event_type e (next_ (true));
+          state_ = state_peek; // Set it after the call to next_().
+          return e;
         }
       }
 
@@ -190,6 +215,11 @@ namespace cutl
       // Note also that there is no attribute(ns,name) version since it
       // would conflict with attribute(name,dv) (qualified attributes
       // are not very common).
+      //
+      // Attribute map is valid throughout at the "element level" until
+      // end_element and not just during start_element. As a special case,
+      // the map is still valid after peek() that returned end_element until
+      // this end_element event is retrieved with next().
       //
       const std::string&
       attribute (const std::string& name) const;
@@ -231,20 +261,28 @@ namespace cutl
         mixed    //    yes         yes       preserved
       };
 
+      // Note that you cannot get/set content while peeking.
+      //
       void
       content (content_type c)
       {
-        if (!content_.empty () && content_.back ().depth == depth_)
-          content_.back ().content = c;
+        assert (state_ == state_next);
+
+        if (!element_state_.empty () && element_state_.back ().depth == depth_)
+          element_state_.back ().content = c;
         else
-          content_.push_back (content_entry (depth_, c));
+          element_state_.push_back (element_entry (depth_, c));
       }
 
       content_type
       content () const
       {
-        return !content_.empty () && content_.back ().depth == depth_
-          ? content_.back ().content : mixed;
+        assert (state_ == state_next);
+
+        return
+          !element_state_.empty () && element_state_.back ().depth == depth_
+          ? element_state_.back ().content
+          : mixed;
       }
 
     private:
@@ -265,7 +303,7 @@ namespace cutl
 
     private:
       event_type
-      next_ ();
+      next_ (bool peek);
 
       event_type
       next_body ();
@@ -296,18 +334,6 @@ namespace cutl
       unsigned long long line_;
       unsigned long long column_;
 
-      // Attributes as a map.
-      //
-      struct attribute_value
-      {
-        std::string value;
-        mutable bool handled;
-      };
-
-      typedef std::map<qname_type, attribute_value> attribute_map;
-      attribute_map attr_map_;
-      mutable attribute_map::size_type attr_unhandled_;
-
       // Attributes as events.
       //
       struct attribute_type
@@ -331,18 +357,40 @@ namespace cutl
       namespace_decls end_ns_;
       namespace_decls::size_type end_ns_i_; // Index of the current decl.
 
-      // Content.
+      // Attributes as a map.
       //
-      struct content_entry
+      struct attribute_value
       {
-        content_entry (std::size_t d, content_type c)
-            : depth (d), content (c) {}
+        std::string value;
+        mutable bool handled;
+      };
+
+      typedef std::map<qname_type, attribute_value> attribute_map;
+
+      // Element state consisting of the content model and attribute map.
+      //
+      struct element_entry
+      {
+        element_entry (std::size_t d, content_type c = mixed)
+            : depth (d), content (c), attr_unhandled_ (0) {}
 
         std::size_t depth;
         content_type content;
+        attribute_map attr_map_;
+        mutable attribute_map::size_type attr_unhandled_;
       };
 
-      std::vector<content_entry> content_;
+      typedef std::vector<element_entry> element_state;
+      std::vector<element_entry> element_state_;
+
+      // Return the element entry corresponding to the current depth, if
+      // exists, and NULL otherwise.
+      //
+      const element_entry*
+      get_element () const;
+
+      void
+      pop_element ();
     };
 
     LIBCUTL_EXPORT

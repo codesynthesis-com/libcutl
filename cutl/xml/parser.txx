@@ -12,19 +12,22 @@ namespace cutl
     T parser::
     attribute (const qname_type& qn, const T& dv) const
     {
-      attribute_map::const_iterator i (attr_map_.find (qn));
-
-      if (i != attr_map_.end ())
+      if (const element_entry* e = get_element ())
       {
-        if (!i->second.handled)
+        attribute_map::const_iterator i (e->attr_map_.find (qn));
+
+        if (i != e->attr_map_.end ())
         {
-          i->second.handled = true;
-          attr_unhandled_--;
+          if (!i->second.handled)
+          {
+            i->second.handled = true;
+            e->attr_unhandled_--;
+          }
+          return value_traits<T>::parse (i->second.value, *this);
         }
-        return value_traits<T>::parse (i->second.value, *this);
       }
-      else
-        return dv;
+
+      return dv;
     }
   }
 }
