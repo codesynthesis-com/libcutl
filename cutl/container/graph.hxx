@@ -86,6 +86,20 @@ namespace cutl
       new_node (A0 const&, A1 const&, A2 const&, A3 const&, A4 const&,
                 A5 const&, A6 const&, A7 const&, A8 const&, A9 const&);
 
+      // Non-const versions.
+      //
+      template <typename T, typename A0>
+      T&
+      new_node (A0&);
+
+      template <typename T, typename A0, typename A1>
+      T&
+      new_node (A0&, A1&);
+
+      template <typename T, typename A0, typename A1, typename A2>
+      T&
+      new_node (A0&, A1&, A2&);
+
     public:
       template <typename T, typename L, typename R>
       T&

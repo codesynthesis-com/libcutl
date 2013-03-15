@@ -155,6 +155,41 @@ namespace cutl
       return *node;
     }
 
+    // Non-const versions.
+    //
+    template <typename N, typename E>
+    template <typename T, typename A0>
+    T& graph<N, E>::
+    new_node (A0& a0)
+    {
+      shared_ptr<T> node (new (shared) T (a0));
+      nodes_[node.get ()] = node;
+
+      return *node;
+    }
+
+
+    template <typename N, typename E>
+    template <typename T, typename A0, typename A1>
+    T& graph<N, E>::
+    new_node (A0& a0, A1& a1)
+    {
+      shared_ptr<T> node (new (shared) T (a0, a1));
+      nodes_[node.get ()] = node;
+
+      return *node;
+    }
+
+    template <typename N, typename E>
+    template <typename T, typename A0, typename A1, typename A2>
+    T& graph<N, E>::
+    new_node (A0& a0, A1& a1, A2& a2)
+    {
+      shared_ptr<T> node (new (shared) T (a0, a1, a2));
+      nodes_[node.get ()] = node;
+
+      return *node;
+    }
 
     // Edges.
     //
