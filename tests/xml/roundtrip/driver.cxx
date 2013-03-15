@@ -33,7 +33,9 @@ main (int argc, char* argv[])
 
     parser p (ifs,
               argv[1],
-              parser::receive_default | parser::receive_namespace_decls);
+              parser::receive_default |
+              parser::receive_attributes_event |
+              parser::receive_namespace_decls);
 
     serializer s (cout, "out", 0);
 

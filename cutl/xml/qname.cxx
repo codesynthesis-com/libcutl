@@ -12,11 +12,24 @@ namespace cutl
 {
   namespace xml
   {
+    string qname::
+    string () const
+    {
+      std::string r;
+      if (!ns_.empty ())
+      {
+        r += ns_;
+        r += '#';
+      }
+
+      r += name_;
+      return r;
+    }
+
     ostream&
     operator<< (ostream& os, const qname& qn)
     {
-      const string& ns (qn.namespace_ ());
-      return os << ns << (ns.empty () ? "" : "#") << qn.name ();
+      return os << qn.string ();
     }
   }
 }

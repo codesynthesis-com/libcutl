@@ -5,8 +5,9 @@
 #ifndef CUTL_XML_PARSER_HXX
 #define CUTL_XML_PARSER_HXX
 
-#include <string>
+#include <map>
 #include <vector>
+#include <string>
 #include <iosfwd>
 #include <cstddef> // std::size_t
 
@@ -82,14 +83,18 @@ namespace cutl
       typedef xml::qname qname_type;
       typedef unsigned short feature_type;
 
+      // If both receive_attributes_event and receive_attributes_map are
+      // specified, then receive_attributes_event is assumed.
+      //
       static const feature_type receive_elements = 0x0001;
       static const feature_type receive_characters = 0x0002;
-      static const feature_type receive_attributes = 0x0004;
-      static const feature_type receive_namespace_decls = 0x0008;
+      static const feature_type receive_attributes_map = 0x0004;
+      static const feature_type receive_attributes_event = 0x0008;
+      static const feature_type receive_namespace_decls = 0x0010;
 
       static const feature_type receive_default = receive_elements |
                                                   receive_characters |
-                                                  receive_attributes;
+                                                  receive_attributes_map;
 
       // Parse std::istream. Input name is used in diagnostics to identify
       // the document being parsed. std::ios_base::failure exception is
@@ -178,6 +183,42 @@ namespace cutl
       unsigned long long line () const {return line_;}
       unsigned long long column () const {return column_;}
 
+      // Attribute map lookup. If attribute is not found, then the version
+      // without the default value thows an appropriate parsing exception
+      // while the version with the default value returns that value.
+      //
+      // Note also that there is no attribute(ns,name) version since it
+      // would conflict with attribute(name,dv) (qualified attributes
+      // are not very common).
+      //
+      const std::string&
+      attribute (const std::string& name) const;
+
+      template <typename T>
+      T
+      attribute (const std::string& name) const;
+
+      std::string
+      attribute (const std::string& name, const std::string& dv) const;
+
+      template <typename T>
+      T
+      attribute (const std::string& name, const T& dv) const;
+
+      const std::string&
+      attribute (const qname_type& qname) const;
+
+      template <typename T>
+      T
+      attribute (const qname_type& qname) const;
+
+      std::string
+      attribute (const qname_type& qname, const std::string& dv) const;
+
+      template <typename T>
+      T
+      attribute (const qname_type& qname, const T& dv) const;
+
       // Optional content processing.
       //
     public:
@@ -255,15 +296,27 @@ namespace cutl
       unsigned long long line_;
       unsigned long long column_;
 
-      // Attributes.
+      // Attributes as a map.
       //
-      struct attribute
+      struct attribute_value
+      {
+        std::string value;
+        mutable bool handled;
+      };
+
+      typedef std::map<qname_type, attribute_value> attribute_map;
+      attribute_map attr_map_;
+      mutable attribute_map::size_type attr_unhandled_;
+
+      // Attributes as events.
+      //
+      struct attribute_type
       {
         qname_type qname;
         std::string value;
       };
 
-      typedef std::vector<attribute> attributes;
+      typedef std::vector<attribute_type> attributes;
 
       attributes attr_;
       attributes::size_type attr_i_; // Index of the current attribute.
@@ -299,5 +352,6 @@ namespace cutl
 }
 
 #include <cutl/xml/parser.ixx>
+#include <cutl/xml/parser.txx>
 
 #endif // CUTL_XML_PARSER_HXX

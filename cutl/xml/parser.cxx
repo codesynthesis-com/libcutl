@@ -92,8 +92,12 @@ namespace cutl
         : is_ (is), iname_ (iname), feature_ (f),
           depth_ (0), state_ (state_next), event_ (eof), queue_ (eof),
           pqname_ (&qname_), pvalue_ (&value_),
-          attr_i_ (0), start_ns_i_ (0), end_ns_i_ (0)
+          attr_unhandled_ (0), attr_i_ (0), start_ns_i_ (0), end_ns_i_ (0)
     {
+      if ((feature_ & receive_attributes_map) != 0 &&
+          (feature_ & receive_attributes_event) != 0)
+        feature_ &= ~receive_attributes_map;
+
       // Allocate the parser. Make sure nothing else can throw after
       // this call since otherwise we will leak it.
       //
@@ -191,32 +195,56 @@ namespace cutl
       istream::iostate old_state_;
     };
 
+    const string& parser::
+    attribute (const qname_type& qn) const
+    {
+      attribute_map::const_iterator i (attr_map_.find (qn));
+
+      if (i != attr_map_.end ())
+      {
+        if (!i->second.handled)
+        {
+          i->second.handled = true;
+          attr_unhandled_--;
+        }
+        return i->second.value;
+      }
+      else
+        throw parsing (*this, "attribute '" + qn.string () + "' expected");
+    }
+
+    string parser::
+    attribute (const qname_type& qn, const string& dv) const
+    {
+      attribute_map::const_iterator i (attr_map_.find (qn));
+
+      if (i != attr_map_.end ())
+      {
+        if (!i->second.handled)
+        {
+          i->second.handled = true;
+          attr_unhandled_--;
+        }
+        return i->second.value;
+      }
+      else
+        return dv;
+    }
+
     void parser::
     next_expect (event_type e)
     {
       if (next () != e)
-        throw parsing (*this, parser_event_str[e] + string (" expected"));
+        throw parsing (*this, string (parser_event_str[e]) + " expected");
     }
 
     void parser::
     next_expect (event_type e, const string& ns, const string& n)
     {
       if (next () != e || namespace_ () != ns || name () != n)
-      {
-        string m (parser_event_str[e]);
-        m += " '";
-
-        if (!ns.empty ())
-        {
-          m += ns;
-          m += '#';
-        }
-
-        m += n;
-        m += "' expected";
-
-        throw parsing (*this, m);
-      }
+        throw parsing (*this,
+                       string (parser_event_str[e]) + " '" +
+                       qname_type (ns, n).string () + "' expected");
     }
 
     parser::event_type parser::
@@ -266,6 +294,29 @@ namespace cutl
     parser::event_type parser::
     next_body ()
     {
+      // If the previous event is start_element and we return attributes
+      // as a map, make sure there are no unhandled attributes left. Also
+      // clear the map.
+      //
+      if (event_ == start_element && (feature_ & receive_attributes_map) != 0)
+      {
+        if (attr_unhandled_ != 0)
+        {
+          // Find the first unhandled attribute and report it.
+          //
+          for (attribute_map::const_iterator i (attr_map_.begin ());
+               i != attr_map_.end (); ++i)
+          {
+            if (!i->second.handled)
+              throw parsing (
+                *this, "unexpected attribute '" + i->first.string () + "'");
+          }
+          assert (false);
+        }
+
+        attr_map_.clear ();
+      }
+
       // See if we have any start namespace declarations we need to return.
       //
       if (start_ns_i_ < start_ns_.size ())
@@ -299,7 +350,7 @@ namespace cutl
         }
       }
 
-      // See if we have any attributes we need to return.
+      // See if we have any attributes we need to return as events.
       //
       if (attr_i_ < attr_.size ())
       {
@@ -525,14 +576,31 @@ namespace cutl
 
       // Handle attributes.
       //
-      if ((p.feature_ & receive_attributes) != 0)
+      bool am ((p.feature_ & receive_attributes_map) != 0);
+      bool ae ((p.feature_ & receive_attributes_event) != 0);
+      if (am || ae)
       {
         for (; *atts != 0; atts += 2)
         {
-          p.attr_.push_back (attribute ());
-          split_name (*atts, p.attr_.back ().qname);
-          p.attr_.back ().value = *(atts + 1);
+          if (am)
+          {
+            qname_type qn;
+            split_name (*atts, qn);
+            attribute_map::value_type v (qn, attribute_value ());
+            v.second.value = *(atts + 1);
+            v.second.handled = false;
+            p.attr_map_.insert (v);
+          }
+          else
+          {
+            p.attr_.push_back (attribute_type ());
+            split_name (*atts, p.attr_.back ().qname);
+            p.attr_.back ().value = *(atts + 1);
+          }
         }
+
+        if (am)
+          p.attr_unhandled_ = p.attr_map_.size ();
       }
 
       XML_StopParser (p.p_, true);

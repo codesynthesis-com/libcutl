@@ -81,11 +81,56 @@ main ()
     // cerr << e.what () << endl;
   }
 
+  // Test attribute maps.
+  //
+  {
+    istringstream is ("<root a='a' b='b' d='123' t='true'/>");
+    parser p (is, "test");
+    p.next_expect (parser::start_element, "root");
+
+    assert (p.attribute ("a") == "a");
+    assert (p.attribute ("b", "B") == "b");
+    assert (p.attribute ("c", "C") == "C");
+    assert (p.attribute<int> ("d") == 123);
+    assert (p.attribute<bool> ("t") == true);
+    assert (p.attribute ("f", false) == false);
+
+    p.next_expect (parser::end_element);
+  }
+
+  try
+  {
+    istringstream is ("<root a='a' b='b'/>");
+    parser p (is, "test");
+    p.next_expect (parser::start_element, "root");
+    assert (p.attribute ("a") == "a");
+    p.next_expect (parser::end_element);
+    assert (false);
+  }
+  catch (const xml::exception& e)
+  {
+    // cerr << e.what () << endl;
+  }
+
+  try
+  {
+    istringstream is ("<root a='abc'/>");
+    parser p (is, "test");
+    p.next_expect (parser::start_element, "root");
+    p.attribute<int> ("a");
+    assert (false);
+  }
+  catch (const xml::exception& e)
+  {
+    // cerr << e.what () << endl;
+  }
+
   // Test peeking and getting the current event.
   //
   {
     istringstream is ("<root x='x'>x<nested/></root>");
-    parser p (is, "peek");
+    parser p (is, "peek",
+              parser::receive_default | parser::receive_attributes_event);
 
     assert (p.event () == parser::eof);
 
@@ -133,7 +178,8 @@ main ()
   //
   {
     istringstream is ("<root x=' x '>  \n\t </root>");
-    parser p (is, "empty");
+    parser p (is, "empty",
+              parser::receive_default | parser::receive_attributes_event);
 
     assert (p.next () == parser::start_element);
     p.content (parser::empty);
@@ -197,7 +243,8 @@ main ()
                       "    <inner> X </inner>\n"
                       "  </nested>\n"
                       "</root>\n");
-    parser p (is, "complex");
+    parser p (is, "complex",
+              parser::receive_default | parser::receive_attributes_event);
 
     assert (p.next () == parser::start_element); // root
     p.content (parser::complex);

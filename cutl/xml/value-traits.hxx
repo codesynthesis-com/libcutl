@@ -6,6 +6,7 @@
 #define CUTL_XML_VALUE_TRAITS_HXX
 
 #include <string>
+#include <cstddef> // std::size_t
 
 #include <cutl/details/export.hxx>
 
@@ -19,6 +20,9 @@ namespace cutl
     template <typename T>
     struct default_value_traits
     {
+      static T
+      parse (std::string, const parser&);
+
       static std::string
       serialize (const T&, const serializer&);
     };
@@ -26,6 +30,9 @@ namespace cutl
     template <>
     struct LIBCUTL_EXPORT default_value_traits<bool>
     {
+      static bool
+      parse (std::string, const parser&);
+
       static std::string
       serialize (bool v, const serializer&)
       {
@@ -35,6 +42,9 @@ namespace cutl
 
     template <typename T>
     struct value_traits: default_value_traits<T> {};
+
+    template <typename T, std::size_t N>
+    struct value_traits<T[N]>: default_value_traits<const T*> {};
   }
 }
 

@@ -10,7 +10,11 @@ sources   += fs/exception.cxx fs/path.cxx fs/auto-remove.cxx
 
 sources   += re/re.cxx
 
-sources   += xml/qname.cxx xml/parser.cxx xml/serializer.cxx
+sources   +=         \
+xml/qname.cxx        \
+xml/parser.cxx       \
+xml/serializer.cxx   \
+xml/value-traits.cxx
 
 sources   +=              \
 compiler/context.cxx      \

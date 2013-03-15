@@ -38,6 +38,11 @@ namespace cutl
       std::string& name () {return name_;}
       std::string& prefix () {return prefix_;}
 
+      // Printable representation in the [<namespace>#]<name> form.
+      //
+      std::string
+      string () const;
+
       // Note that comparison operators
       //
     public:
