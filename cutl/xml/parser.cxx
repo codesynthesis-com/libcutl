@@ -237,6 +237,27 @@ namespace cutl
       return dv;
     }
 
+    bool parser::
+    attribute_present (const qname_type& qn) const
+    {
+      if (const element_entry* e = get_element ())
+      {
+        attribute_map::const_iterator i (e->attr_map_.find (qn));
+
+        if (i != e->attr_map_.end ())
+        {
+          if (!i->second.handled)
+          {
+            i->second.handled = true;
+            e->attr_unhandled_--;
+          }
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     void parser::
     next_expect (event_type e)
     {

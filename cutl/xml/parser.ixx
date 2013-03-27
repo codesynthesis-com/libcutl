@@ -41,6 +41,12 @@ namespace cutl
       return value_traits<T>::parse (attribute (qn), *this);
     }
 
+    inline bool parser::
+    attribute_present (const std::string& n) const
+    {
+      return attribute_present (qname_type (n));
+    }
+
     inline void parser::
     next_expect (event_type e, const qname_type& qn)
     {

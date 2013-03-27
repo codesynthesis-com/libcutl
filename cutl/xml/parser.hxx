@@ -249,6 +249,12 @@ namespace cutl
       T
       attribute (const qname_type& qname, const T& dv) const;
 
+      bool
+      attribute_present (const std::string& name) const;
+
+      bool
+      attribute_present (const qname_type& qname) const;
+
       // Optional content processing.
       //
     public:
