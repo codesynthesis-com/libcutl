@@ -255,6 +255,20 @@ namespace cutl
       bool
       attribute_present (const qname_type& qname) const;
 
+      // Low-level attribute map access. Note that this API assumes
+      // all attributes are handled.
+      //
+      struct attribute_value_type
+      {
+        std::string value;
+        mutable bool handled;
+      };
+
+      typedef std::map<qname_type, attribute_value_type> attribute_map_type;
+
+      const attribute_map_type&
+      attribute_map () const;
+
       // Optional content processing.
       //
     public:
@@ -363,16 +377,6 @@ namespace cutl
       namespace_decls end_ns_;
       namespace_decls::size_type end_ns_i_; // Index of the current decl.
 
-      // Attributes as a map.
-      //
-      struct attribute_value
-      {
-        std::string value;
-        mutable bool handled;
-      };
-
-      typedef std::map<qname_type, attribute_value> attribute_map;
-
       // Element state consisting of the content model and attribute map.
       //
       struct element_entry
@@ -382,12 +386,16 @@ namespace cutl
 
         std::size_t depth;
         content_type content;
-        attribute_map attr_map_;
-        mutable attribute_map::size_type attr_unhandled_;
+        attribute_map_type attr_map_;
+        mutable attribute_map_type::size_type attr_unhandled_;
       };
 
       typedef std::vector<element_entry> element_state;
       std::vector<element_entry> element_state_;
+
+      // Empty attribute map to return when an element has no attributes.
+      //
+      const attribute_map_type empty_attr_map_;
 
       // Return the element entry corresponding to the current depth, if
       // exists, and NULL otherwise.

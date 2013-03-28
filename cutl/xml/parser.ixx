@@ -47,6 +47,18 @@ namespace cutl
       return attribute_present (qname_type (n));
     }
 
+    inline const parser::attribute_map_type& parser::
+    attribute_map () const
+    {
+      if (const element_entry* e = get_element ())
+      {
+        e->attr_unhandled_ = 0; // Assume all handled.
+        return e->attr_map_;
+      }
+
+      return empty_attr_map_;
+    }
+
     inline void parser::
     next_expect (event_type e, const qname_type& qn)
     {

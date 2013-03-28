@@ -200,7 +200,7 @@ namespace cutl
     {
       if (const element_entry* e = get_element ())
       {
-        attribute_map::const_iterator i (e->attr_map_.find (qn));
+        attribute_map_type::const_iterator i (e->attr_map_.find (qn));
 
         if (i != e->attr_map_.end ())
         {
@@ -221,7 +221,7 @@ namespace cutl
     {
       if (const element_entry* e = get_element ())
       {
-        attribute_map::const_iterator i (e->attr_map_.find (qn));
+        attribute_map_type::const_iterator i (e->attr_map_.find (qn));
 
         if (i != e->attr_map_.end ())
         {
@@ -242,7 +242,7 @@ namespace cutl
     {
       if (const element_entry* e = get_element ())
       {
-        attribute_map::const_iterator i (e->attr_map_.find (qn));
+        attribute_map_type::const_iterator i (e->attr_map_.find (qn));
 
         if (i != e->attr_map_.end ())
         {
@@ -308,7 +308,7 @@ namespace cutl
       {
         // Find the first unhandled attribute and report it.
         //
-        for (attribute_map::const_iterator i (e.attr_map_.begin ());
+        for (attribute_map_type::const_iterator i (e.attr_map_.begin ());
              i != e.attr_map_.end (); ++i)
         {
           if (!i->second.handled)
@@ -662,7 +662,7 @@ namespace cutl
             {
               qname_type qn;
               split_name (*atts, qn);
-              attribute_map::value_type v (qn, attribute_value ());
+              attribute_map_type::value_type v (qn, attribute_value_type ());
               v.second.value = *(atts + 1);
               v.second.handled = false;
               pe->attr_map_.insert (v);

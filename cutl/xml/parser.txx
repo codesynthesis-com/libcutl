@@ -14,7 +14,7 @@ namespace cutl
     {
       if (const element_entry* e = get_element ())
       {
-        attribute_map::const_iterator i (e->attr_map_.find (qn));
+        attribute_map_type::const_iterator i (e->attr_map_.find (qn));
 
         if (i != e->attr_map_.end ())
         {
