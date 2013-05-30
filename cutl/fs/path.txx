@@ -64,6 +64,26 @@ namespace cutl
         return *this;
     }
 
+#ifdef _WIN32
+    template <typename C>
+    typename basic_path<C>::string_type basic_path<C>::
+    posix_string () const
+    {
+      if (absolute ())
+        throw invalid_basic_path<C> (path_);
+
+      string_type r (path_);
+
+      // Translate Windows-style separators to the POSIX ones.
+      //
+      for (size_type i (0), n (r.size ()); i != n; ++i)
+        if (r[i] == '\\')
+          r[i] = '/';
+
+      return r;
+    }
+#endif
+
     template <typename C>
     basic_path<C>& basic_path<C>::
     operator/= (basic_path<C> const& r)

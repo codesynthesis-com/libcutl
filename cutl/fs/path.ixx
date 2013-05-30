@@ -43,6 +43,15 @@ namespace cutl
       return *this;
     }
 
+#ifndef _WIN32
+    template <typename C>
+    inline typename basic_path<C>::string_type basic_path<C>::
+    posix_string () const
+    {
+      return string ();
+    }
+#endif
+
 #ifdef _WIN32
     template <>
     inline char basic_path<char>::

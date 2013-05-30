@@ -119,6 +119,19 @@ main ()
   assert (path ("C:\\Foo12//Bar").normalize ().string () == "c:\\foo12\\bar");
 #endif
 
+  // posix_string
+  //
+  assert (path ("foo/bar/../baz").posix_string () == "foo/bar/../baz");
+#ifdef _WIN32
+  assert (path ("foo\\bar\\..\\baz").posix_string () == "foo/bar/../baz");
+  try
+  {
+    path ("c:\\foo\\bar\\..\\baz").posix_string ();
+    assert (false);
+  }
+  catch (const invalid_path&) {}
+#endif
+
   /*
   path p ("../foo");
   p.complete ();

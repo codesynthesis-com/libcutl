@@ -80,7 +80,6 @@ namespace cutl
       }
     };
 
-
     template <typename C>
     class invalid_basic_path;
 
@@ -274,6 +273,15 @@ namespace cutl
       {
         return path_;
       }
+
+      // If possible, return a POSIX representation of the path. For example,
+      // for a Windows path in the form foo\bar this function will return
+      // foo/bar. If it is not possible to create a POSIX representation for
+      // this path (e.g., c:\foo), this function will throw the invalid_path
+      // exception.
+      //
+      string_type
+      posix_string () const;
 
     private:
       void
