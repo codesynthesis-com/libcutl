@@ -376,6 +376,49 @@ namespace cutl
 
           break;
         }
+      case ',':
+        {
+          if (construct_ == con_other)
+          {
+            // Handling '},' case.
+            //
+
+            bool brace (false);
+
+            if (hold_.size () > 1 && hold_.back () == '\n')
+            {
+              bool pop_nl (false);
+
+              for (typename hold::reverse_iterator
+                     i (hold_.rbegin ()), e (hold_.rend ());
+                   i != e; ++i)
+              {
+                if (*i != '\n')
+                {
+                  if (*i == '}')
+                    brace = pop_nl = true;
+
+                  break;
+                }
+              }
+
+              if (pop_nl)
+                while (hold_.back () == '\n')
+                  hold_.pop_back ();
+            }
+
+            output_indentation ();
+            write (c);
+            position_++;
+
+            if (brace)
+              hold_.push_back ('\n');
+          }
+          else
+            defaulting = true;
+
+          break;
+        }
       case ' ':
         {
           if (construct_ == con_other)

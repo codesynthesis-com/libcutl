@@ -115,6 +115,11 @@ main ()
      << "\"'name')\");"
      << "}";
 
+  os << "namespace N"
+     << "{"
+     << "static int i[] = {{0,\n0},{1,\n1}};"
+     << "}";
+
 /*
   @@ TODO: still misindents (if-else association problem)
 
