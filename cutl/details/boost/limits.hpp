@@ -14,7 +14,7 @@
 #include <cutl/details/boost/config.hpp>
 
 #ifdef BOOST_NO_LIMITS
-# include <cutl/details/boost/detail/limits.hpp>
+#  error "There is no std::numeric_limits suppport available."
 #else
 # include <limits>
 #endif

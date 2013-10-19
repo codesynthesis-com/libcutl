@@ -31,7 +31,10 @@
 #include <cutl/details/boost/config.hpp>
 #include <cutl/details/boost/smart_ptr/detail/sp_has_sync.hpp>
 
-#if defined(__GNUC__) && defined( __arm__ ) && !defined( __thumb__ )
+#if defined( BOOST_SP_USE_PTHREADS )
+#  include <cutl/details/boost/smart_ptr/detail/spinlock_pt.hpp>
+
+#elif defined(__GNUC__) && defined( __arm__ ) && !defined( __thumb__ )
 #  include <cutl/details/boost/smart_ptr/detail/spinlock_gcc_arm.hpp>
 
 #elif defined( BOOST_SP_HAS_SYNC )

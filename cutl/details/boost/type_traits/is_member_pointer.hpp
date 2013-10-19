@@ -66,7 +66,7 @@ template <typename R, typename T>
 
 template <bool>
 struct is_member_pointer_select
-    : ::cutl_details_boost::type_traits::false_result
+    : public ::cutl_details_boost::type_traits::false_result
 {
 };
 
@@ -87,7 +87,7 @@ struct is_member_pointer_select<false>
 
 template <typename T>
 struct is_member_pointer_impl
-    : is_member_pointer_select<
+    : public is_member_pointer_select<
           ::cutl_details_boost::type_traits::ice_or<
               ::cutl_details_boost::is_reference<T>::value
             , ::cutl_details_boost::is_array<T>::value

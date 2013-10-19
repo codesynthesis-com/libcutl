@@ -14,7 +14,6 @@
 #
 # include <cutl/details/boost/preprocessor/cat.hpp>
 # include <cutl/details/boost/preprocessor/config/config.hpp>
-# include <cutl/details/boost/preprocessor/tuple/eat.hpp>
 #
 # if BOOST_PP_CONFIG_FLAGS() & BOOST_PP_CONFIG_MWCC()
 #    define BOOST_PP_SEQ_SIZE(seq) BOOST_PP_SEQ_SIZE_I((seq))

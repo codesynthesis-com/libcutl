@@ -20,6 +20,12 @@
 // should be the last #include
 #include <cutl/details/boost/type_traits/detail/bool_trait_def.hpp>
 
+#ifndef BOOST_IS_POD
+#define BOOST_INTERNAL_IS_POD(T) false
+#else
+#define BOOST_INTERNAL_IS_POD(T) BOOST_IS_POD(T)
+#endif
+
 namespace cutl_details_boost {
 
 // forward declaration, needed by 'is_pod_array_helper' template below
@@ -36,14 +42,14 @@ template <typename T> struct is_pod_impl
         (::cutl_details_boost::type_traits::ice_or<
             ::cutl_details_boost::is_scalar<T>::value,
             ::cutl_details_boost::is_void<T>::value,
-            BOOST_IS_POD(T)
+            BOOST_INTERNAL_IS_POD(T)
          >::value));
 };
 
 #if !defined(BOOST_NO_ARRAY_TYPE_SPECIALIZATIONS)
 template <typename T, std::size_t sz>
 struct is_pod_impl<T[sz]>
-    : is_pod_impl<T>
+    : public is_pod_impl<T>
 {
 };
 #endif
@@ -60,7 +66,7 @@ struct is_pod_helper
             (::cutl_details_boost::type_traits::ice_or<
                 ::cutl_details_boost::is_scalar<T>::value,
                 ::cutl_details_boost::is_void<T>::value,
-                BOOST_IS_POD(T)
+                BOOST_INTERNAL_IS_POD(T)
             >::value));
     };
 };
@@ -125,11 +131,15 @@ BOOST_TT_AUX_BOOL_TRAIT_IMPL_SPEC1(is_pod,void const volatile,true)
 
 } // namespace detail
 
-BOOST_TT_AUX_BOOL_TRAIT_DEF1(is_POD,T,::cutl_details_boost::detail::is_pod_impl<T>::value)
 BOOST_TT_AUX_BOOL_TRAIT_DEF1(is_pod,T,::cutl_details_boost::detail::is_pod_impl<T>::value)
+// is_POD is the old depricated name for this trait, do not use this as it may
+// be removed in future without warning!!
+BOOST_TT_AUX_BOOL_TRAIT_DEF1(is_POD,T,::cutl_details_boost::is_pod<T>::value)
 
 } // namespace cutl_details_boost
 
 #include <cutl/details/boost/type_traits/detail/bool_trait_undef.hpp>
+
+#undef BOOST_INTERNAL_IS_POD
 
 #endif // BOOST_TT_IS_POD_HPP_INCLUDED

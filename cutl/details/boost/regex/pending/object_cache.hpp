@@ -73,7 +73,7 @@ cutl_details_boost::shared_ptr<Object const> object_cache<Key, Object>::get(cons
    // for now just throw, but we should never really get here...
    //
    ::cutl_details_boost::throw_exception(std::runtime_error("Error in thread safety code: could not acquire a lock"));
-#ifdef BOOST_NO_UNREACHABLE_RETURN_DETECTION
+#if defined(BOOST_NO_UNREACHABLE_RETURN_DETECTION) || defined(BOOST_NO_EXCEPTIONS)
    return cutl_details_boost::shared_ptr<Object>();
 #endif
 #else
@@ -151,7 +151,7 @@ cutl_details_boost::shared_ptr<Object const> object_cache<Key, Object>::do_get(c
             --s;
          }
          else
-            --pos;
+            ++pos;
       }
       BOOST_ASSERT(s_data.index[k]->first.get() == result.get());
       BOOST_ASSERT(&(s_data.index.find(k)->first) == s_data.cont.back().second);

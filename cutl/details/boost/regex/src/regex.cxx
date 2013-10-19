@@ -19,6 +19,7 @@
 
 #define BOOST_REGEX_SOURCE
 
+#include <cutl/details/boost/config.hpp>
 #include <new>
 #include <cutl/details/boost/regex.hpp>
 #include <cutl/details/boost/throw_exception.hpp>

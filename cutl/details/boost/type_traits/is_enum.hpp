@@ -95,7 +95,7 @@ template <>
 struct is_enum_helper<false>
 {
     template <typename T> struct type
-       : ::cutl_details_boost::is_convertible<typename cutl_details_boost::add_reference<T>::type,::cutl_details_boost::detail::int_convertible>
+       : public ::cutl_details_boost::is_convertible<typename cutl_details_boost::add_reference<T>::type,::cutl_details_boost::detail::int_convertible>
     {
     };
 };
