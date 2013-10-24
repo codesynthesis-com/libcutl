@@ -2,6 +2,9 @@ Version 1.8.0
 
   * Add support for XML parsing (based in Expat) and serialization (based
     on Genx).
+  * Improve the C++ indenter by handling the '},' sequence.
+  * Add fs::basic_path::posix_string().
+  * Update the internal Boost subset to version 1.54.0.
 
 Version 1.7.0
 
