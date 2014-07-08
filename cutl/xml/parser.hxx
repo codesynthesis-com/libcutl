@@ -209,7 +209,7 @@ namespace cutl
       unsigned long long column () const {return column_;}
 
       // Attribute map lookup. If attribute is not found, then the version
-      // without the default value thows an appropriate parsing exception
+      // without the default value throws an appropriate parsing exception
       // while the version with the default value returns that value.
       //
       // Note also that there is no attribute(ns,name) version since it

@@ -84,7 +84,7 @@ $(cutl.l.cpp-options): value := -I$(out_root) -I$(src_root)
 
 $(call include,$(bld_root)/ld/configuration-lib.make) # ld_lib_type
 
-$(out_base)/details/config.h:
+$(out_base)/details/config.h: | $(out_base)/details/.
 	@echo '/* file      : cutl/details/config.h'               >$@
 	@echo ' * note      : automatically generated'            >>$@
 	@echo ' */'                                               >>$@

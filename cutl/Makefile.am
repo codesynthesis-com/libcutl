@@ -24,5 +24,5 @@ endif
 libcutl_la_SOURCES += __path__(genx_sources)
 nobase_cutlinclude_HEADERS += __path__(genx_headers)
 
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
-libcutl_la_LDFLAGS = -release __value__(interface_version)
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -DLIBCUTL_DYNAMIC_LIB
+AM_LDFLAGS = -release __value__(interface_version) -no-undefined

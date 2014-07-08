@@ -100,7 +100,7 @@ if test x"$external_expat" = xno; then
   AC_DEFINE_UNQUOTED([LIBCUTL_BYTEORDER], [$byteorder], [1234 = little, 4321 = big])
 fi
 
-# Define LIBODB_STATIC_LIB if we are build static library on certain platforms.
+# Define LIBCUTL_STATIC_LIB if we are build static library on certain platforms.
 #
 STATIC_LIB([LIBCUTL_STATIC_LIB], [Static library interface.])
 
