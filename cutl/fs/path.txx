@@ -182,15 +182,9 @@ namespace cutl
       for (typename paths::const_iterator i (r.begin ()), e (r.end ());
            i != e;)
       {
-#ifdef _WIN32
-        for (size_type j (0), n (i->size ()); j < n; ++j)
-          p += tolower ((*i)[j]);
-#else
         p += *i;
-#endif
-        ++i;
 
-        if (i != e)
+        if (++i != e)
           p += traits::directory_separator;
       }
 

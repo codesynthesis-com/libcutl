@@ -39,7 +39,6 @@ namespace cutl
       // could be multiple seperators. For example, on Windows
       // we check for both '/' and '\'.
       //
-
       static bool
       is_separator (C c)
       {
@@ -78,6 +77,33 @@ namespace cutl
 
         return string_type::npos;
       }
+
+      static int
+      compare (string_type const& l, string_type const& r)
+      {
+        size_type ln (l.size ()), rn (r.size ()), n (ln < rn ? ln : rn);
+        for (size_type i (0); i != n; ++i)
+        {
+#ifdef _WIN32
+          C lc (tolower (l[i])), rc (tolower (r[i]));
+#else
+          C lc (l[i]), rc (r[i]);
+#endif
+          if (is_separator (lc) && is_separator (rc))
+            continue;
+
+          if (lc < rc) return -1;
+          if (lc > rc) return 1;
+        }
+
+        return ln < rn ? -1 : (ln > rn ? 1 : 0);
+      }
+
+    private:
+#ifdef _WIN32
+      static C
+      tolower (C);
+#endif
     };
 
     template <typename C>
@@ -210,10 +236,8 @@ namespace cutl
     public:
       // Normalize the path. This includes collapsing the '.' and '..'
       // directories if possible, collapsing multiple directory
-      // separators, converting all directory separators to the
-      // canonical form, and making the path lower-case if the
-      // filesystem is not case-sensitive (e.g., Windows). Returns
-      // *this.
+      // separators, and converting all directory separators to the
+      // canonical form. Returns *this.
       //
       basic_path&
       normalize ();
@@ -249,10 +273,13 @@ namespace cutl
         return *this;
       }
 
+      // Note that comparison is case-insensitive if the filesystem is
+      // not case-sensitive (e.g., Windows).
+      //
       bool
       operator== (basic_path const& x) const
       {
-        return path_ == x.path_;
+        return traits::compare (path_, x.path_) == 0;
       }
 
       bool
@@ -264,7 +291,7 @@ namespace cutl
       bool
       operator< (basic_path const& x) const
       {
-        return path_ < x.path_;
+        return traits::compare (path_, x.path_) < 0;
       }
 
     public:
@@ -286,11 +313,6 @@ namespace cutl
     private:
       void
       init ();
-
-#ifdef _WIN32
-      static C
-      tolower (C);
-#endif
 
     private:
       string_type path_;

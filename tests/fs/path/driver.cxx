@@ -112,11 +112,20 @@ main ()
   assert (path ("./..").normalize ().string () == "..");
   assert (path ("../.").normalize ().string () == "..");
   assert (path ("foo/./..").normalize ().string () == "");
-  assert (path ("C:/foo/./..").normalize ().string () == "c:");
+  assert (path ("C:/foo/./..").normalize ().string () == "C:");
   assert (path ("./foo").normalize ().string () == "foo");
 
-  assert (path ("C:").normalize ().string () == "c:");
-  assert (path ("C:\\Foo12//Bar").normalize ().string () == "c:\\foo12\\bar");
+  assert (path ("C:").normalize ().string () == "C:");
+  assert (path ("C:\\Foo12//Bar").normalize ().string () == "C:\\Foo12\\Bar");
+#endif
+
+  // comparison
+  //
+  assert (path ("./foo") == path("./foo"));
+  assert (path ("./boo") < path("./foo"));
+#ifdef _WIN32
+  assert (path (".\\foo") == path("./FoO"));
+  assert (path (".\\boo") < path(".\\Foo"));
 #endif
 
   // posix_string

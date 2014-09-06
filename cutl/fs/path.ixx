@@ -11,6 +11,22 @@ namespace cutl
 {
   namespace fs
   {
+#ifdef _WIN32
+    template <>
+    inline char path_traits<char>::
+    tolower (char c)
+    {
+      return std::tolower (c);
+    }
+
+    template <>
+    inline wchar_t path_traits<wchar_t>::
+    tolower (wchar_t c)
+    {
+      return std::towlower (c);
+    }
+#endif
+
     template <typename C>
     inline bool basic_path<C>::
     absolute () const
@@ -49,22 +65,6 @@ namespace cutl
     posix_string () const
     {
       return string ();
-    }
-#endif
-
-#ifdef _WIN32
-    template <>
-    inline char basic_path<char>::
-    tolower (char c)
-    {
-      return std::tolower (c);
-    }
-
-    template <>
-    inline wchar_t basic_path<wchar_t>::
-    tolower (wchar_t c)
-    {
-      return std::towlower (c);
     }
 #endif
   }
