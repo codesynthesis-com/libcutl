@@ -40,6 +40,22 @@ namespace cutl
       }
     };
 
+    template <>
+    struct LIBCUTL_EXPORT default_value_traits<std::string>
+    {
+      static std::string
+      parse (std::string s, const parser&)
+      {
+        return s;
+      }
+
+      static std::string
+      serialize (const std::string& v, const serializer&)
+      {
+        return v;
+      }
+    };
+
     template <typename T>
     struct value_traits: default_value_traits<T> {};
 
