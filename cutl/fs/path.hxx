@@ -6,7 +6,7 @@
 #define CUTL_FS_PATH_HXX
 
 #include <string>
-#include <iosfwd>
+#include <ostream>
 
 #include <cutl/exception.hxx>
 
