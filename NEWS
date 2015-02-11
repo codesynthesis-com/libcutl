@@ -1,3 +1,9 @@
+Version 1.9.0
+
+  * Add xml::value_traits specialization for std::string.
+  * Do not low-case paths in normalize() for Win32. Instead, do case-
+    insensitive comparison.
+
 Version 1.8.0
 
   * Add support for XML parsing (based in Expat) and serialization (based
