@@ -23,7 +23,7 @@ struct base
 struct derived1: base {};
 struct derived2: base {};
 
-typedef vector<shared_ptr<base> > objects;
+typedef vector<cutl::shared_ptr<base> > objects;
 
 struct init
 {
@@ -103,6 +103,8 @@ struct combined_impl: derived1_trav, derived2_trav
 int
 main ()
 {
+  using cutl::shared_ptr;
+
   objects o;
   o.push_back (shared_ptr<base> (new (shared) base));
   o.push_back (shared_ptr<base> (new (shared) derived1));
