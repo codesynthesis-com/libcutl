@@ -295,7 +295,7 @@ namespace cutl
       }
 
     public:
-      string_type
+      const string_type&
       string () const
       {
         return path_;
