@@ -1,3 +1,7 @@
+Version 1.10.0
+
+  * fs::basic_path::string() now returns the string by reference.
+
 Version 1.9.0
 
   * Add xml::value_traits specialization for std::string.
