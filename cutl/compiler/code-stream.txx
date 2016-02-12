@@ -77,7 +77,7 @@ namespace cutl
 
     template <template <typename> class S, typename C>
     ostream_filter<S, C>::
-    ~ostream_filter ()
+    ~ostream_filter () /*noexcept (false)*/
     {
       try
       {

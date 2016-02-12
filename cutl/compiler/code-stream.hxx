@@ -125,7 +125,7 @@ namespace cutl
       typedef S<C> stream_type;
 
       ostream_filter (std::basic_ostream<C>& os);
-      ~ostream_filter ();
+      ~ostream_filter () /*noexcept (false)*/;
 
       stream_type&
       stream ()
