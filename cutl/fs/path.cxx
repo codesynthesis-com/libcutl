@@ -11,6 +11,12 @@
 #  include <unistd.h> // getcwd, chdir
 #endif
 
+#ifndef _WIN32
+#  ifndef PATH_MAX
+#    define PATH_MAX 4096
+#  endif
+#endif
+
 #include <cutl/fs/path.hxx>
 
 namespace cutl
