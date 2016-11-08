@@ -5,10 +5,18 @@
 #ifndef CUTL_DETAILS_CONFIG_HXX
 #define CUTL_DETAILS_CONFIG_HXX
 
-#ifdef _MSC_VER
-#  include <cutl/details/config-vc.h>
+#ifdef LIBCUTL_BUILD2
+#  ifdef _MSC_VER
+#    include <cutl/details/build2/config-vc.h>
+#  else
+#    include <cutl/details/build2/config.h>
+#  endif
 #else
-#  include <cutl/details/config.h>
+#  ifdef _MSC_VER
+#    include <cutl/details/config-vc.h>
+#  else
+#    include <cutl/details/config.h>
+#  endif
 #endif
 
 #endif // CUTL_DETAILS_CONFIG_HXX

@@ -1,0 +1,13 @@
+: 1
+name: libcutl
+version: 1.11.0-a1
+summary: C++ utility library
+license: MIT
+tags: c++, utility
+description-file: README
+changes-file: NEWS
+url: http://www.codesynthesis.com/projects/libcutl/
+email: libcutl-users@codesynthesis.com; Mailing list
+requires: c++11
+depends: * build2 >= 0.4.0
+depends: * bpkg >= 0.4.0

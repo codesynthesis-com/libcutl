@@ -1,0 +1,26 @@
+# file      : build/bootstrap.build
+# copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
+# license   : MIT; see accompanying LICENSE file
+
+project = libcutl
+
+using build@0.4.0
+
+version = 1.11.0-a1
+
+abi_major = 1
+abi_minor = 11
+abi_patch = 0
+abi_prerelease = true
+
+revision = 0
+
+dist.package = $project-$version
+
+if ($revision != 0)
+  dist.package += +$revision
+
+using config
+using dist
+using test
+using install
