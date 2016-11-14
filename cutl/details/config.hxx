@@ -5,6 +5,26 @@
 #ifndef CUTL_DETAILS_CONFIG_HXX
 #define CUTL_DETAILS_CONFIG_HXX
 
+// C++11 support.
+//
+#ifdef _MSC_VER
+#  if _MSC_VER >= 1900
+#    define LIBCUTL_CXX11
+#  endif
+#else
+#  if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+#    ifdef __clang__ // Pretends to be a really old __GNUC__ on some platforms.
+#      define LIBCUTL_CXX11
+#    elif defined(__GNUC__)
+#      if (__GNUC__ == 4 && __GNUC_MINOR__ >= 9) || __GNUC__ > 4
+#        define LIBCUTL_CXX11
+#      endif
+#    else
+#      define LIBCUTL_CXX11
+#    endif
+#  endif
+#endif
+
 #ifdef LIBCUTL_BUILD2
 #  ifdef _MSC_VER
 #    include <cutl/details/build2/config-vc.h>

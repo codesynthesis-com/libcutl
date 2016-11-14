@@ -5,7 +5,7 @@
 #ifndef CUTL_CONTAINER_ANY_HXX
 #define CUTL_CONTAINER_ANY_HXX
 
-#include <memory>   // std::auto_ptr
+#include <memory>   // std::unique_ptr/auto_ptr
 #include <typeinfo> // std::type_info
 
 #include <cutl/exception.hxx>
@@ -144,7 +144,11 @@ namespace cutl
       };
 
     private:
+#ifdef LIBCUTL_CXX11
+      std::unique_ptr<holder> holder_;
+#else
       std::auto_ptr<holder> holder_;
+#endif
     };
   }
 }
