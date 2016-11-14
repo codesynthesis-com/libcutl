@@ -59,19 +59,22 @@ namespace cutl
   }
 
   inline void* shared_base::
-  operator new (std::size_t n, share) throw (std::bad_alloc)
+  operator new (std::size_t n, share)
+#ifndef LIBCUTL_CXX11
+    throw (std::bad_alloc)
+#endif
   {
     return ::operator new (n);
   }
 
   inline void shared_base::
-  operator delete (void* p, share) throw ()
+  operator delete (void* p, share) LIBCUTL_NOTHROW_NOEXCEPT
   {
     ::operator delete (p);
   }
 
   inline void shared_base::
-  operator delete (void* p) throw ()
+  operator delete (void* p) LIBCUTL_NOTHROW_NOEXCEPT
   {
     ::operator delete (p);
   }

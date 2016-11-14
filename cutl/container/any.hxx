@@ -10,16 +10,14 @@
 
 #include <cutl/exception.hxx>
 
-#include <cutl/details/export.hxx>
-
 namespace cutl
 {
   namespace container
   {
-    class LIBCUTL_EXPORT any
+    class any
     {
     public:
-      struct LIBCUTL_EXPORT typing: exception {};
+      struct typing: exception {};
 
     public:
       any ()

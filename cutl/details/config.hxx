@@ -25,6 +25,12 @@
 #  endif
 #endif
 
+#ifdef LIBCUTL_CXX11
+#  define LIBCUTL_NOTHROW_NOEXCEPT noexcept
+#else
+#  define LIBCUTL_NOTHROW_NOEXCEPT throw()
+#endif
+
 #ifdef LIBCUTL_BUILD2
 #  ifdef _MSC_VER
 #    include <cutl/details/build2/config-vc.h>

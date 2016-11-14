@@ -9,7 +9,7 @@ namespace cutl
   namespace fs
   {
     char const* error::
-    what () const throw ()
+    what () const LIBCUTL_NOTHROW_NOEXCEPT
     {
       return "filesystem error";
     }

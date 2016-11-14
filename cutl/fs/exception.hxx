@@ -7,6 +7,8 @@
 
 #include <cutl/exception.hxx>
 
+#include <cutl/details/config.hxx>
+
 namespace cutl
 {
   namespace fs
@@ -24,7 +26,7 @@ namespace cutl
       }
 
       virtual char const*
-      what () const throw ();
+      what () const LIBCUTL_NOTHROW_NOEXCEPT;
 
     private:
       int code_;

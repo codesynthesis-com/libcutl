@@ -16,7 +16,7 @@ cutl::share exclusive = cutl::share (2);
 namespace cutl
 {
   char const* not_shared::
-  what () const throw ()
+  what () const LIBCUTL_NOTHROW_NOEXCEPT
   {
     return "object is not shared";
   }
@@ -25,7 +25,10 @@ namespace cutl
 //
 //
 void*
-operator new (size_t n, cutl::share s) throw (std::bad_alloc)
+operator new (size_t n, cutl::share s)
+#ifndef LIBCUTL_CXX11
+  throw (std::bad_alloc)
+#endif
 {
   if (s == shared)
   {
@@ -45,7 +48,7 @@ operator new (size_t n, cutl::share s) throw (std::bad_alloc)
 }
 
 void
-operator delete (void* p, cutl::share s) throw ()
+operator delete (void* p, cutl::share s) LIBCUTL_NOTHROW_NOEXCEPT
 {
   // This version of operator delete is only called when the c-tor
   // fails. In this case there is no object and we can just free the

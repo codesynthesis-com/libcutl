@@ -10,6 +10,7 @@
 
 #include <cutl/exception.hxx>
 
+#include <cutl/details/config.hxx>
 #include <cutl/details/export.hxx>
 
 namespace cutl
@@ -121,7 +122,7 @@ namespace cutl
     {
     public:
       virtual char const*
-      what () const throw ();
+      what () const LIBCUTL_NOTHROW_NOEXCEPT;
     };
 
     template <typename C>
@@ -132,7 +133,6 @@ namespace cutl
 
       invalid_basic_path (C const* p): path_ (p) {}
       invalid_basic_path (string_type const& p): path_ (p) {}
-      ~invalid_basic_path () throw () {}
 
       string_type const&
       path () const

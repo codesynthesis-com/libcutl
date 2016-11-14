@@ -13,7 +13,7 @@ namespace cutl
 {
   namespace compiler
   {
-    class LIBCUTL_EXPORT type_id
+    class type_id
     {
     public:
       template<typename X>

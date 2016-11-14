@@ -24,7 +24,7 @@ namespace cutl
   namespace fs
   {
     char const* invalid_path_base::
-    what () const throw ()
+    what () const LIBCUTL_NOTHROW_NOEXCEPT
     {
       return "invalid filesystem path";
     }

@@ -22,8 +22,8 @@ namespace cutl
     class LIBCUTL_EXPORT context
     {
     public:
-      struct LIBCUTL_EXPORT no_entry: exception {};
-      struct LIBCUTL_EXPORT typing: exception {};
+      struct no_entry: exception {};
+      struct typing: exception {};
 
     public:
       context () {}

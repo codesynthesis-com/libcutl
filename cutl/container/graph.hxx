@@ -10,14 +10,12 @@
 #include <cutl/exception.hxx>
 #include <cutl/shared-ptr.hxx>
 
-#include <cutl/details/export.hxx>
-
 namespace cutl
 {
   namespace container
   {
-    struct LIBCUTL_EXPORT no_edge: exception {};
-    struct LIBCUTL_EXPORT no_node: exception {};
+    struct no_edge: exception {};
+    struct no_node: exception {};
 
     template <typename N, typename E>
     class graph

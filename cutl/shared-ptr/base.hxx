@@ -10,11 +10,12 @@
 
 #include <cutl/exception.hxx>
 
+#include <cutl/details/config.hxx>
 #include <cutl/details/export.hxx>
 
 namespace cutl
 {
-  struct LIBCUTL_EXPORT share
+  struct share
   {
     explicit
     share (char id);
@@ -30,18 +31,23 @@ namespace cutl
 extern LIBCUTL_EXPORT cutl::share shared;
 extern LIBCUTL_EXPORT cutl::share exclusive;
 
+#ifdef LIBCUTL_CXX11
+LIBCUTL_EXPORT void*
+operator new (std::size_t, cutl::share);
+#else
 LIBCUTL_EXPORT void*
 operator new (std::size_t, cutl::share) throw (std::bad_alloc);
+#endif
 
 LIBCUTL_EXPORT void
-operator delete (void*, cutl::share) throw ();
+operator delete (void*, cutl::share) LIBCUTL_NOTHROW_NOEXCEPT;
 
 namespace cutl
 {
   struct LIBCUTL_EXPORT not_shared: exception
   {
     virtual char const*
-    what () const throw ();
+    what () const LIBCUTL_NOTHROW_NOEXCEPT;
   };
 
   struct LIBCUTL_EXPORT shared_base
@@ -60,14 +66,19 @@ namespace cutl
     std::size_t
     _ref_count () const;
 
+#ifdef LIBCUTL_CXX11
+    void*
+    operator new (std::size_t, share);
+#else
     void*
     operator new (std::size_t, share) throw (std::bad_alloc);
+#endif
 
     void
-    operator delete (void*, share) throw ();
+    operator delete (void*, share) LIBCUTL_NOTHROW_NOEXCEPT;
 
     void
-    operator delete (void*) throw ();
+    operator delete (void*) LIBCUTL_NOTHROW_NOEXCEPT;
 
   protected:
     std::size_t counter_;

@@ -9,7 +9,7 @@
 namespace cutl
 {
   char const* exception::
-  what () const throw ()
+  what () const LIBCUTL_NOTHROW_NOEXCEPT
   {
     return typeid (*this).name ();
   }

@@ -5,6 +5,8 @@
 #ifndef CUTL_META_POLYMORPHIC_HXX
 #define CUTL_META_POLYMORPHIC_HXX
 
+#include <cutl/details/config.hxx>
+
 #include <cutl/meta/class-p.hxx>
 #include <cutl/meta/remove-cv.hxx>
 
@@ -36,7 +38,7 @@ namespace cutl
           t2 ();
 
           virtual
-          ~t2 () throw ();
+          ~t2 () LIBCUTL_NOTHROW_NOEXCEPT;
         };
 
         static const bool r = sizeof (t1) == sizeof (t2);

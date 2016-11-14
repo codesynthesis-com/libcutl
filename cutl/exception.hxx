@@ -7,6 +7,7 @@
 
 #include <exception>
 
+#include <cutl/details/config.hxx>
 #include <cutl/details/export.hxx>
 
 namespace cutl
@@ -16,7 +17,7 @@ namespace cutl
     // By default return the exception type name ( typeid (*this).name () ).
     //
     virtual char const*
-    what () const throw ();
+    what () const LIBCUTL_NOTHROW_NOEXCEPT;
   };
 }
 

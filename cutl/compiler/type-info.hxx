@@ -27,7 +27,7 @@ namespace cutl
 
     //
     //
-    class LIBCUTL_EXPORT base_info
+    class base_info
     {
     public:
       base_info (type_id const&);
@@ -46,7 +46,7 @@ namespace cutl
 
     //
     //
-    class LIBCUTL_EXPORT type_info
+    class type_info
     {
       typedef std::vector<base_info> bases;
 
@@ -78,12 +78,12 @@ namespace cutl
 
     //
     //
-    class LIBCUTL_EXPORT no_type_info: exception {};
+    class no_type_info: exception {};
 
     LIBCUTL_EXPORT type_info const&
     lookup (type_id const&);
 
-    LIBCUTL_EXPORT type_info const&
+    type_info const&
     lookup (std::type_info const&);
 
     template <typename X>

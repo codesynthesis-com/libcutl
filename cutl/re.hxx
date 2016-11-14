@@ -9,6 +9,8 @@
 #include <ostream>
 
 #include <cutl/exception.hxx>
+
+#include <cutl/details/config.hxx>
 #include <cutl/details/export.hxx>
 
 namespace cutl
@@ -17,9 +19,6 @@ namespace cutl
   {
     struct LIBCUTL_EXPORT format_base: exception
     {
-      virtual
-      ~format_base () throw ();
-
       format_base (std::string const& d): description_ (d) {}
 
       std::string const&
@@ -29,7 +28,7 @@ namespace cutl
       }
 
       virtual char const*
-      what () const throw ();
+      what () const LIBCUTL_NOTHROW_NOEXCEPT;
 
     protected:
       std::string description_;
@@ -38,9 +37,6 @@ namespace cutl
     template <typename C>
     struct basic_format: format_base
     {
-      virtual
-      ~basic_format () throw () {}
-
       basic_format (std::basic_string<C> const& e, std::string const& d)
           : format_base (d), regex_ (e) {}
 

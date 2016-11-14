@@ -4,12 +4,22 @@
 
 #include <cutl/re.hxx>
 
-#include <cutl/details/config.hxx> // LIBCUTL_EXTERNAL_BOOST
+#include <cutl/details/config.hxx> // LIBCUTL_*
 
-#ifndef LIBCUTL_EXTERNAL_BOOST
-#  include <cutl/details/boost/tr1/regex.hpp>
+// For build2 build it is either C++11 regex or external Boost.
+//
+#ifdef LIBCUTL_BUILD2
+#  ifdef LIBCUTL_CXX11
+#    include <regex>
+#  else
+#    include <boost/tr1/regex.hpp>
+#  endif
 #else
-#  include <boost/tr1/regex.hpp>
+#  ifndef LIBCUTL_EXTERNAL_BOOST
+#    include <cutl/details/boost/tr1/regex.hpp>
+#  else
+#    include <boost/tr1/regex.hpp>
+#  endif
 #endif
 
 using namespace std;
@@ -18,17 +28,18 @@ namespace cutl
 {
   namespace re
   {
+#if defined(LIBCUTL_BUILD2) && defined(LIBCUTL_CXX11)
+    namespace ire = std;
+#else
+    namespace ire = std::tr1;
+#endif
+
     //
     // format_base
     //
 
-    format_base::
-    ~format_base () throw ()
-    {
-    }
-
     char const* format_base::
-    what () const throw ()
+    what () const LIBCUTL_NOTHROW_NOEXCEPT
     {
       return description_.c_str ();
     }
@@ -40,17 +51,17 @@ namespace cutl
     struct basic_regex<C>::impl
     {
       typedef basic_string<C> string_type;
-      typedef tr1::basic_regex<C> regex_type;
+      typedef ire::basic_regex<C> regex_type;
       typedef typename regex_type::flag_type flag_type;
 
       impl () {}
       impl (regex_type const& r): r (r) {}
       impl (string_type const& s, bool icase)
       {
-        flag_type f (tr1::regex_constants::ECMAScript);
+        flag_type f (ire::regex_constants::ECMAScript);
 
         if (icase)
-          f |= tr1::regex_constants::icase;
+          f |= ire::regex_constants::icase;
 
         r.assign (s, f);
       }
@@ -118,15 +129,15 @@ namespace cutl
           impl_ = s == 0 ? new impl : new impl (*s, icase);
         else
         {
-          impl::flag_type f (tr1::regex_constants::ECMAScript);
+          impl::flag_type f (ire::regex_constants::ECMAScript);
 
           if (icase)
-            f |= tr1::regex_constants::icase;
+            f |= ire::regex_constants::icase;
 
           impl_->r.assign (*s, f);
         }
       }
-      catch (tr1::regex_error const& e)
+      catch (ire::regex_error const& e)
       {
         throw basic_format<char> (s == 0 ? "" : *s, e.what ());
       }
@@ -146,15 +157,15 @@ namespace cutl
           impl_ = s == 0 ? new impl : new impl (*s, icase);
         else
         {
-          impl::flag_type f (tr1::regex_constants::ECMAScript);
+          impl::flag_type f (ire::regex_constants::ECMAScript);
 
           if (icase)
-            f |= tr1::regex_constants::icase;
+            f |= ire::regex_constants::icase;
 
           impl_->r.assign (*s, f);
         }
       }
-      catch (tr1::regex_error const& e)
+      catch (ire::regex_error const& e)
       {
         throw basic_format<wchar_t> (s == 0 ? L"" : *s, e.what ());
       }
@@ -166,28 +177,28 @@ namespace cutl
     bool basic_regex<char>::
     match (string_type const& s) const
     {
-      return tr1::regex_match (s, impl_->r);
+      return ire::regex_match (s, impl_->r);
     }
 
     template <>
     bool basic_regex<wchar_t>::
     match (string_type const& s) const
     {
-      return tr1::regex_match (s, impl_->r);
+      return ire::regex_match (s, impl_->r);
     }
 
     template <>
     bool basic_regex<char>::
     search (string_type const& s) const
     {
-      return tr1::regex_search (s, impl_->r);
+      return ire::regex_search (s, impl_->r);
     }
 
     template <>
     bool basic_regex<wchar_t>::
     search (string_type const& s) const
     {
-      return tr1::regex_search (s, impl_->r);
+      return ire::regex_search (s, impl_->r);
     }
 
     template <>
@@ -196,13 +207,13 @@ namespace cutl
              string_type const& sub,
              bool first_only) const
     {
-      tr1::regex_constants::match_flag_type f (
-        tr1::regex_constants::format_default);
+      ire::regex_constants::match_flag_type f (
+        ire::regex_constants::format_default);
 
       if (first_only)
-        f |= tr1::regex_constants::format_first_only;
+        f |= ire::regex_constants::format_first_only;
 
-      return tr1::regex_replace (s, impl_->r, sub, f);
+      return ire::regex_replace (s, impl_->r, sub, f);
     }
 
     template <>
@@ -211,13 +222,13 @@ namespace cutl
              string_type const& sub,
              bool first_only) const
     {
-      tr1::regex_constants::match_flag_type f (
-        tr1::regex_constants::format_default);
+      ire::regex_constants::match_flag_type f (
+        ire::regex_constants::format_default);
 
       if (first_only)
-        f |= tr1::regex_constants::format_first_only;
+        f |= ire::regex_constants::format_first_only;
 
-      return tr1::regex_replace (s, impl_->r, sub, f);
+      return ire::regex_replace (s, impl_->r, sub, f);
     }
   }
 }
