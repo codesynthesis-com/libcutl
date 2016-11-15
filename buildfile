@@ -2,7 +2,7 @@
 # copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
-d = cutl/
+d = cutl/ tests/
 ./: $d doc{INSTALL LICENSE NEWS README version} file{manifest}
 include $d
 

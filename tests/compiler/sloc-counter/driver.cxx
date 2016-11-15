@@ -22,7 +22,7 @@ main (int argc, char* argv[])
 
   ostream_filter<sloc_counter, char> filt (cout);
 
-  ifstream ifs(argv[1]);
+  ifstream ifs (argv[1]);
 
   for (istream::int_type c (ifs.get ());
        c != istream::traits_type::eof ();

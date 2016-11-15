@@ -1,0 +1,7 @@
+# file      : tests/container/buildfile
+# copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
+# license   : MIT; see accompanying LICENSE file
+
+d = multi-index/
+./: $d
+include $d

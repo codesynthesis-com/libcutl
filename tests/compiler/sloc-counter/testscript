@@ -1,0 +1,46 @@
+# file      : tests/compiler/sloc-counter/testscript
+# copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
+# license   : MIT; see accompanying LICENSE file
+
+: c++-program-sloc
+:
+text = '// C++ comment
+  // C++ comment
+
+/* C comment */
+
+/* Multiline
+   C
+   Comment
+
+
+*/
+
+#include <iostream>
+
+char str[] = "multi\
+line\
+string\
+literal";
+
+using namespace std;
+
+
+int main(
+  int argc /*count*/,
+  char* argv[] /*array*/)
+{
+  /* comment start */ int x = 0;
+  char* s =
+  /* comment start */"foo";
+  int y = 2
+  /* tricky stuff *//
+  2;
+  cerr << "Hello, \"world!" << '"'\\''"' << endl;
+}';
+cat <"$text" >>>file;
+$* file >>EOO
+$text
+
+18
+EOO
