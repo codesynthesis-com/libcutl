@@ -9,7 +9,7 @@ namespace cutl
   namespace compiler
   {
     template<>
-    char const* cxx_indenter<char>::
+    LIBCUTL_EXPORT char const* cxx_indenter<char>::
     keyword (cxx_indenter<char>::keyword_type t)
     {
       static char const* keywords[] =
@@ -28,7 +28,7 @@ namespace cutl
     }
 
     template<>
-    wchar_t const* cxx_indenter<wchar_t>::
+    LIBCUTL_EXPORT wchar_t const* cxx_indenter<wchar_t>::
     keyword (cxx_indenter<wchar_t>::keyword_type t)
     {
       static wchar_t const* keywords[] =

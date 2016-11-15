@@ -70,35 +70,35 @@ namespace cutl
     };
 
     template <>
-    basic_regex<char>::
+    LIBCUTL_EXPORT basic_regex<char>::
     ~basic_regex ()
     {
       delete impl_;
     }
 
     template <>
-    basic_regex<wchar_t>::
+    LIBCUTL_EXPORT basic_regex<wchar_t>::
     ~basic_regex ()
     {
       delete impl_;
     }
 
     template <>
-    basic_regex<char>::
+    LIBCUTL_EXPORT basic_regex<char>::
     basic_regex (basic_regex const& r)
         : str_ (r.str_), impl_ (new impl (r.impl_->r))
     {
     }
 
     template <>
-    basic_regex<wchar_t>::
+    LIBCUTL_EXPORT basic_regex<wchar_t>::
     basic_regex (basic_regex const& r)
         : str_ (r.str_), impl_ (new impl (r.impl_->r))
     {
     }
 
     template <>
-    basic_regex<char>& basic_regex<char>::
+    LIBCUTL_EXPORT basic_regex<char>& basic_regex<char>::
     operator= (basic_regex const& r)
     {
       string_type tmp (r.str_);
@@ -108,7 +108,7 @@ namespace cutl
     }
 
     template <>
-    basic_regex<wchar_t>& basic_regex<wchar_t>::
+    LIBCUTL_EXPORT basic_regex<wchar_t>& basic_regex<wchar_t>::
     operator= (basic_regex const& r)
     {
       string_type tmp (r.str_);
@@ -118,7 +118,7 @@ namespace cutl
     }
 
     template <>
-    void basic_regex<char>::
+    LIBCUTL_EXPORT void basic_regex<char>::
     init (string_type const* s, bool icase)
     {
       string_type tmp (s == 0 ? string_type () : *s);
@@ -146,7 +146,7 @@ namespace cutl
     }
 
     template <>
-    void basic_regex<wchar_t>::
+    LIBCUTL_EXPORT void basic_regex<wchar_t>::
     init (string_type const* s, bool icase)
     {
       string_type tmp (s == 0 ? string_type () : *s);
@@ -174,35 +174,35 @@ namespace cutl
     }
 
     template <>
-    bool basic_regex<char>::
+    LIBCUTL_EXPORT bool basic_regex<char>::
     match (string_type const& s) const
     {
       return ire::regex_match (s, impl_->r);
     }
 
     template <>
-    bool basic_regex<wchar_t>::
+    LIBCUTL_EXPORT bool basic_regex<wchar_t>::
     match (string_type const& s) const
     {
       return ire::regex_match (s, impl_->r);
     }
 
     template <>
-    bool basic_regex<char>::
+    LIBCUTL_EXPORT bool basic_regex<char>::
     search (string_type const& s) const
     {
       return ire::regex_search (s, impl_->r);
     }
 
     template <>
-    bool basic_regex<wchar_t>::
+    LIBCUTL_EXPORT bool basic_regex<wchar_t>::
     search (string_type const& s) const
     {
       return ire::regex_search (s, impl_->r);
     }
 
     template <>
-    string basic_regex<char>::
+    LIBCUTL_EXPORT string basic_regex<char>::
     replace (string_type const& s,
              string_type const& sub,
              bool first_only) const
@@ -217,7 +217,7 @@ namespace cutl
     }
 
     template <>
-    wstring basic_regex<wchar_t>::
+    LIBCUTL_EXPORT wstring basic_regex<wchar_t>::
     replace (string_type const& s,
              string_type const& sub,
              bool first_only) const

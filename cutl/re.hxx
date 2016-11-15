@@ -20,6 +20,7 @@ namespace cutl
     struct LIBCUTL_EXPORT format_base: exception
     {
       format_base (std::string const& d): description_ (d) {}
+      ~format_base () LIBCUTL_NOTHROW_NOEXCEPT {}
 
       std::string const&
       description () const
@@ -39,6 +40,7 @@ namespace cutl
     {
       basic_format (std::basic_string<C> const& e, std::string const& d)
           : format_base (d), regex_ (e) {}
+      ~basic_format () LIBCUTL_NOTHROW_NOEXCEPT {}
 
       std::basic_string<C> const&
       regex () const

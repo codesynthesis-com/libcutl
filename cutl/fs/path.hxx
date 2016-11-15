@@ -133,6 +133,7 @@ namespace cutl
 
       invalid_basic_path (C const* p): path_ (p) {}
       invalid_basic_path (string_type const& p): path_ (p) {}
+      ~invalid_basic_path () LIBCUTL_NOTHROW_NOEXCEPT {}
 
       string_type const&
       path () const

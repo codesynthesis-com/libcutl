@@ -77,7 +77,7 @@ namespace cutl
 
     template <template <typename> class S, typename C>
     ostream_filter<S, C>::
-    ~ostream_filter () /*noexcept (false)*/
+    ~ostream_filter ()
     {
       try
       {
@@ -86,7 +86,6 @@ namespace cutl
       catch (...)
       {
         os_.rdbuf (prev_);
-        throw;
       }
 
       os_.rdbuf (prev_);
