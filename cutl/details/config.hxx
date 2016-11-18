@@ -32,6 +32,9 @@
 #endif
 
 #ifdef LIBCUTL_BUILD2
+#  ifndef LIBCUTL_CXX11
+#    error C++ compiler does not support (enough of) C++11
+#  endif
 #  ifdef _MSC_VER
 #    include <cutl/details/build2/config-vc.h>
 #  else
