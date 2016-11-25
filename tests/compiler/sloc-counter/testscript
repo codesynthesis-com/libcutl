@@ -2,9 +2,12 @@
 # copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
+# @@ BUG: adding blank lines at the end increases the count.
+
 : c++-program-sloc
 :
-text = '// C++ comment
+$* <<EOI >'19'
+// C++ comment
   // C++ comment
 
 /* C comment */
@@ -37,10 +40,5 @@ int main(
   /* tricky stuff *//
   2;
   cerr << "Hello, \"world!" << '"'\\''"' << endl;
-}';
-cat <"$text" >>>file;
-$* file >>EOO
-$text
-
-18
-EOO
+}
+EOI

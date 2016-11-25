@@ -3,6 +3,8 @@
 // license   : MIT; see accompanying LICENSE file
 
 #include <fstream>
+#include <sstream>
+#include <cassert>
 #include <iostream>
 
 #include <cutl/compiler/code-stream.hxx>
@@ -14,23 +16,25 @@ using namespace cutl::compiler;
 int
 main (int argc, char* argv[])
 {
-  if (argc != 2)
+  ifstream ifs;
+
+  if (argc > 1)
+    ifs.open (argv[1]);
+
+  istream& in (ifs.is_open () ? ifs : cin);
+
+  ostringstream os1, os2;
+  ostream_filter<sloc_counter, char> filt (os1);
+
+  for (istream::int_type i (in.get ());
+       i != istream::traits_type::eof ();
+       i = in.get ())
   {
-    cerr << "usage: " << argv[0] << " <file>" << endl;
-    return 1;
+    char c (istream::traits_type::to_char_type (i));
+    os1.put (c);
+    os2.put (c);
   }
 
-  ostream_filter<sloc_counter, char> filt (cout);
-
-  ifstream ifs (argv[1]);
-
-  for (istream::int_type c (ifs.get ());
-       c != istream::traits_type::eof ();
-       c = ifs.get ())
-  {
-    cout.put (istream::traits_type::to_char_type (c));
-  }
-
-  cout << endl
-       << filt.stream ().count () << endl;
+  assert (os1.str () == os2.str ());
+  cout << filt.stream ().count () << endl;
 }
