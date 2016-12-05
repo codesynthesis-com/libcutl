@@ -46,11 +46,11 @@ if $abi_prerelease
 else
   lib{cutl}: bin.lib.version = @-$abi_major.$abi_minor
 
-cxx.poptions =+ -I$src_root -DLIBCUTL_BUILD2
+cxx.poptions =+ "-I$src_root" -DLIBCUTL_BUILD2
 obja{*}: cxx.poptions += -DLIBCUTL_STATIC_BUILD
 objs{*}: cxx.poptions += -DLIBCUTL_SHARED_BUILD
 
-lib{cutl}: cxx.export.poptions = -I$src_root -DLIBCUTL_BUILD2
+lib{cutl}: cxx.export.poptions = "-I$src_root" -DLIBCUTL_BUILD2
 liba{cutl}: cxx.export.poptions += -DLIBCUTL_STATIC
 libs{cutl}: cxx.export.poptions += -DLIBCUTL_SHARED
 
