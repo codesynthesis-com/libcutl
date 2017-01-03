@@ -1,5 +1,5 @@
 # file      : tests/buildfile
-# copyright : Copyright (c) 2009-2013 Code Synthesis Tools CC
+# copyright : Copyright (c) 2009-2017 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
 d = compiler/ container/ fs/ re/ shared-ptr/
