@@ -2,7 +2,6 @@
 # copyright : Copyright (c) 2009-2017 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
-
 lib{cutl}:                                           \
                {hxx         cxx}{ exception        } \
                {hxx            }{ re               } \
@@ -10,6 +9,7 @@ lib{cutl}:                                           \
                {hxx            }{ shared-ptr       } \
     shared-ptr/{hxx ixx txx cxx}{ base             } \
                {hxx            }{ static-ptr       } \
+               {hxx            }{ version          } \
       compiler/{hxx     txx    }{ code-stream      } \
       compiler/{hxx     txx cxx}{ context          } \
       compiler/{hxx ixx txx cxx}{ cxx-indenter     } \
@@ -38,19 +38,22 @@ details/build2/{h              }{ config-vc        } \
           meta/{hxx            }{ remove-p         } \
           meta/{hxx            }{ remove-v         }
 
+hxx{version}: in{version} $src_root/file{manifest}
+hxx{version}: dist = true
+
 # For pre-releases use the complete version to make sure they cannot be used
 # in place of another pre-release or the final version.
 #
-if $abi_prerelease
-  lib{cutl}: bin.lib.version = @-$version
+if $version.pre_release
+  lib{cutl}: bin.lib.version = @"-$version.project_id"
 else
-  lib{cutl}: bin.lib.version = @-$abi_major.$abi_minor
+  lib{cutl}: bin.lib.version = @"-$version.major.$version.minor"
 
-cxx.poptions =+ "-I$src_root" -DLIBCUTL_BUILD2
+cxx.poptions =+ "-I$out_root" "-I$src_root" -DLIBCUTL_BUILD2
 obja{*}: cxx.poptions += -DLIBCUTL_STATIC_BUILD
 objs{*}: cxx.poptions += -DLIBCUTL_SHARED_BUILD
 
-lib{cutl}: cxx.export.poptions = "-I$src_root" -DLIBCUTL_BUILD2
+lib{cutl}: cxx.export.poptions = "-I$out_root" "-I$src_root" -DLIBCUTL_BUILD2
 liba{cutl}: cxx.export.poptions += -DLIBCUTL_STATIC
 libs{cutl}: cxx.export.poptions += -DLIBCUTL_SHARED
 
