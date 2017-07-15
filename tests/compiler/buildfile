@@ -1,7 +1,0 @@
-# file      : tests/compiler/buildfile
-# copyright : Copyright (c) 2009-2017 Code Synthesis Tools CC
-# license   : MIT; see accompanying LICENSE file
-
-d = cxx-indenter/ sloc-counter/ traversal/
-./: $d
-include $d

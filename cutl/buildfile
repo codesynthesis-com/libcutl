@@ -2,41 +2,9 @@
 # copyright : Copyright (c) 2009-2017 Code Synthesis Tools CC
 # license   : MIT; see accompanying LICENSE file
 
-lib{cutl}:                                           \
-               {hxx         cxx}{ exception        } \
-               {hxx            }{ re               } \
-            re/{        txx cxx}{ re               } \
-               {hxx            }{ shared-ptr       } \
-    shared-ptr/{hxx ixx txx cxx}{ base             } \
-               {hxx            }{ static-ptr       } \
-               {hxx            }{ version          } \
-      compiler/{hxx     txx    }{ code-stream      } \
-      compiler/{hxx     txx cxx}{ context          } \
-      compiler/{hxx ixx txx cxx}{ cxx-indenter     } \
-      compiler/{hxx     txx    }{ sloc-counter     } \
-      compiler/{hxx     txx    }{ traversal        } \
-      compiler/{hxx ixx txx    }{ type-id          } \
-      compiler/{hxx ixx     cxx}{ type-info        } \
-     container/{hxx            }{ any              } \
-     container/{hxx    txx     }{ graph            } \
-     container/{hxx            }{ key              } \
-     container/{hxx            }{ map-iterator     } \
-     container/{hxx            }{ multi-index      } \
-     container/{hxx            }{ pointer-iterator } \
-       details/{hxx            }{ config.hxx       } \
-       details/{hxx            }{ export.hxx       } \
-details/build2/{h              }{ config           } \
-details/build2/{h              }{ config-vc        } \
-            fs/{hxx         cxx}{ auto-remove      } \
-            fs/{hxx         cxx}{ exception        } \
-            fs/{hxx ixx txx cxx}{ path             } \
-          meta/{hxx            }{ answer           } \
-          meta/{hxx            }{ class-p          } \
-          meta/{hxx            }{ polymorphic-p    } \
-          meta/{hxx            }{ remove-c         } \
-          meta/{hxx            }{ remove-cv        } \
-          meta/{hxx            }{ remove-p         } \
-          meta/{hxx            }{ remove-v         }
+lib{cutl}:     {hxx ixx txx cxx}{** -version -xml/** -details/boost/**} \
+               {hxx}{version}                                           \
+details/build2/{h}{*}
 
 hxx{version}: in{version} $src_root/file{manifest}
 hxx{version}: dist = true
