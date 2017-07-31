@@ -25,10 +25,12 @@ lib{cutl}: cxx.export.poptions = "-I$out_root" "-I$src_root" -DLIBCUTL_BUILD2
 liba{cutl}: cxx.export.poptions += -DLIBCUTL_STATIC
 libs{cutl}: cxx.export.poptions += -DLIBCUTL_SHARED
 
-# Install into the cutl/ subdirectory of, say, /usr/include/.
+# Install into the cutl/ subdirectory of, say, /usr/include/ recreating
+# subdirectories.
 #
-install.include = $install.include/cutl/
-install.include.subdirs = true # Recreate subdirectories.
+install_include = include/cutl/
+{hxx ixx txx}{*}: install         = $install_include
+{hxx ixx txx}{*}: install.subdirs = true
 
 # We want these to be picked up even when LIBCUTL_BUILD2 is not defined.
 #
@@ -37,11 +39,11 @@ details/build2/:
   if ($cxx.id == "msvc")
   {
     h{config}@./:    install = false
-    h{config-vc}@./: install = $install.include/details/
+    h{config-vc}@./: install = $install_include/details/
   }
   else
   {
-    h{config}@./:    install = $install.include/details/
+    h{config}@./:    install = $install_include/details/
     h{config-vc}@./: install = false
   }
 }
