@@ -28,7 +28,8 @@ libs{cutl}: cxx.export.poptions += -DLIBCUTL_SHARED
 # Install into the cutl/ subdirectory of, say, /usr/include/ recreating
 # subdirectories.
 #
-install_include = include/cutl/
+install_include = [dir_path] include/cutl/
+
 {hxx ixx txx}{*}: install         = $install_include
 {hxx ixx txx}{*}: install.subdirs = true
 
