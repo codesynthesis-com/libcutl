@@ -7,8 +7,8 @@ tags: c++, utility
 description-file: README
 changes-file: NEWS
 url: http://www.codesynthesis.com/projects/libcutl/
+src-url: http://scm.codesynthesis.com/?p=libcutl/libcutl.git\;a=tree
 email: libcutl-users@codesynthesis.com; Mailing list
-src-url: http://scm.codesynthesis.com/?p=libcutl/libcutl.git;a=tree
 build-email: builds@codesynthesis.com
 requires: c++11
 depends: * build2 >= 0.5.0-
