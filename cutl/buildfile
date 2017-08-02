@@ -37,14 +37,16 @@ install_include = [dir_path] include/cutl/
 #
 details/build2/:
 {
+  h{*}: install = false
+
   if ($cxx.id == "msvc")
   {
-    h{config}@./:    install = false
-    h{config-vc}@./: install = $install_include/details/
+    h{config-vc}@./:      install = $install_include/details/
+    h{config-vc-stub}@./: install = $install_include/details/build2/config-vc.h
   }
   else
   {
-    h{config}@./:    install = $install_include/details/
-    h{config-vc}@./: install = false
+    h{config}@./:      install = $install_include/details/
+    h{config-stub}@./: install = $install_include/details/build2/config.h
   }
 }
