@@ -31,7 +31,3 @@
 # Generated .gitignore files.
 #
 .gitignore
-
-# Temporarily here because of auto-generated cutl/.gitignore.
-#
-cutl/version.hxx
