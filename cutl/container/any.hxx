@@ -9,6 +9,7 @@
 #include <typeinfo> // std::type_info
 
 #include <cutl/exception.hxx>
+#include <cutl/details/config.hxx> // LIBCUTL_CXX11
 
 namespace cutl
 {

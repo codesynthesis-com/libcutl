@@ -5,7 +5,6 @@
 #ifndef CUTL_COMPILER_CODE_STREAM_HXX
 #define CUTL_COMPILER_CODE_STREAM_HXX
 
-#include <memory>  // std::auto_ptr
 #include <ostream>
 
 #include <cutl/exception.hxx>

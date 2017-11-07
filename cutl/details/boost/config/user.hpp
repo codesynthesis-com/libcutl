@@ -11,6 +11,10 @@
 
 #include <cutl/details/config.hxx>
 
+#ifdef LIBCUTL_CXX11
+#  define BOOST_NO_AUTO_PTR
+#endif
+
 // We have removed those.
 //
 #define BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
