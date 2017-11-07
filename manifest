@@ -6,8 +6,8 @@ license: MIT
 tags: c++, utility
 description-file: README
 changes-file: NEWS
-url: http://www.codesynthesis.com/projects/libcutl/
-src-url: http://scm.codesynthesis.com/?p=libcutl/libcutl.git\;a=tree
+url: https://www.codesynthesis.com/projects/libcutl/
+src-url: https://git.codesynthesis.com/cgit/libcutl/libcutl/
 email: libcutl-users@codesynthesis.com; Mailing list
 build-email: builds@codesynthesis.com
 requires: c++11
