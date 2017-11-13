@@ -34,7 +34,7 @@ namespace cutl
     //
 
     template <>
-    basic_path<char> basic_path<char>::
+    LIBCUTL_EXPORT basic_path<char> basic_path<char>::
     current ()
     {
 #ifdef _WIN32
@@ -51,7 +51,7 @@ namespace cutl
     }
 
     template <>
-    void basic_path<char>::
+    LIBCUTL_EXPORT void basic_path<char>::
     current (basic_path const& p)
     {
       string_type const& s (p.string ());
@@ -73,7 +73,7 @@ namespace cutl
     //
 
     template <>
-    basic_path<wchar_t> basic_path<wchar_t>::
+    LIBCUTL_EXPORT basic_path<wchar_t> basic_path<wchar_t>::
     current ()
     {
 #ifdef _WIN32
@@ -94,7 +94,7 @@ namespace cutl
     }
 
     template <>
-    void basic_path<wchar_t>::
+    LIBCUTL_EXPORT void basic_path<wchar_t>::
     current (basic_path const& p)
     {
       string_type const& s (p.string ());
