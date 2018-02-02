@@ -5,4 +5,4 @@
 import libs = libcutl%lib{cutl}
 
 exe{driver}: {hxx cxx}{*} $libs
-exe{driver}: test.output = output.std
+exe{driver}: file{output.std}: test.stdout = true
