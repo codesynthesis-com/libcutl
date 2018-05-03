@@ -40,7 +40,7 @@ install_include = [dir_path] include/cutl/
 
 # We want these to be picked up even when LIBCUTL_BUILD2 is not defined.
 #
-details/build2/:
+details/build2/
 {
   h{*}: install = false
 
