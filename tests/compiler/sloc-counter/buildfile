@@ -4,4 +4,4 @@
 
 import libs = libcutl%lib{cutl}
 
-exe{driver}: {hxx cxx}{* -test} $libs test{testscript}
+exe{driver}: {hxx cxx}{* -test} $libs testscript
