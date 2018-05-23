@@ -95,8 +95,10 @@ main ()
     dec_ref (x);
   }
 
-  // Error handling (this theoretically can segfault).
+  // Error handling. This can theoretically can segfault and it trips up
+  // the address sanitizer.
   //
+#ifndef __SANITIZE_ADDRESS__
   {
     type* x (new type (5, "foo"));
 
@@ -111,6 +113,7 @@ main ()
 
     delete x;
   }
+#endif
 
   //
   // shared_ptr
