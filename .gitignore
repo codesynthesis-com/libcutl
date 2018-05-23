@@ -1,3 +1,5 @@
+.bdep/
+
 # Compiler/linker output.
 #
 *.d
