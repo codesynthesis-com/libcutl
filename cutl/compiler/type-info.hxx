@@ -1,5 +1,5 @@
 // file      : cutl/compiler/type-info.hxx
-// copyright : Copyright (c) 2009-2017 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2018 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_COMPILER_TYPE_INFO_HXX

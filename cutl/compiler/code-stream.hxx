@@ -1,5 +1,5 @@
 // file      : cutl/compiler/code-stream.hxx
-// copyright : Copyright (c) 2009-2017 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2018 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_COMPILER_CODE_STREAM_HXX

@@ -1,5 +1,5 @@
 // file      : tests/compiler/cxx-indenter/driver.cxx
-// copyright : Copyright (c) 2009-2017 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2018 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #include <fstream>
