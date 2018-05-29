@@ -1,6 +1,6 @@
 : 1
 name: libcutl
-version: 1.11.0-b.1.z
+version: 1.11.0-b.2
 summary: C++ utility library
 license: MIT
 tags: c++, utility
