@@ -1,5 +1,5 @@
 // file      : cutl/container/key.hxx
-// copyright : Copyright (c) 2009-2018 Code Synthesis Tools CC
+// copyright : Copyright (c) 2009-2019 Code Synthesis Tools CC
 // license   : MIT; see accompkeying LICENSE file
 
 #ifndef CUTL_CONTAINER_KEY_HXX
