@@ -208,7 +208,7 @@ struct person_list_email_set
   find (const string& email) const
   {
     email_map::const_iterator i (email_map_.find (email));
-    return i != email_map_.end () ? i->second : end ();
+    return i != email_map_.end () ? const_iterator (i->second) : end ();
   }
 
   iterator begin () {return person_list_.begin ();}
