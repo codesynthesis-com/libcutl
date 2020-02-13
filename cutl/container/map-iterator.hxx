@@ -1,5 +1,4 @@
 // file      : cutl/container/map-iterator.hxx
-// copyright : Copyright (c) 2009-2019 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_CONTAINER_MAP_ITERATOR_HXX

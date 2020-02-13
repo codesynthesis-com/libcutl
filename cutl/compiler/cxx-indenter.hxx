@@ -1,5 +1,4 @@
 // file      : cutl/compiler/cxx-indenter.hxx
-// copyright : Copyright (c) 2009-2019 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_COMPILER_CXX_INDENTER_HXX

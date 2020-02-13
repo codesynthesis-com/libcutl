@@ -1,5 +1,4 @@
 // file      : cutl/shared-ptr.hxx
-// copyright : Copyright (c) 2009-2019 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_SHARED_PTR_HXX

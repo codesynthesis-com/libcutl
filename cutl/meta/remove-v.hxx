@@ -1,5 +1,4 @@
 // file      : cutl/meta/remove-v.hxx
-// copyright : Copyright (c) 2009-2019 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_META_REMOVE_V_HXX

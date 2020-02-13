@@ -1,5 +1,4 @@
 // file      : cutl/fs/auto-remove.hxx
-// copyright : Copyright (c) 2009-2019 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_FS_AUTO_REMOVE_HXX

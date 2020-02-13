@@ -1,5 +1,4 @@
 // file      : cutl/xml/value-traits.hxx
-// copyright : Copyright (c) 2009-2019 Code Synthesis Tools CC
 // license   : MIT; see accompanying LICENSE file
 
 #ifndef CUTL_XML_VALUE_TRAITS_HXX
