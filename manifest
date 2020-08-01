@@ -9,7 +9,7 @@ changes-file: NEWS
 url: https://www.codesynthesis.com/projects/libcutl/
 src-url: https://git.codesynthesis.com/cgit/libcutl/libcutl/
 email: libcutl-users@codesynthesis.com ; Mailing list
-build-email: builds@codesynthesis.com
+build-warning-email: builds@codesynthesis.com
 builds: all
 requires: c++11
 depends: * build2 >= 0.11.0
