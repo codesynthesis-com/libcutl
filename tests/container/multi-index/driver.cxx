@@ -7,7 +7,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <cutl/container/multi-index.hxx>
+#include <libcutl/container/multi-index.hxx>
 
 using namespace std;
 using namespace cutl::container;

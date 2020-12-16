@@ -4,8 +4,8 @@
 #include <fstream>
 #include <iostream>
 
-#include <cutl/compiler/code-stream.hxx>
-#include <cutl/compiler/cxx-indenter.hxx>
+#include <libcutl/compiler/code-stream.hxx>
+#include <libcutl/compiler/cxx-indenter.hxx>
 
 using namespace std;
 using namespace cutl::compiler;

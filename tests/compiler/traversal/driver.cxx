@@ -4,10 +4,10 @@
 #include <vector>
 #include <iostream>
 
-#include <cutl/shared-ptr.hxx>
+#include <libcutl/shared-ptr.hxx>
 
-#include <cutl/compiler/type-info.hxx>
-#include <cutl/compiler/traversal.hxx>
+#include <libcutl/compiler/type-info.hxx>
+#include <libcutl/compiler/traversal.hxx>
 
 using namespace std;
 using namespace cutl;

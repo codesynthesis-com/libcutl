@@ -6,8 +6,8 @@
 #include <cassert>
 #include <iostream>
 
-#include <cutl/compiler/code-stream.hxx>
-#include <cutl/compiler/sloc-counter.hxx>
+#include <libcutl/compiler/code-stream.hxx>
+#include <libcutl/compiler/sloc-counter.hxx>
 
 using namespace std;
 using namespace cutl::compiler;

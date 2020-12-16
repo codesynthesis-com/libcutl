@@ -4,7 +4,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <cutl/fs/path.hxx>
+#include <libcutl/fs/path.hxx>
 
 using std::cerr;
 using std::endl;

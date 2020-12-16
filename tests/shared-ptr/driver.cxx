@@ -4,7 +4,7 @@
 #include <string>
 #include <cassert>
 
-#include <cutl/shared-ptr.hxx>
+#include <libcutl/shared-ptr.hxx>
 
 using namespace cutl;
 

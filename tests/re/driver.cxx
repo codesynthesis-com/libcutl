@@ -5,7 +5,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <cutl/re.hxx>
+#include <libcutl/re.hxx>
 
 using namespace cutl::re;
 

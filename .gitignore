@@ -19,21 +19,3 @@
 *.exe.dlls/
 *.exe.manifest
 *.pc
-
-# Old build system output.
-#
-*.l
-*.l.cpp-options
-
-# Generated documentation.
-#
-*.pdf
-*.ps
-
-# Generated build system files.
-#
-*-dynamic.make
-
-# Generated .gitignore files.
-#
-.gitignore
