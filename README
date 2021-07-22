@@ -1,5 +1,6 @@
-libcutl is a C++ utility library. It contains a collection of generic and
-fairly independent components. See doc/components.txt for an overview.
+libcutl is a C++ utility library for compilers. It contains a collection of
+generic and fairly independent components. See doc/components.txt for an
+overview.
 
 See the NEWS file for the user-visible changes from the previous release.
 
