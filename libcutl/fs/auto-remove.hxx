@@ -5,6 +5,7 @@
 #define LIBCUTL_FS_AUTO_REMOVE_HXX
 
 #include <vector>
+#include <utility>
 
 #include <libcutl/fs/path.hxx>
 #include <libcutl/fs/exception.hxx>
@@ -19,6 +20,11 @@ namespace cutl
     //
     struct LIBCUTL_EXPORT auto_remove
     {
+      auto_remove ()
+          : canceled_ (true)
+      {
+      }
+
       explicit
       auto_remove (path const& p)
           : path_ (p), canceled_ (false)
@@ -33,11 +39,29 @@ namespace cutl
         canceled_ = true;
       }
 
-    private:
-      auto_remove (auto_remove const&);
+      // Movable-only type. Move-assignment cancels the lhs object.
+      //
+      auto_remove (auto_remove&& x)
+          : path_ (std::move (x.path_)), canceled_ (x.canceled_)
+      {
+        x.canceled_ = true;
+      }
 
       auto_remove&
-      operator= (auto_remove const&);
+      operator= (auto_remove&& x)
+      {
+        if (this != &x)
+        {
+          path_ = std::move (x.path_);
+          canceled_ = x.canceled_;
+          x.canceled_ = true;
+        }
+
+        return *this;
+      }
+
+      auto_remove (auto_remove const&) = delete;
+      auto_remove& operator= (auto_remove const&) = delete;
 
     private:
       path path_;
