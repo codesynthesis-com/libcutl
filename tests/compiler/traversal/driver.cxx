@@ -9,6 +9,9 @@
 #include <libcutl/compiler/type-info.hxx>
 #include <libcutl/compiler/traversal.hxx>
 
+#undef NDEBUG
+#include <cassert>
+
 using namespace std;
 using namespace cutl;
 

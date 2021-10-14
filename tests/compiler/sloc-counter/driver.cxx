@@ -3,11 +3,13 @@
 
 #include <fstream>
 #include <sstream>
-#include <cassert>
 #include <iostream>
 
 #include <libcutl/compiler/code-stream.hxx>
 #include <libcutl/compiler/sloc-counter.hxx>
+
+#undef NDEBUG
+#include <cassert>
 
 using namespace std;
 using namespace cutl::compiler;

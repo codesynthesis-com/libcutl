@@ -7,6 +7,9 @@
 #include <libcutl/compiler/code-stream.hxx>
 #include <libcutl/compiler/cxx-indenter.hxx>
 
+#undef NDEBUG
+#include <cassert>
+
 using namespace std;
 using namespace cutl::compiler;
 

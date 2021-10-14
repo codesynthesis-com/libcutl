@@ -1,10 +1,12 @@
 // file      : tests/fs/path/driver.cxx
 // license   : MIT; see accompanying LICENSE file
 
-#include <cassert>
 #include <iostream>
 
 #include <libcutl/fs/path.hxx>
+
+#undef NDEBUG
+#include <cassert>
 
 using std::cerr;
 using std::endl;

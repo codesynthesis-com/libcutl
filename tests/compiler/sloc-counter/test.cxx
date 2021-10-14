@@ -12,6 +12,9 @@
 
 #include <iostream>
 
+#undef NDEBUG
+#include <cassert>
+
 char str[] = "multi\
 line\
 string\
@@ -25,7 +28,7 @@ int main(
   char* argv[] /*array*/)
 {
   /* comment start */ int x = 0;
-  char* s = 
+  char* s =
   /* comment start */"foo";
   int y = 2
   /* tricky stuff *//

@@ -2,9 +2,11 @@
 // license   : MIT; see accompanying LICENSE file
 
 #include <string>
-#include <cassert>
 
 #include <libcutl/shared-ptr.hxx>
+
+#undef NDEBUG
+#include <cassert>
 
 using namespace cutl;
 

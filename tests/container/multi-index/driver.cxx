@@ -4,10 +4,12 @@
 #include <map>
 #include <list>
 #include <string>
-#include <cassert>
 #include <iostream>
 
 #include <libcutl/container/multi-index.hxx>
+
+#undef NDEBUG
+#include <cassert>
 
 using namespace std;
 using namespace cutl::container;

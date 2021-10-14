@@ -2,10 +2,12 @@
 // license   : MIT; see accompanying LICENSE file
 
 #include <string>
-#include <cassert>
 #include <iostream>
 
 #include <libcutl/re.hxx>
+
+#undef NDEBUG
+#include <cassert>
 
 using namespace cutl::re;
 
