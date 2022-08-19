@@ -19,9 +19,9 @@
 
 #define BOOST_HAS_THREADS
 
-#ifdef _LIBCPP_HAS_NO_VARIADICS
+//#ifdef _LIBCPP_HAS_NO_VARIADICS
 #    define BOOST_NO_CXX11_HDR_TUPLE
-#endif
+//#endif
 
 //
 // These appear to be unusable/incomplete so far:
