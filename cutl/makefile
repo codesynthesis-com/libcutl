@@ -119,7 +119,7 @@ details/boost/README $(expat_dist) $(genx_dist)
 $(dist): export extra_dist := $(data_dist) libcutl-vc9.vcproj \
 libcutl-vc10.vcxproj libcutl-vc10.vcxproj.filters
 $(dist): export interface_version = $(shell sed -e \
-'s/^\([0-9]*\.[0-9]*\).*/\1/' $(src_root)/version)
+'s/^\([0-9]*\.[0-9]*\).*/\1/' $(src_root)/version.txt)
 
 $(dist):
 	$(call dist-data,$(sources) $(boost_sources) $(expat_sources) $(genx_sources))

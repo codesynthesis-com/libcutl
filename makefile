@@ -18,11 +18,11 @@ $(test): $(addprefix $(out_base)/,$(addsuffix /.test,$(dirs)))
 dist_dirs := $(filter-out tests,$(dirs))
 
 $(dist): export dirs := $(dist_dirs)
-$(dist): export docs := LICENSE NEWS README INSTALL version
+$(dist): export docs := LICENSE NEWS README INSTALL version.txt
 $(dist): data_dist := libcutl-vc9.sln libcutl-vc10.sln
 $(dist): exec_dist := bootstrap
 $(dist): export extra_dist := $(data_dist) $(exec_dist)
-$(dist): export version = $(shell cat $(src_root)/version)
+$(dist): export version = $(shell cat $(src_root)/version.txt)
 
 $(dist): $(addprefix $(out_base)/,$(addsuffix /.dist,$(dist_dirs)))
 	$(call dist-data,$(docs) $(data_dist) libcutl.pc.in)
