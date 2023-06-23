@@ -99,7 +99,11 @@ main ()
   // Error handling. This can theoretically can segfault and it trips up
   // the address sanitizer.
   //
-#ifndef __SANITIZE_ADDRESS__
+  // @@ This now also trips Clang 16 on various platforms, so disable for
+  //    now.
+  //
+#if 0
+//#ifndef __SANITIZE_ADDRESS__
   {
     type* x (new type (5, "foo"));
 

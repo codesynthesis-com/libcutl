@@ -33,6 +33,8 @@ operator new (size_t n, cutl::share s)
     // of this platform. Twice the pointer size is a good guess for
     // most platforms.
     //
+    // @@ Need to redo this properly using alignof(std::max_align_t).
+    //
     size_t* p = static_cast<size_t*> (operator new (n + 2 * sizeof (size_t)));
     *p++ = 1;          // Initial count.
     *p++ = 0xDEADBEEF; // Signature.
