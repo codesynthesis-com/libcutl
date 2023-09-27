@@ -10,7 +10,7 @@ url: https://www.codesynthesis.com/projects/libcutl/
 src-url: https://git.codesynthesis.com/cgit/libcutl/libcutl/
 email: libcutl-users@codesynthesis.com ; Mailing list
 build-warning-email: builds@codesynthesis.com
-builds: host
+builds: all
 requires: c++11
 depends: * build2 >= 0.16.0
 depends: * bpkg >= 0.16.0
