@@ -12,5 +12,5 @@ email: libcutl-users@codesynthesis.com ; Mailing list
 build-warning-email: builds@codesynthesis.com
 builds: host
 requires: c++11
-depends: * build2 >= 0.13.0
-depends: * bpkg >= 0.13.0
+depends: * build2 >= 0.16.0
+depends: * bpkg >= 0.16.0
