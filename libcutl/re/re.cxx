@@ -3,25 +3,9 @@
 
 #include <libcutl/re.hxx>
 
-// It is either C++11 regex or Boost.
-//
-// Note that some compiler/runtime combinations don't have usable C++11
-// regex. For example Clang 3.5 with libstdc++ from GCC 4.9. In this case you
-// can fall back to using Boost regex by passing -DLIBCUTL_BOOST_REGEX
-// preprocessor option when building libcutl.
-//
-// @@ Should this rather be a (custom) config.* variable?
-//
-#if !defined(LIBCUTL_BOOST_REGEX)
-#  include <regex>
-#  include <locale>
-#  include <cstddef> // size_t
-#else
-#  ifndef LIBCUTL_BOOST_REGEX
-#    define LIBCUTL_BOOST_REGEX
-#  endif
-#  include <boost/tr1/regex.hpp>
-#endif
+#include <regex>
+#include <locale>
+#include <cstddef> // size_t
 
 using namespace std;
 
@@ -29,12 +13,6 @@ namespace cutl
 {
   namespace re
   {
-#ifdef LIBCUTL_BOOST_REGEX
-    namespace ire = std::tr1;
-#else
-    namespace ire = std;
-#endif
-
     //
     // format_base
     //
@@ -52,17 +30,17 @@ namespace cutl
     struct basic_regex<C>::impl
     {
       typedef basic_string<C> string_type;
-      typedef ire::basic_regex<C> regex_type;
+      typedef std::basic_regex<C> regex_type;
       typedef typename regex_type::flag_type flag_type;
 
       impl () {}
       impl (regex_type const& r): r (r) {}
       impl (string_type const& s, bool icase)
       {
-        flag_type f (ire::regex_constants::ECMAScript);
+        flag_type f (std::regex_constants::ECMAScript);
 
         if (icase)
-          f |= ire::regex_constants::icase;
+          f |= std::regex_constants::icase;
 
         r.assign (s, f);
       }
@@ -130,15 +108,15 @@ namespace cutl
           impl_ = s == 0 ? new impl : new impl (*s, icase);
         else
         {
-          impl::flag_type f (ire::regex_constants::ECMAScript);
+          impl::flag_type f (std::regex_constants::ECMAScript);
 
           if (icase)
-            f |= ire::regex_constants::icase;
+            f |= std::regex_constants::icase;
 
           impl_->r.assign (*s, f);
         }
       }
-      catch (ire::regex_error const& e)
+      catch (std::regex_error const& e)
       {
         throw basic_format<char> (s == 0 ? "" : *s, e.what ());
       }
@@ -158,15 +136,15 @@ namespace cutl
           impl_ = s == 0 ? new impl : new impl (*s, icase);
         else
         {
-          impl::flag_type f (ire::regex_constants::ECMAScript);
+          impl::flag_type f (std::regex_constants::ECMAScript);
 
           if (icase)
-            f |= ire::regex_constants::icase;
+            f |= std::regex_constants::icase;
 
           impl_->r.assign (*s, f);
         }
       }
-      catch (ire::regex_error const& e)
+      catch (std::regex_error const& e)
       {
         throw basic_format<wchar_t> (s == 0 ? L"" : *s, e.what ());
       }
@@ -178,28 +156,28 @@ namespace cutl
     LIBCUTL_EXPORT bool basic_regex<char>::
     match (string_type const& s) const
     {
-      return ire::regex_match (s, impl_->r);
+      return std::regex_match (s, impl_->r);
     }
 
     template <>
     LIBCUTL_EXPORT bool basic_regex<wchar_t>::
     match (string_type const& s) const
     {
-      return ire::regex_match (s, impl_->r);
+      return std::regex_match (s, impl_->r);
     }
 
     template <>
     LIBCUTL_EXPORT bool basic_regex<char>::
     search (string_type const& s) const
     {
-      return ire::regex_search (s, impl_->r);
+      return std::regex_search (s, impl_->r);
     }
 
     template <>
     LIBCUTL_EXPORT bool basic_regex<wchar_t>::
     search (string_type const& s) const
     {
-      return ire::regex_search (s, impl_->r);
+      return std::regex_search (s, impl_->r);
     }
 
     // If we are using C++11 regex then extend the standard ECMA-262
@@ -222,15 +200,10 @@ namespace cutl
     template <typename C>
     static basic_string<C>
     regex_replace_ex (const basic_string<C>& s,
-                      const ire::basic_regex<C>& re,
+                      const std::basic_regex<C>& re,
                       const basic_string<C>& fmt,
-                      ire::regex_constants::match_flag_type flags)
+                      std::regex_constants::match_flag_type flags)
     {
-#ifdef LIBCUTL_BOOST_REGEX
-      // Boost regex already does what we need.
-      //
-      return ire::regex_replace (s, re, fmt, flags);
-#else
       using string_type = basic_string<C>;
       using str_it      = typename string_type::const_iterator;
       using regex_it    = regex_iterator<str_it>;
@@ -426,7 +399,6 @@ namespace cutl
 
       r.append (ub, s.end ()); // Append the rightmost non-matched substring.
       return r;
-#endif
     }
 
     template <>
@@ -435,11 +407,11 @@ namespace cutl
              string_type const& sub,
              bool first_only) const
     {
-      ire::regex_constants::match_flag_type f (
-        ire::regex_constants::format_default);
+      std::regex_constants::match_flag_type f (
+        std::regex_constants::format_default);
 
       if (first_only)
-        f |= ire::regex_constants::format_first_only;
+        f |= std::regex_constants::format_first_only;
 
       return regex_replace_ex (s, impl_->r, sub, f);
     }
@@ -450,11 +422,11 @@ namespace cutl
              string_type const& sub,
              bool first_only) const
     {
-      ire::regex_constants::match_flag_type f (
-        ire::regex_constants::format_default);
+      std::regex_constants::match_flag_type f (
+        std::regex_constants::format_default);
 
       if (first_only)
-        f |= ire::regex_constants::format_first_only;
+        f |= std::regex_constants::format_first_only;
 
       return regex_replace_ex (s, impl_->r, sub, f);
     }
