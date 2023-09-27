@@ -1,3 +1,7 @@
+For all further versions see the change log at:
+
+https://git.codesynthesis.com/cgit/libcutl/libcutl/log/
+
 Version 1.10.0
 
   * fs::basic_path::string() now returns the string by reference.
