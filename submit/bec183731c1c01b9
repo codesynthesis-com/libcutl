@@ -1,0 +1,5 @@
+: 1
+name: libcutl
+version: 1.11.0
+summary: C++ utility library for compilers
+license: MIT
